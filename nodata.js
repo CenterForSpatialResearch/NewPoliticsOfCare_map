@@ -1,0 +1,6 @@
+d3.select("#noData").append("div").style("width","15px").style("height","15px").style("background-color","#ddd")
+    .style("display","inline-block")
+    .style("margin-left","10px")
+    .style("vertical-align","middle")
+d3.select("#noData").append("div").html("0 or no value in dataset").style("display","inline-block").style("padding","5px")
+    .style("vertical-align","middle").style("font-size","12px")

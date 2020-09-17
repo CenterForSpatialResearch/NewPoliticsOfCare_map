@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	  <meta charset="UTF-8">
+    <title>coverage</title>
+
+    <meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="css/dc.css"/>
+  <script src='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.js'></script>
+  <script src="https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.js"></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v1.10.1/mapbox-gl.css' rel='stylesheet' />
+  
+  <link href='https://api.mapbox.com/mapbox.js/v3.1.1/mapbox.css' rel='stylesheet' />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+<link
+rel="stylesheet"
+href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+type="text/css"
+/>
+    <link rel="stylesheet" type="text/css" href="css/style.css"/>
+
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
+<!--
+  <script type="text/javascript" src="js/mapbox-gl.js"></script>
+-->
+<script src="https://code.jquery.com/jquery-1.12.4.min.js" 
+        integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" 
+        crossorigin="anonymous">
+</script>
+<script src="js/jquery.mousefollow.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <style>
+  
+    </style>
+
+</head>
+
+<body>
+
+<div id="head">
+  <span id="brand">MAPPING THE NEW POLITICS OF CARE :</span><br>
+  <span id="title">comparisons between the <strong>priority values</strong> of different measures</span>  
+
+</div>
+
+<div id="byState"></div>
+<div id="nav">
+  <!-- <nav id="update" class="menu"><i>Model Last Updated on ##/##/##</i></nav> -->
+   
+  <div id = "strategies">
+       <!-- <nav id="strategiesQuestion" class="menu">How do you want to measure the need for Community Health Workers?</nav> -->
+   
+      <nav id="comparisonGrid"></div>
+      
+      </div>
+ </div>
+</div>
+
+ <div id="comparisonKey"></div>
+   
+    <div id="map"></div>
+  <div id="mapPopup"></div>
+<div id = "gridHover"></div>
+  
+
+<script type="text/javascript" src="js/d3.js"></script>
+
+<script type="text/javascript" src="js/crossfilter.js"></script>
+<script type="text/javascript" src="js/dc.js"></script>
+<script type="text/javascript" src="js/queue.v1.min.js"></script>
+<script type="text/javascript" src="js/radar.js"></script>
+<script type="text/javascript" src="dc-canvas-scatterplot.js"></script>
+<script type="text/javascript" src="fileSaver.js"></script>
+<script type="text/javascript" src="measure_comparisons.js"></script>
+
+
+</body>
+</html>

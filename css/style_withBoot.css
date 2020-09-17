@@ -1,0 +1,457 @@
+.temp{
+    border:1px solid red;
+}
+.mainMenu{
+    text-align:center;
+}
+body{
+	font-family:'Open Sans', sans-serif;
+    font-weight:200;
+	color:#000000;
+    font-size:11px;
+    padding:10px;
+}
+a{
+	color:#000000;
+    text-decoration:none;
+}
+a :hover{
+	color:#000000;
+}
+.mapboxgl-ctrl-top-right{
+    margin-top:40px;
+    width:200px;
+    margin-right:40px;
+}
+.mapboxgl-ctrl-geocoder--input{
+    margin-left:30px;
+    margin-top:8px;
+    width:190px;
+    border:1px solid #fff;
+}
+.mapboxgl-popup-content{
+    font-size:10px;
+    font-family:'Open Sans', sans-serif;
+    color:#3983a8;
+    width:200px;
+}
+.mapboxgl-popup-tip{
+    opacity:rgba(255,255,255,.9);
+}
+.popupTitle{
+    font-size:14px;
+}
+option{
+    height:40px;
+}
+.measures{
+    padding:2px 0px 2px 10%;
+    width:90%;
+    display:inline-block;
+}
+#head{
+    padding:20px;
+    letter-spacing:1px;
+   /* position:fixed;
+    left:0px;
+    top:0px;*/
+    background-color:rgba(255,255,255,1);
+    height:60px;
+    /*width:100%;
+*/overflow:hidden;
+    z-index:9;
+}
+.col{
+    border:1px solid red;
+}
+#date{
+    position:absolute;
+    right:0px;
+    top:0px;
+    color:black;
+    z-index:999;
+    padding-right:5px;
+}
+#brand{
+    font-size:26px;
+    font-weight:bold;
+    color:#000;
+font-family: 'Hammersmith One', sans-serif;}
+
+#title{
+    font-size:16px;
+    line-height:200%;
+}
+#fluctuation{
+    border-top:1px solid black;
+    padding:20px;
+    font-weight:bold;
+}
+#mapPopup{
+    margin:0px;
+    width:200px;
+    height:100px;
+    border:1px solid #000;
+    padding:10px;
+    position:absolute;
+    background-color:rgba(255,255,255,.9);
+    visibility:hidden;
+    z-index:9999;
+    line-height:120%;
+}
+#mapPopupCompare{
+    margin:0px;
+    width:200px;
+    height:200px;
+    border:1px solid #000;
+    padding:10px;
+    position:absolute;
+    background-color:rgba(255,255,255,.9);
+    visibility:hidden;
+    z-index:9999;
+    line-height:120%;
+}
+#currentSelection{
+    position:fixed;
+    left:300px;
+    bottom:50px;
+    z-index:999;
+    font-size:60px;
+}
+#colorGrid{
+   /* width:250px;
+    height:220px;*/
+    padding:10px;
+    background-color:rgba(255,255,255,1);
+    border-top: 1px solid #ddd;
+}
+#comparisonKey{
+    z-index:99999;
+    background-color:rgba(255,255,255,1);
+    border-top:1px solid black;
+    padding-top:10px;
+/*    filter: drop-shadow(3px 3px 4px rgba(0,0,0,.1));
+*/}
+#univar{
+    font-size:14px;
+    cursor:pointer;
+    border:1px solid black;
+    padding:10px;
+    text-align:center;
+    margin-bottom:5px;
+    background-color:black;
+    color:#ffffff;
+}
+#SVIMap{
+    width:100%;
+    height:100%;
+    position:fixed;
+    left:0px;
+    top:100%;
+    background-color:rgba(255,255,255,.9);
+    z-index:999999;
+}
+#SVIMapFrame{
+    width:100%;
+    height:100%;
+    padding:20px;
+    border:1px solid black;
+    overflow:hidden;
+}
+
+#SVIText{
+    position:fixed;
+    top:0px;
+    left:0px;
+    margin:20px;
+    padding:20px;
+    font-size:20px;
+    width:500px;
+    height:600px;
+    background-color:rgba(255,255,255,.9);
+}
+#closeMap{
+    font-size:18px;
+    position:fixed;
+    right:0px;
+    top:0px;
+    padding:20px;
+    z-index:99999999;
+    font-weight:bold;
+    background-color:rgba(255,255,255,.9);
+    margin:10px;
+}
+#colorTitle{
+    font-size:14px;
+    font-weight:bold;
+}
+
+#currentState{
+    color:#000000;
+    line-height:150%;
+    height:180px;
+}
+#popMap{
+    width:200px;
+    height:200px;
+}
+#popLabel{
+    width:200px;
+}
+#gridHover{
+/*    position:absolute;
+    top:100px;
+    left:350px;*/
+    font-size:12px;
+    padding:10px;
+    height:20px;
+/*    background-color:rgba(255,255,255,.9);
+*/}
+    .alignRight{
+        text-align:right;        
+    }
+    table{
+        width:200px;
+    }
+#coverage{
+    display:none;
+}
+#coverageDropdown{
+   margin-top:5px;
+}
+.highlightNumber{
+    font-weight:bold;
+    color:red;
+    text-align:right;
+}
+.covidMenu{
+    font-style:italic;
+}
+#Unemployment{
+/*    padding-bottom:10px;
+*/}
+#Proportional_allocation_to_Unemployment{
+/*    padding-bottom:10px;
+*/}
+#Proportional_allocation_to_Covid{
+    border-top:1px dashed black;
+}
+#Covid{
+    border-top:1px dashed black;
+/*    padding-top:10px;
+*/}
+/* for charts and maps */
+ #map{
+   /*  width:100%;
+     height:100%;*/
+	/* position:fixed;
+     left:0px;
+     top:0px;
+     
+     z-index:-1;
+     margin-left:0px;
+     margin-top:0px;
+     padding-top:0px;*/
+ }
+ #nav{
+     width:290px;
+    /* height:100%;
+*/ margin:10px;
+     padding:10px;
+     margin-top:100px;
+   /*  position:absolute;
+     left:0px;
+     top:0px;*/
+/*     overflow:auto;
+*//*     border:1px solid black;
+*/     background-color:rgba(255,255,255,1);
+        filter: drop-shadow(3px 3px 4px rgba(0,0,0,.1));
+     
+ }
+ #nav2{
+     position:fixed;
+     left:250px;
+     top:120px;
+     font-size:12px;
+     text-align:right;
+     padding:10px;
+ }
+ #stateHeader{
+     padding:10px;
+     font-size:12px;
+     margin:0px;
+     width:270px;
+     border-top:1px solid #ddd;
+ }
+ #stateKey{
+     padding:10px;
+     font-size:12px;
+     margin:0px;
+     width:270px;
+ }
+ #placesMenu{
+     font-size:10px;
+     padding:10px;
+     margin:0px;
+/*     width:270px;
+*/     border-bottom:1px solid #ddd;
+ }
+ .placesLink{
+     margin-top:10px;
+     padding:5px;
+/*     display:inline-block;
+*/ }
+ .ddlCustomers{
+     -webkit-appearance: none;
+       -moz-appearance: none;
+       appearance: none;
+ }
+select{
+     -webkit-appearance: none;
+       -moz-appearance: none;
+       appearance: none;
+       padding: 5px;
+       font-family:'Open Sans', sans-serif;
+       font-size:10px;
+       font-weight:200;
+       width:200px;
+ }
+ input{
+     -webkit-appearance: none;
+       -moz-appearance: none;
+       appearance: none;
+ }
+
+
+ #subtitle{
+     top:50px;
+     left:20px;
+     position:absolute;
+     font-size:16px;
+     font-weight:400;
+     font-style:italic;
+     color:#DF6D2A;
+ }
+ #key{
+     z-index:999;
+     width:400px;
+     height:100px;
+     margin:10px;
+     background-color:none;
+     border-bottom:1px solid #ddd;
+     
+ }
+
+ .mapMenu{
+     padding:5px;
+     margin-left:-5px;/*
+     border-right:1px solid #000;
+     border-left:1px solid #000;*/
+     height:20px;
+     width:24%;
+     color:#000;
+     background-color:#fff;
+     display:inline-block;
+     text-align:center;
+ }
+ #about{
+     border:none;
+ }
+ #geocoder{width:30px;}
+ #scatterplotResults{
+   position:absolute;
+   right:10px;
+   bottom:10px;
+   height:200px;
+   width:200px;  
+   overflow:auto;
+ }
+ #comparisonPlot{
+     border-top:1px solid #ddd;
+     width:100%;
+     z-index:9999999999;
+ }
+ .coverageOption{
+     padding:20px;
+ }
+ .menu{
+     font-family: 'Open Sans', sans-serif;
+     background:rgba(0,0,0,0);
+     font-size:14px;
+     display: inline-block;
+ }
+ 
+ .labelC{
+     padding:10px;
+     line-height:125%;
+     font-size:12px; 
+     font-style:none;
+     border:1px solid black;
+     margin:4px 10px 4px 10px;
+ }
+ .menu a{
+     font-size: 6px;
+     color: #000000;
+     display: inline-block;
+     text-decoration: none;
+     background:#fff;
+     border-top:1px solid #ddd;
+ }
+ .labelS{
+     line-height:125%;
+     font-size:12px; 
+     font-style:none;
+     border:1px solid black;
+     margin:0px 25px 8px 25px;
+     padding:15px;
+ }
+ .strategyGridLabel{
+ }
+ #labelS{
+     border:1px solid black;
+     width:80px;
+     display:inline-block;
+     
+ }
+ #mapbox-satellite{
+     background-color:rgba(0,0,0,0);
+ }
+ #allocationTitle{
+     font-weight:bold;
+     margin:10px;
+ }
+ #strategiesQuestion{
+     font-weight:bold;
+     margin:10px;
+ }
+ #coverageQuestion{
+     font-weight:bold;
+     margin:10px;
+     padding-top:20px;
+ }
+
+ #backToNational{
+     width:50px;
+     border-radius:50px;
+     height:50px;
+     padding:25px;
+     position:fixed;
+     right:10px;
+     top:90px;
+     background-color:#000;
+     color:white;
+     font-size:11px;
+     font-weight:bold;
+     text-align:center;
+     visibility:hidden;
+ }
+
+ #strategiesMenu{
+     background-color:#fff;
+     z-index:99999;
+     padding-bottom:20px;
+ }
+ 
+ #comparisonGrid{
+     font-size:11px;
+ }
