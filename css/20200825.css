@@ -224,6 +224,9 @@ font-family: 'Hammersmith One', sans-serif;}
 .covidMenu{
     font-style:italic;
 }
+.mapboxgl-canvas{
+    padding-left:190px;
+}
 #Unemployment{
 /*    padding-bottom:10px;
 */}
@@ -243,7 +246,7 @@ font-family: 'Hammersmith One', sans-serif;}
      position:fixed;
      top:0;
      right:0;
-    
+     padding-left:100px;
      min-width:100%;
      min-height:100%;
      z-index:-1;
