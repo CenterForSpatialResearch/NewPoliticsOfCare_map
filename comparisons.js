@@ -537,7 +537,7 @@ function colorMap(map,key){
     
  //
     var dataProperty = "compare_"+key
-    var color = {property:dataProperty,stops:[[rangeExtent[0],colorStart],[0,"#ddd"],[rangeExtent[1],colorEnd]]}
+    var color = {property:dataProperty,stops:[[rangeExtent[0],colorEnd],[0,"#ddd"],[rangeExtent[1],colorStart]]}
     map.setPaintProperty("counties", 'fill-color', color)
     
 }
@@ -1014,8 +1014,8 @@ function newScatterPlot(state){
     var svg = d3.select("#comparisonPlot").append("svg").attr("width",w+p*5).attr("height",h+p*3)
     var data = pub.dataByState[state]
     
-    var xLabel = "Proportional_allocation_to_"+pub.pair.split("XXX")[0]
-    var yLabel = "Proportional_allocation_to_"+pub.pair.split("XXX")[1]
+    var xLabel = "Proportional_allocation_to_"+pub.pair.split("XXX")[1]
+    var yLabel = "Proportional_allocation_to_"+pub.pair.split("XXX")[0]
     
     var extentX = d3.extent(data.map(function(d){
         return d[xLabel]
@@ -1024,8 +1024,8 @@ function newScatterPlot(state){
         return d[yLabel]
     }))
     
-    var colorStart = keyColors[pub.pair.split("XXX")[0]]
-    var colorEnd = keyColors[pub.pair.split("XXX")[1]]
+    var colorStart = keyColors[pub.pair.split("XXX")[1]]
+    var colorEnd = keyColors[pub.pair.split("XXX")[0]]
     
     var xScale = d3.scaleLinear().domain([0,extentX[1]]).range([0,w])
     var yScale = d3.scaleLinear().domain([0,extentY[1]]).range([h,0])
