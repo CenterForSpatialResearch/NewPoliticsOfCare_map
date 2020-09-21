@@ -135,8 +135,12 @@ function toTitleCase(str){
 var countyCentroids = d3.json("county_centroids.geojson")
 var counties = d3.json("counties.geojson")
 //var aiannh = d3.json("indian_reservations.geojson")
-var allData = d3.csv("County_level_proportional_allocation_for_all_policies.csv")
-var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/allocation_chw/master/Output/time_stamp.csv")
+//var allData = d3.csv("County_level_proportional_allocation_for_all_policies.csv")
+//var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/allocation_chw/master/Output/time_stamp.csv")
+var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
+var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
+
+
 var states = d3.json("simplestates.geojson")
 var carto= d3.json("cartogram.geojson")
 var stateAllocations = d3.csv("state_level_allocation.csv")

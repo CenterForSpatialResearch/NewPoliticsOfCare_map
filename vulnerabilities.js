@@ -95,7 +95,8 @@ var countyCentroids = d3.json("county_centroids.geojson")
 var counties = d3.json("counties.geojson")
 var usOutline = d3.json("simple_contiguous.geojson")
 var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
-var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/allocation_chw/master/Output/time_stamp.csv")
+var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
+var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
 var states = d3.json("simplestates.geojson")
 
  var measureSet = [
@@ -151,6 +152,7 @@ var centroids = null
 var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states){    
+    //console.log(modelData)
     
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
