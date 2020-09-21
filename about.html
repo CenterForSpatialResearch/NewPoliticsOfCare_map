@@ -42,6 +42,7 @@ type="text/css"
         padding:10px;
         line-height:125%;
         font-weight:bold;
+        background-color: gold;
       }
       .data{
         font-size:14px;
@@ -75,8 +76,8 @@ type="text/css"
             }
       .answer{
         padding: 0 18px;
-        max-height: 0;
-        overflow: hidden;
+/*        max-height: 0;
+*/        overflow: hidden;
         transition: max-height 0.3s ease-out;
         background-color: #ffffff;
         padding-left:20px;
@@ -521,25 +522,25 @@ We can make better choices with better data. This project begins with what data 
 </div>
 </div>
 <script>
-var coll = document.getElementsByClassName("question");
-var i;
-var cumulativeHeight = 0
-for (i = 0; i < coll.length; i++) {
-  coll[i].addEventListener("click", function() {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    var parentDiv = this.parentElement;
-
-    if (content.style.maxHeight){
-      content.scrollHeight = content.scrollHeight -content.style.maxHeight
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-      cumulativeHeight+=content.scrollHeight 
-      parentDiv.style.maxHeight = cumulativeHeight + "px";
-    } 
-  });
-}
+// var coll = document.getElementsByClassName("question");
+// var i;
+// var cumulativeHeight = 0
+// for (i = 0; i < coll.length; i++) {
+//   coll[i].addEventListener("click", function() {
+//     this.classList.toggle("active");
+//     var content = this.nextElementSibling;
+//     var parentDiv = this.parentElement;
+//
+//     if (content.style.maxHeight){
+//       content.scrollHeight = content.scrollHeight -content.style.maxHeight
+//       content.style.maxHeight = null;
+//     } else {
+//       content.style.maxHeight = content.scrollHeight + "px";
+//       cumulativeHeight+=content.scrollHeight
+//       parentDiv.style.maxHeight = cumulativeHeight + "px";
+//     }
+//   });
+// }
 </script>
   
 </body>
