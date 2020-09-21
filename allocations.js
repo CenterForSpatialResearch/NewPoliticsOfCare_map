@@ -41,6 +41,7 @@ var pub = {
     stateAllocations:null,
     currentState:randomStartState
 }
+var minMaxDictionary = {}
 var stateAllocationPercentMaxMin = {}
 var allocationMaxs = {
 }
@@ -173,6 +174,8 @@ var centroids = null
 var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states,carto,stateAllocations){
+    makeMinMaxDictionary()
+    
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
     })
@@ -224,8 +227,24 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function makeMinMaxDictionary(){
+    
+    var state_tiger_dict = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY','60':'AS','66':'GU','69':'MP','72':'PR','78':'VI'}
+    for(var s in state_tiger_dict){
+        var stateAbbr = state_tiger_dict[s]
+        minMaxDictionary[stateAbbr]={}
+        for(var i in measureSet){
+            var measureKey = measureSet[i]
+            minMaxDictionary[stateAbbr][measureKey]={}
+            minMaxDictionary[stateAbbr][measureKey]["min"]=100
+            minMaxDictionary[stateAbbr][measureKey]["max"]=0
+        }
+    }
+}
+
 function turnToDictFIPS(data,keyColumn,stateAllocations){
   //  console.log(stateAllocations)
+    
     var stateAllocationDictionary = formatState(stateAllocations)[0]
    // console.log(stateAllocationDictionary)
     var newDict = {}
@@ -255,11 +274,23 @@ function turnToDictFIPS(data,keyColumn,stateAllocations){
                 var priorityKey = "Normalized_"+measureKey
                 var priority = parseFloat(data[i][priorityKey])
                 var allocated =Math.floor(parseFloat(data[i][measureKey]))
-                var percentAllocated = Math.round(allocated/stateTotal*10000)/100
+                var percentAllocated = Math.round(allocated/stateTotal*10000)/100                
+                
                 values["percentAllocated_"+measureKey]=percentAllocated
+                
+                if(minMaxDictionary[stateAbbr][measureKey]["min"]>percentAllocated){
+                    minMaxDictionary[stateAbbr][measureKey]["min"]=percentAllocated
+                }
+                else if(minMaxDictionary[stateAbbr][measureKey]["max"]<percentAllocated){
+                    minMaxDictionary[stateAbbr][measureKey]["max"]=percentAllocated
+                }
                 
                 if(Object.keys(stateAllocationPercentMaxMin).indexOf(stateAbbr)==-1){
                     stateAllocationPercentMaxMin[stateAbbr]={}
+                    for(var k in measureSet){
+                        
+                    }
+                    
                     stateAllocationPercentMaxMin[stateAbbr].min=percentAllocated
                     stateAllocationPercentMaxMin[stateAbbr].max=percentAllocated
                 }else{
@@ -285,7 +316,8 @@ function turnToDictFIPS(data,keyColumn,stateAllocations){
             newDict[key]=values
         }        
     }
-    //console.log(newDict)
+   // console.log(minMaxDictionary)
+    
     return newDict
 }
 function combineGeojson(all,counties,stateAllocations){
@@ -914,8 +946,9 @@ function strategyMenu(map,data){
                 
 function colorByPriority(map){
     map.setPaintProperty("counties", 'fill-opacity',1)
-    var maxMin =  stateAllocationPercentMaxMin[pub.currentState]
-    
+   // var maxMin =  stateAllocationPercentMaxMin[pub.currentState]
+    var maxMin = minMaxDictionary[pub.currentState][pub.column]
+    //console.log(minMaxDictionary[pub.currentState][pub.column])
     var max = parseFloat(maxMin.max)
     var min = parseFloat(maxMin.min)
     var midPoint = min+(max-min)/2
@@ -929,6 +962,9 @@ function colorByPriority(map){
     map.setPaintProperty("counties", 'fill-color', matchString)
     drawGridWithoutCoverage(map)
     d3.select("#coverage").style("display","block")
+    
+    d3.select("#keyRangeMax").html(max+"%")
+    
     
 }
 
