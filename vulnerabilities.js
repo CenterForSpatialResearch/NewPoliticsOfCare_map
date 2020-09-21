@@ -888,7 +888,12 @@ function drawGridWithoutCoverage(map){
     var label = []
     for(var ps in pStops){
         var range = pStops[ps]
-        label.push(range[0]+" - "+range[1])
+        if(range[0]==0){
+           label.push(range[0]+" < - "+range[1])
+        }else{
+            label.push(range[0]+" - "+range[1])
+        }
+        
         
     }
     var clicked = false
