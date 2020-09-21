@@ -153,6 +153,7 @@ var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states){    
     //console.log(modelData)
+    console.log(modelData)
     
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
@@ -484,7 +485,7 @@ function drawMap(data,outline){
              if(roundedValue==0){
                  roundedValue = Math.round(feature.properties["Normalized_"+pub.column]*10000)/10000
              }
-             
+           
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
@@ -492,6 +493,15 @@ function drawMap(data,outline){
                      +"Vulnerability score ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"                 
              var needsMetString = currentSelectionCoverage+"% of needs met</strong>"
+             
+             if(pub.column=="SVI"){
+             var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
+                     +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +Math.round(feature.properties[pub.column]*100)/100+"</span><br>"
+                     +"Vulnerability score ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +roundedValue+"</span><br>"   
+             }
              
              if(currentSelectionCoverage ==-1){
                  needsMetString = "Currently No Cases Reported"
