@@ -786,7 +786,7 @@ function strategyMenu(map,data){
                          var filter = ["!=","percentage_scenario_SVI_hotspot_base_case_capacity_30",-1]
                          d3.selectAll(".measureGrid").attr("fill","white")
                          d3.select(this).attr("fill","black")
-                         map.setFilter("counties",filter)
+                         //map.setFilter("counties",filter)
                          clickedId = d3.select(this).attr("id")
                          pub.column = clickedId
                          d3.selectAll(".measures").style("background-color","white").style("color","#000")
