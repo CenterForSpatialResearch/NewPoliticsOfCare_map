@@ -130,9 +130,9 @@ var carto= d3.json("cartogram.geojson")
 var stateAllocations = d3.csv("state_level_allocation.csv")
  var measureSet = [
      "Proportional_allocation_to_Medicaid_demand",
+     "Proportional_allocation_to_Unemployment",
      "Proportional_allocation_to_SVI",
      "Proportional_allocation_to_YPLL",
-     "Proportional_allocation_to_Unemployment",
        "Proportional_allocation_to_Covid",
      "Proportional_allocation_to_Covid_capita",
      "Proportional_allocation_to_Covid_death_capita"
@@ -143,7 +143,7 @@ var stateAllocations = d3.csv("state_level_allocation.csv")
       Proportional_allocation_to_Medicaid_demand:"MEDICAID ENROLLEES",
       Proportional_allocation_to_SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
       Proportional_allocation_to_YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
-      Proportional_allocation_to_Unemployment:"UNEMPLOYMENT RATE",
+      Proportional_allocation_to_Unemployment:"UNEMPLOYMENT",
        Proportional_allocation_to_Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
       Proportional_allocation_to_Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
       Proportional_allocation_to_Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"

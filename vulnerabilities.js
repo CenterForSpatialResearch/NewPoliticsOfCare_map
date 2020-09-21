@@ -101,9 +101,9 @@ var states = d3.json("simplestates.geojson")
 
  var measureSet = [
      "Medicaid_demand",
+     "Unemployment",
      "SVI",
      "YPLL",
-     "Unemployment",
        "Covid",
      "Covid_capita",
      "Covid_death_capita"
@@ -114,7 +114,7 @@ var measureDisplayText = {
      Medicaid_demand:"MEDICAID ENROLLEES",
      SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
      YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
-     Unemployment:"UNEMPLOYMENT RATE",
+     Unemployment:"UNEMPLOYMENT",
       Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
      Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
      Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"

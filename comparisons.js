@@ -93,9 +93,9 @@ var keyColors = {
  var measureSet = [
     // "medicaid_demand",
       "Medicaid_demand",
+     "Unemployment",
      "SVI",
      "YPLL",
-     "Unemployment",
     "Covid",
      "Covid_capita",
      "Covid_death_capita"
