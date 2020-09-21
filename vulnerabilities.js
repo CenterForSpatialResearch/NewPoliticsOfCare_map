@@ -984,7 +984,7 @@ function zoomToBounds(mapS){
     //https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
     var bounds =  new mapboxgl.LngLatBounds([-155, 20], 
         [-55, 55]);
-    map.fitBounds(bounds,{padding:20},{bearing:0})
+    map.fitBounds(bounds,{padding:40},{bearing:0})
 }
 function getMaxMin(coords){
     var maxLat = -999
