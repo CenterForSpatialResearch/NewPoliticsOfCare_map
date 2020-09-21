@@ -174,7 +174,10 @@ function cartoGoToState(state){
           .style("width","150px").style("height","10px")
       .style("background-image","linear-gradient(to right, "+colors[0]+" , "+colors[1]+","+colors[2]+")")
       .style("display","inline-block")
-    d3.select("#stateKey").append("div").attr("id","keyRangeMax").html(max+"%").style("display","inline-block").style("padding","5px")
+      
+    d3.select("#stateKey").append("div").attr("id","keyRangeMax").html(max+"%")
+      .style("font-size","16px")
+      .style("display","inline-block").style("padding","5px")
       
           
 }
