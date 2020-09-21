@@ -940,7 +940,7 @@ function drawGridWithoutCoverage(map){
                     d3.select("#gridHover").style("visibility","visible")
                     var gP = ["low","med","high"][Math.floor((i)/3)]
                     var gC = ["low","med","high"][i%3]
-                    d3.select("#gridHover").html(pub.histo[i].length+ " counties have "+ gP+" priority and "+gC+" unmet need")
+                  //  d3.select("#gridHover").html(pub.histo[i].length+ " counties have "+ gP+" priority and "+gC+" unmet need")
                     //   console.log("over")
                 })
                 .on("mouseout",function(d,i){
@@ -961,7 +961,7 @@ function drawGridWithoutCoverage(map){
 
                     if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
                         d3.select(this).attr("stroke","none")
-                        currentFilter = ["!=","percentage_scenario_SVI_hotspot_base_case_capacity_30",-1]
+                        currentFilter =["==","stateAbbr",currentState]
                         map.setFilter("counties",currentFilter)
                         clicked = false
                     }else{
