@@ -946,12 +946,21 @@ function drawGridWithoutCoverage(map){
                 .on("mouseout",function(d,i){
                     d3.selectAll(".gridCell").attr("opacity",1)
                     d3.select("#gridHover").style("visibility","hidden")
-
+                    // console.log(currentState)
+  //                   console.log(clicked)
                     if(clicked == false){
-                        console.log(currentState)
-                        currentFilter = ["==","stateAbbr",currentState]
+                        if(currentState=="C48"){
+                            currentFilter =["!=","stateAbbr"," "]
+                        }else{
+                            currentFilter =["==","stateAbbr",currentState]
+                        }
+                        // console.log(currentFilter)
                         map.setFilter("counties",currentFilter)
+                        
                     }else{
+                        // console.log(clicked)
+ //                        console.log(currentFilter)
+ //
                         map.setFilter("counties",currentFilter)
                     }
                 })
@@ -961,7 +970,11 @@ function drawGridWithoutCoverage(map){
 
                     if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
                         d3.select(this).attr("stroke","none")
-                        currentFilter =["==","stateAbbr",currentState]
+                        if(currentState=="C48"){
+                            currentFilter =["!=","stateAbbr"," "]
+                        }else{
+                            currentFilter =["==","stateAbbr",currentState]
+                        }
                         map.setFilter("counties",currentFilter)
                         clicked = false
                     }else{
@@ -1084,6 +1097,7 @@ function PopulateDropDownList(features,map) {
  //               curve: 1
  //               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
  //           });
+         currentState="C48"
        }else if(this.value=="02"){
            map.flyTo({
                zoom:4,
@@ -1092,6 +1106,7 @@ function PopulateDropDownList(features,map) {
      //           curve: 1
                //essential: true // this animation is considered essential with respect to prefers-reduced-motion
            });
+           currentState="AK"
        }
        else{
            var coords = boundsDict[this.value]
