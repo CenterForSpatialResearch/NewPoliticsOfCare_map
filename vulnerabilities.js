@@ -424,6 +424,7 @@ function drawMap(data,outline){
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
          if(feature["properties"].FIPS!=undefined){
+             console.log(feature["properties"])
              if (hoveredStateId) {
              map.setFeatureState(
              { source: 'counties', id: hoveredStateId },
@@ -494,7 +495,6 @@ function drawMap(data,outline){
                      +"Vulnerability score ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"                 
              var needsMetString = currentSelectionCoverage+"% of needs met</strong>"
-             
              if(pub.column=="SVI"){
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
