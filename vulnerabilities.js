@@ -424,7 +424,6 @@ function drawMap(data,outline){
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
          if(feature["properties"].FIPS!=undefined){
-             console.log(feature["properties"])
              if (hoveredStateId) {
              map.setFeatureState(
              { source: 'counties', id: hoveredStateId },
