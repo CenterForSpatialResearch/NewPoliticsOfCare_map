@@ -103,8 +103,8 @@ var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch
 var states = d3.json("simplestates.geojson")
 
  var measureSet = [
-     "Medicaid_demand",
-     "Unemployment",
+     "Medicaid_capita",
+     "Unemployment_capita",
      "SVI",
      "YPLL",
        "Covid",
@@ -114,20 +114,20 @@ var states = d3.json("simplestates.geojson")
 
 
 var measureDisplayText = {
-     Medicaid_demand:"MEDICAID ENROLLEES",
+     Medicaid_capita:"MEDICAID ENROLLEES",
      SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
      YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
-     Unemployment:"UNEMPLOYMENT",
+     Unemployment_capita:"UNEMPLOYMENT",
       Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
      Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
      Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"
    
 }
 var measureDisplayTextPop={
-     Medicaid_demand:"Total estimated medicaid enrollment",
+     Medicaid_capita:"Total estimated medicaid enrollment",
      SVI:"Social Vulneralbility Index*",
      YPLL:"Years of Potential Life Lost",
-     Unemployment:"Unemployment",
+     Unemployment_capita:"Unemployment",
       Covid:"Total Covid Cases (14 Days)",
      Covid_capita:"Covid Cases per 100,000 Residents",
      Covid_death_capita:"Covid Deaths per 100,000 Residents"
