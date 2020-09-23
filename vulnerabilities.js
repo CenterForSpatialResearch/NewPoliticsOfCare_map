@@ -40,7 +40,8 @@ var outlineColor = "#DF6D2A"
 var colors = ["#10B6A3","#A2D352","#FFF100"]
 //var colors = ["#E0ECF4","#9EBCDA","#8856A7"]
 var pStops = [[0,.1],[.1,.2],[.2,.3],[.3,.4],[.4,.5],[.5,.6],[.6,.7],[.7,.8],[.8,.9],[.9,1]]
-var cStops = [[0,34],[34,67],[67,100]]
+var pStops = [[0,10],[10,20],[20,30],[30,40],[40,50],[50,60],[60,70],[70,80],[80,90],[90,100]]
+//var cStops = [[0,34],[34,67],[67,100]]
 
 /*
 var groupColorDict = []
@@ -98,6 +99,7 @@ var usOutline = d3.json("simple_contiguous.geojson")
 var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
 var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
 var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
+//var allData = d3.csv("County_level_proportional_allocation_for_all_policies 2.csv")
 var states = d3.json("simplestates.geojson")
 
  var measureSet = [
@@ -236,8 +238,9 @@ function turnToDictFIPS(data,keyColumn){
         var values = data[i]
         for(var j in measureSet){
             var measureKey = measureSet[j]
-            var priorityKey = "Normalized_"+measureKey
+            var priorityKey = "Percentile_ranks_"+measureKey
             var priority = parseFloat(data[i][priorityKey])
+            //console.log(priority)
             for(var ps in pStops){
                 var pStop = pStops[ps]
                 if(priority>=pStop[0] && priority<=pStop[1]){
@@ -424,6 +427,7 @@ function drawMap(data,outline){
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
          if(feature["properties"].FIPS!=undefined){
+             console.log(feature["properties"])
              if (hoveredStateId) {
              map.setFeatureState(
              { source: 'counties', id: hoveredStateId },
@@ -481,17 +485,19 @@ function drawMap(data,outline){
          //    var currentGroup = feature.properties[currentSelection +"_group"]
              
          //    var currentGroupDescription = groupLabels[currentGroup]
-             
-             var roundedValue = Math.round(feature.properties["Normalized_"+pub.column]*100)/100
+             console.log(pub.column)
+  console.log(feature.properties["Percentile_ranks_"+pub.column])
+  console.log(feature.properties)
+             var roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*100)/100
              if(roundedValue==0){
-                 roundedValue = Math.round(feature.properties["Normalized_"+pub.column]*10000)/10000
+                 roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*10000)/10000
              }
            
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
                      +Math.ceil(feature.properties[pub.column])+"</span><br>"
-                     +"Vulnerability score ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"                 
              var needsMetString = currentSelectionCoverage+"% of needs met</strong>"
              if(pub.column=="SVI"){
@@ -499,7 +505,7 @@ function drawMap(data,outline){
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
                      +Math.round(feature.properties[pub.column]*100)/100+"</span><br>"
-                     +"Vulnerability score ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
              
@@ -852,9 +858,9 @@ function colorByPriority(map){
  //                ["get","group_"+pub.column]].concat(newColors)
     d3.select("#currentSelection").html("Normalized "+pub.column)
     var matchString = {
-    property: "Normalized_"+pub.column,
+    property: "Percentile_ranks_"+pub.column,
    // stops: [[0, 'rgba(19,182,163, 1)'],[.5,"#A2D352"],[1, 'rgba(255, 241, 0, 1)']]
-    stops: [[0,"#ddd"],[Math.pow(.01, 30), colors[0]],[.5,colors[1]],[1, colors[2]]]
+    stops: [[0,"#ddd"],[Math.pow(.01, 30), colors[0]],[50,colors[1]],[100, colors[2]]]
     }
     
     
@@ -905,7 +911,7 @@ function drawGridWithoutCoverage(map){
     
 
     uniSVG.append("text").text(measureDisplayTextPop[pub.column]).attr("x",0).attr("y",15).style("font-size","14px")    
-    uniSVG.append("text").text("Vulnerability Score relative to rest of State").attr("x",0).attr("y",30)
+    uniSVG.append("text").text("Percentile ranking relative to rest of State").attr("x",0).attr("y",30)
     .style("font-size","12px")
     
     uniSVG.append("text").text("Click to filter map").attr("x",0).attr("y",55)
@@ -915,7 +921,7 @@ function drawGridWithoutCoverage(map){
     // uniSVG.append("rect").attr("width",gridSize/2).attr("height",gridSize/2).attr("x",10).attr("y",190).attr("fill","#ddd")
    //  uniSVG.append("text").attr("x",35).attr("y",204).text("Counties with no recorded cases")
    //  
-    var cScale = d3.scaleLinear().domain([0,.5,1]).range(colors)
+    var cScale = d3.scaleLinear().domain([0,50,100]).range(colors)
     uniSVG.selectAll(".uniRect")
                 .data(pStops)
                 .enter()
