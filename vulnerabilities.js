@@ -35,9 +35,10 @@ var currentState = ""
 var highlightColor = "gold"
 var bghighlightColor = "gold"
 var outlineColor = "#DF6D2A"
-
+var currentClickedGroup = null
 
 var colors = ["#10B6A3","#A2D352","#FFF100"]
+//var colors = ["#fff","#aaa","black"]
 //var colors = ["#E0ECF4","#9EBCDA","#8856A7"]
 var pStops = [[0,.1],[.1,.2],[.2,.3],[.3,.4],[.4,.5],[.5,.6],[.6,.7],[.7,.8],[.8,.9],[.9,1]]
 var pStops = [[0,10],[10,20],[20,30],[30,40],[40,50],[50,60],[60,70],[70,80],[80,90],[90,100]]
@@ -514,7 +515,7 @@ function drawMap(data,outline){
              }
              d3.select("#popLabel").html(displayString)//+"<br><i>Click on county for more</i>")
             var coords = pub.centroids[feature.properties["FIPS"]]
-              var formattedCoords =coords
+            var formattedCoords =coords
          }       
          
          map.on("mouseleave",'counties',function(){
@@ -953,9 +954,11 @@ function drawGridWithoutCoverage(map){
                     d3.select("#gridHover").style("visibility","hidden")
                     // console.log(currentState)
   //                   console.log(clicked)
-                    map.setFilter("counties",["!=","group_"+pub.column," "])
 
                      if(clicked == false){
+                         map.setFilter("counties",["!=","group_"+pub.column," "])
+                         currentClickedGroup = "_"+i
+                         
  //                        if(currentState=="C48"){
  //                            currentFilter =["!=","stateAbbr"," "]
  //                        }else{
@@ -967,12 +970,14 @@ function drawGridWithoutCoverage(map){
                     }else{
  //                        // console.log(clicked)
  // //                        console.log(currentFilter)
- // //
- //                        map.setFilter("counties",currentFilter)
+     // //
+                        var filter = ["==","group_"+pub.column,currentClickedGroup]
+                        map.setFilter("counties",filter)
                      }
                 })
                 .on("click",function(d,i){
                     var groupName = "_"+(i)            
+                    currentClickedGroup = "_"+i
                     var filter = ["==","group_"+pub.column,groupName]
 
                     if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
