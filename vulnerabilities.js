@@ -156,7 +156,7 @@ var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states){    
     //console.log(modelData)
-    console.log(modelData)
+    //console.log(modelData)
     
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
@@ -486,8 +486,8 @@ function drawMap(data,outline){
              
          //    var currentGroupDescription = groupLabels[currentGroup]
              console.log(pub.column)
-  console.log(feature.properties["Percentile_ranks_"+pub.column])
-  console.log(feature.properties)
+              console.log(feature.properties["Percentile_ranks_"+pub.column])
+              console.log(feature.properties)
              var roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*100)/100
              if(roundedValue==0){
                  roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*10000)/10000
@@ -504,7 +504,7 @@ function drawMap(data,outline){
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
-                     +Math.round(feature.properties[pub.column]*100)/100+"</span><br>"
+                     +feature.properties[pub.column]+"</span><br>"
                      +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
@@ -940,12 +940,12 @@ function drawGridWithoutCoverage(map){
                     d3.selectAll(".gridCell").attr("opacity",.3)
                     d3.select(this).attr("opacity",1)
 
-                    var x = event.clientX;     // Get the horizontal coordinate
-                    var y = event.clientY;             
-                    d3.select("#gridHover").style("visibility","visible")
-                    var gP = ["low","med","high"][Math.floor((i)/3)]
-                    var gC = ["low","med","high"][i%3]
-                  //  d3.select("#gridHover").html(pub.histo[i].length+ " counties have "+ gP+" priority and "+gC+" unmet need")
+                    // var x = event.clientX;     // Get the horizontal coordinate
+      //               var y = event.clientY;           
+                    //d3.select("#gridHover").style("visibility","visible")
+                    // var gP = ["low","med","high"][Math.floor((i)/3)]
+ //                    var gC = ["low","med","high"][i%3]
+                  //  d3.select("#gridHover").html(pub.histo[i].length+ " counties have "+ gP+" priority and "+gC+" unmet need")[]
                     //   console.log("over")
                 })
                 .on("mouseout",function(d,i){
@@ -953,21 +953,23 @@ function drawGridWithoutCoverage(map){
                     d3.select("#gridHover").style("visibility","hidden")
                     // console.log(currentState)
   //                   console.log(clicked)
-                    if(clicked == false){
-                        if(currentState=="C48"){
-                            currentFilter =["!=","stateAbbr"," "]
-                        }else{
-                            currentFilter =["==","stateAbbr",currentState]
-                        }
-                        // console.log(currentFilter)
-                        map.setFilter("counties",currentFilter)
-                        
-                    }else{
-                        // console.log(clicked)
- //                        console.log(currentFilter)
+                    map.setFilter("counties",["!=","group_"+pub.column," "])
+
+                     if(clicked == false){
+ //                        if(currentState=="C48"){
+ //                            currentFilter =["!=","stateAbbr"," "]
+ //                        }else{
+ //                            currentFilter =["==","stateAbbr",currentState]
+ //                        }
+ //                        // console.log(currentFilter)
+ //                        map.setFilter("counties",currentFilter)
  //
-                        map.setFilter("counties",currentFilter)
-                    }
+                    }else{
+ //                        // console.log(clicked)
+ // //                        console.log(currentFilter)
+ // //
+ //                        map.setFilter("counties",currentFilter)
+                     }
                 })
                 .on("click",function(d,i){
                     var groupName = "_"+(i)            
