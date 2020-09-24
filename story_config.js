@@ -65,8 +65,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -93,8 +93,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -117,8 +117,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -141,8 +141,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -165,8 +165,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -189,8 +189,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -213,8 +213,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -237,8 +237,8 @@ var config = {
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -261,8 +261,8 @@ var config = {
             location: {
                 center: [-114, 34.232006],
                 zoom: 10,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -285,8 +285,8 @@ var config = {
             location: {
                 center: [-109.5, 34.232006],
                 zoom: 10,
-                pitch: 55.50,
-                bearing: -4
+                pitch: 0,
+                bearing: 0
             },
             onChapterEnter: [
                 {
@@ -351,10 +351,11 @@ var config = {
         },
         {
             id: 'allocation',
-            title: 'these vulnerabilites show ..... how do we help?',
+            title: 'how do we help?',
             image: '',
-            description: 'community health workers are .... <br><br>each of these vulnerabilities mean a different way of allocating community health workers.'
-            +'<br><br>Imagine 1,000,000  Community Health Workers ... give a sense of what they do .. and why they are going to \'vulnerable\' places ... and then ask where they go.  ', 
+            description: 'community health workers do this... each of these vulnerabilities mean a different way of allocating community health workers.'
+            +'<br><br>Imagine 1,000,000  Community Health Workers ... '
+            +'<br><br>Where should they go? all these vulnerability measures show that we are vulnerable in different ways, but we all need CHWs, especially now ...', 
             location: {
                 center: [-95, 39],
                 zoom:3,
