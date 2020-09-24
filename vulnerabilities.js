@@ -428,7 +428,7 @@ function drawMap(data,outline){
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
          if(feature["properties"].FIPS!=undefined){
-             console.log(feature["properties"])
+             //console.log(feature["properties"])
              if (hoveredStateId) {
              map.setFeatureState(
              { source: 'counties', id: hoveredStateId },
@@ -486,9 +486,9 @@ function drawMap(data,outline){
          //    var currentGroup = feature.properties[currentSelection +"_group"]
              
          //    var currentGroupDescription = groupLabels[currentGroup]
-             console.log(pub.column)
-              console.log(feature.properties["Percentile_ranks_"+pub.column])
-              console.log(feature.properties)
+             //console.log(pub.column)
+            //  console.log(feature.properties["Percentile_ranks_"+pub.column])
+             // console.log(feature.properties)
              var roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*100)/100
              if(roundedValue==0){
                  roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*10000)/10000
@@ -950,22 +950,25 @@ function drawGridWithoutCoverage(map){
                     //   console.log("over")
                 })
                 .on("mouseout",function(d,i){
+                         //console.log(currentState)
+                    
                     d3.selectAll(".gridCell").attr("opacity",1)
                     d3.select("#gridHover").style("visibility","hidden")
                     // console.log(currentState)
   //                   console.log(clicked)
 
                      if(clicked == false){
-                         map.setFilter("counties",["!=","group_"+pub.column," "])
+                         //map.setFilter("counties",["!=","group_"+pub.column," "])
                          currentClickedGroup = "_"+i
                          
- //                        if(currentState=="C48"){
- //                            currentFilter =["!=","stateAbbr"," "]
- //                        }else{
- //                            currentFilter =["==","stateAbbr",currentState]
- //                        }
+                         if(currentState=="C48"){
+                             map.setFilter("counties",["!=","group_"+pub.column," "])
+                             
+                         }else{
+                             currentFilter =["==","stateAbbr",currentState]
+                         }
  //                        // console.log(currentFilter)
- //                        map.setFilter("counties",currentFilter)
+                             map.setFilter("counties",currentFilter)
  //
                     }else{
  //                        // console.log(clicked)
