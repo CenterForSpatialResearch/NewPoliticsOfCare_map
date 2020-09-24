@@ -13,8 +13,7 @@ var config = {
             id: 'intro',
             title: 'Vulnerability in health',
             image: '',
-            description: 'We hear a lot about it these days. About how COVID impacts our communities. But before COVID our communities were vulnerable to all kinds of health threats. We think both COVID and other health threats should be met with a historic challenge; A New Deal for Public Health, a COmmunty Health Corps of million people to lift up the health of Americans.'
-            +"<br><br>donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales ut eu sem integer vitae justo eget magna fermentum iaculis eu non diam phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet enim tortor at auctor urna nunc id cursus metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper eget duis at tellus at urna condimentum mattis pellentesque id nibh tortor id aliquet lectus proin nibh nisl condimentum id",
+            description: 'We hear a lot about it these days. About how COVID impacts our communities. But before COVID our communities were vulnerable to all kinds of health threats. We think both COVID and other health threats should be met with a historic challenge; A New Deal for Public Health, a Communty Health Corps of million people to lift up the health of Americans.',
             location: {
                 center: [-95, 39],
                 zoom:3,
@@ -38,7 +37,10 @@ var config = {
         id: 'vulnerabilities',
         title: 'Vulnerabilities',
         image: '',
-        description: 'But vulnerablility can be expressed in mayn different ways--like SVI (we talk a little bit about what it is, why it matters). <br>PUT A KEY HERE<br><br>Let\'s go to Arizona and we can show you what we mean',
+        description: 'But vulnerablility can be expressed in may different ways. For example the CDC\'s Social Vulnerability Index takes into account '
+            +'15 factors in socioeconomic status, household composition and disability...'
+            +'<br><br>Let\'s go to Arizona and we can show you what we mean ..<br><br>'
+            +'<br><img src="images/key.png" width="300px">',
         location: {
             center: [-95, 39],
             zoom:3,
@@ -62,7 +64,7 @@ var config = {
             id: 'sviArizona',
             title: 'SVI in Arizona',
             image: '',
-            description: 'SVI is ..., in Arizona, it is located in ... and .... But this is not the only way to locate vulnerable populations.',
+            description: 'SVI is focuses on populations that ..... The way we have visualized SVI here highlights large populations with high vulnerability, we did this to show ... <br><br>In Arizona, it is located in ... and .... <br><br>But this is not the only way to locate vulnerable populations.',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -90,7 +92,7 @@ var config = {
             id: 'ypll',
             title: 'YPLL',
             image: '',
-            description: 'YPLL is another, YPLL is ... When we use YPLL to locate vulnerability....',
+            description: 'YPLL is another, YPLL is ... <br><br>When we use YPLL to locate vulnerability....',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -114,7 +116,7 @@ var config = {
             id: 'medicaid',
             title: 'Medicaid',
             image: '',
-            description: 'And if we look at where medicaid enrolees are concentrated ...',
+            description: 'Yet another is how many residents use medicaid ... <br><br> And if we look at where medicaid enrolees are concentrated in AZ we see places that are dense and ...',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -138,7 +140,7 @@ var config = {
             id: 'unemployement',
             title: 'unemployement',
             image: '',
-            description: 'Unemplyement has been rising in the past few months ... some stats...., in arizona, ....',
+            description: 'And finally unemplyement has been rising in the past few months ... <br><br>some stats.... <br><br>In Arizona, we see it here and here....',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -160,9 +162,9 @@ var config = {
         },
         {
             id: 'covid1',
-            title: 'Covid has changed this landscape',
+            title: 'Of course, Covid has changed this landscape',
             image: '',
-            description: 'here is where covid cases are ....',
+            description: 'Here is where covid cases are in AZ ...',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -184,9 +186,9 @@ var config = {
         },
         {
             id: 'covid2',
-            title: 'when we look at how covid intersects with concentrations in population ...',
+            title: 'When we look at how covid intersects with concentrations in population ...',
             image: '',
-            description: 'here is where the highest rates are ...',
+            description: 'Here is where the highest rates are ...',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -208,7 +210,7 @@ var config = {
         },
         {
             id: 'covid3',
-            title: 'and when we look at covid deaths ...',
+            title: 'And when we look at covid deaths ...',
             image: '',
             description: 'here is where covid deaths are ....',
             location: {
@@ -232,9 +234,9 @@ var config = {
         },
         {
             id: 'highlightAZ',
-            title: 'here is what each vulnerability identifies as the hotspot',
+            title: 'All together these 4 indexes and 3 measures of Covid show us where vulnerabilities are in the state.',
             image: '',
-            description: 'all 7 vulnerabilities expose different places as ...<br><br> This will be a map that shows a layer that points to counties for the most for each of the 7', 
+            description: 'all 7 expose different places as ...<br><br> This will be a map that shows a layer that points to counties for the most for each of the 7', 
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -256,9 +258,10 @@ var config = {
         },
         {
             id: 'highlightAZCounty',
-            title: 'Each county has a range depending on which vulnerability is measured',
+            title: 'Each county has a range depending on which vulnerability is measured, let\'s look closer...',
             image: '',
-            description: 'for example, _____ county  ranks high in this, but not that.', 
+            description: 'for example, _____ county  ranks high in this, but not that. Its population makeup is ... average income is ... age ...'
+            +'during the pandemic it has been ... where unemplyement has been ... and this other thing has been ...', 
             location: {
                 center: [-114, 34.232006],
                 zoom: 10,
@@ -272,17 +275,17 @@ var config = {
                 }
             ],
             onChapterExit: [
-                // {
-  //                   layer: "mapbox-satellite",
-  //                   opacity: 0
-  //               }
+                 {
+                     layer: "mapbox-satellite",
+                     opacity: 0
+                 }
             ]
         },
         {
             id: 'highlightAZCounty2',
             title: 'And across the state, _____ county shows a different story',
             image: '',
-            description: '______county has consistently high ..... across all 7 measures', 
+            description: '______county has consistently high vulnerability..... across these 3 measures ... its population is older ... with ...', 
             location: {
                 center: [-109.5, 34.232006],
                 zoom: 10,
@@ -290,10 +293,10 @@ var config = {
                 bearing: 0
             },
             onChapterEnter: [
-                // {
-   //                  layer: "Covid_death_capita",
-   //                  opacity: 1
-   //              }
+                 {
+                     layer: "mapbox-satellite",
+                     opacity: 1
+                 }
             ],
             onChapterExit: [
                 {
@@ -328,12 +331,12 @@ var config = {
         },
         {
             id: 'NY',
-            title: 'While New York is completely different ...',
+            title: 'While its neighbor New York is completely different ...',
             image: '',
             description: 'Here, ___ is concentrated in ___ and ... is concentrated in ...', 
             location: {
                 center: [-74.668854,43],
-                zoom: 7,
+                zoom: 6,
                 pitch: 0,
                 bearing: 0
             },
@@ -352,11 +355,10 @@ var config = {
         },
         {
             id: 'allocation',
-            title: 'how do we help?',
+            title: 'if all these vulnerabilities are in different places ... how do we help?',
             image: '',
-            description: 'community health workers do this... each of these vulnerabilities mean a different way of allocating community health workers.'
-            +'<br><br>Imagine 1,000,000  Community Health Workers ... '
-            +'<br><br>Where should they go? all these vulnerability measures show that we are vulnerable in different ways, but we all need CHWs, especially now ...', 
+            description: 'We can start here ...Imagine 1,000,000  Community Health Workers ...  community health workers do this... each of these vulnerabilities mean a different way of allocating community health workers.'
+            +'<br><br>Where should they go? ...', 
             location: {
                 center: [-95, 39],
                 zoom:3,

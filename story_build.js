@@ -161,6 +161,8 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
         }
       
     map.once("idle",function(){
+        map.setLayoutProperty("mapbox-satellite", 'visibility', 'visible');
+        map.setPaintProperty("mapbox-satellite","raster-opacity",0)
         for(var m in measureSet){
             colorByPriority(map,measureSet[m],measureSet[m])
             map.setFilter(measureSet[m],["==","stateAbbr","AZ"])
@@ -329,7 +331,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-             'fill-color': "#eee",
+             'fill-color': "#aaa",
                  'fill-opacity':1
              },
              'filter': ['==', '$type', 'Polygon']
@@ -340,7 +342,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-             'fill-color': "blue",
+             'fill-color': "gold",
                  'fill-opacity':0
              },
              'filter': ['==', '$type', 'Polygon']
@@ -407,14 +409,13 @@ function drawMap(data,outline){
       d3.select("#mapPopup").append("div").attr("id","popMap")
     
   
-     // map.on('mousemove', 'counties', function(e) {
-   //       var feature = e.features[0]
-   //      //console.log(map.getZoom())
-   //      //console.log(feature["properties"]["Normalized_Covid_capita"])
-   //       map.getCanvas().style.cursor = 'pointer';
-   //
-   //
-   //  });
+ map.on('mousemove','SVi', function(e) {
+          var feature = e.features[0]
+         
+          map.getCanvas().style.cursor = 'pointer';
+          console.log(feature)
+   
+     });
           return map
 }
 
