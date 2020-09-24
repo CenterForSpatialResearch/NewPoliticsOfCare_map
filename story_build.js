@@ -165,7 +165,11 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
             colorByPriority(map,measureSet[m],measureSet[m])
             map.setFilter(measureSet[m],["==","stateAbbr","AZ"])
         }
-    colorByPriority(map,"sviAll","SVI")        
+    colorByPriority(map,"sviAll","SVI")   
+   
+    colorByPriority(map,"CT","SVI")   
+        map.setFilter("CT",["==","stateAbbr","CT"])
+        map.setFilter("NY",["==","stateAbbr","NY"])
         //d3.select("#"+pub.column).style("background-color",highlightColor)
     })
 }
@@ -327,6 +331,27 @@ function drawMap(data,outline){
              'paint': {
              'fill-color': "#eee",
                  'fill-opacity':1
+             },
+             'filter': ['==', '$type', 'Polygon']
+         },"ST-OUTLINE");
+         
+         map.addLayer({
+             'id':"CT",
+             'type': 'fill',
+             'source': 'counties',
+             'paint': {
+             'fill-color': "blue",
+                 'fill-opacity':0
+             },
+             'filter': ['==', '$type', 'Polygon']
+         },"ST-OUTLINE");
+         map.addLayer({
+             'id':"NY",
+             'type': 'fill',
+             'source': 'counties',
+             'paint': {
+             'fill-color': "blue",
+                 'fill-opacity':0
              },
              'filter': ['==', '$type', 'Polygon']
          },"ST-OUTLINE");

@@ -302,8 +302,56 @@ var config = {
             ]
         },
         {
+            id: 'CT',
+            title: 'And across the country, CT exhibits similar patterns',
+            image: '',
+            description: 'Here, ___ is concentrated in ___ and ... is concentrated in ...', 
+            location: {
+                center: [-72.661883, 41.704817],
+                zoom: 9,
+                pitch: 0,
+                bearing: 0
+            },
+            onChapterEnter: [
+                {
+                    layer: "CT",
+                    opacity: 1
+                }
+            ],
+            onChapterExit: [
+                {
+                    layer: "CT",
+                    opacity: 0
+                }
+            ]
+        },
+        {
+            id: 'NY',
+            title: 'While New York is completely different ...',
+            image: '',
+            description: 'Here, ___ is concentrated in ___ and ... is concentrated in ...', 
+            location: {
+                center: [-74.668854,43],
+                zoom: 7,
+                pitch: 0,
+                bearing: 0
+            },
+            onChapterEnter: [
+                {
+                    layer: "NY",
+                    opacity: 1
+                }
+            ],
+            onChapterExit: [
+                {
+                    layer: "NY",
+                    opacity: 0
+                }
+            ]
+        },
+        {
             id: 'allocation',
-            title: 'how do we help?',
+            title: 'these vulnerabilites show ..... how do we help?',
             image: '',
             description: 'community health workers are .... <br><br>each of these vulnerabilities mean a different way of allocating community health workers.'
             +'<br><br>Imagine 1,000,000  Community Health Workers ... give a sense of what they do .. and why they are going to \'vulnerable\' places ... and then ask where they go.  ', 
