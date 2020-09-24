@@ -13,7 +13,8 @@ var config = {
             id: 'intro',
             title: 'Vulnerability in health',
             image: '',
-            description: 'We hear a lot about it these days. About how COVID impacts our communities. But before COVID our communities were vulnerable to all kinds of health threats. We think both COVID and other health threats should be met with a historic challenge; A New Deal for Public Health, a COmmunty Health Corps of million people to lift up the health of Americans.',
+            description: 'We hear a lot about it these days. About how COVID impacts our communities. But before COVID our communities were vulnerable to all kinds of health threats. We think both COVID and other health threats should be met with a historic challenge; A New Deal for Public Health, a COmmunty Health Corps of million people to lift up the health of Americans.'
+            +"<br><br>donec et odio pellentesque diam volutpat commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien nec sagittis aliquam malesuada bibendum arcu vitae elementum curabitur vitae nunc sed velit dignissim sodales ut eu sem integer vitae justo eget magna fermentum iaculis eu non diam phasellus vestibulum lorem sed risus ultricies tristique nulla aliquet enim tortor at auctor urna nunc id cursus metus aliquam eleifend mi in nulla posuere sollicitudin aliquam ultrices sagittis orci a scelerisque purus semper eget duis at tellus at urna condimentum mattis pellentesque id nibh tortor id aliquet lectus proin nibh nisl condimentum id",
             location: {
                 center: [-95, 39],
                 zoom:3,
@@ -266,15 +267,15 @@ var config = {
             },
             onChapterEnter: [
                 {
-                    layer: "Covid_death_capita",
+                    layer: "mapbox-satellite",
                     opacity: 1
                 }
             ],
             onChapterExit: [
-                {
-                    layer: "Covid_death_capita",
-                    opacity: 0
-                }
+                // {
+  //                   layer: "mapbox-satellite",
+  //                   opacity: 0
+  //               }
             ]
         },
         {
@@ -289,14 +290,14 @@ var config = {
                 bearing: 0
             },
             onChapterEnter: [
-                {
-                    layer: "Covid_death_capita",
-                    opacity: 1
-                }
+                // {
+   //                  layer: "Covid_death_capita",
+   //                  opacity: 1
+   //              }
             ],
             onChapterExit: [
                 {
-                    layer: "Covid_death_capita",
+                    layer: "mapbox-satellite",
                     opacity: 0
                 }
             ]
