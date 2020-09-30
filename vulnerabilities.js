@@ -424,6 +424,7 @@ function drawMap(data,outline){
     })
      map.on('mousemove', 'counties', function(e) {
          var feature = e.features[0]
+         console.log(feature)
         //console.log(map.getZoom())
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 

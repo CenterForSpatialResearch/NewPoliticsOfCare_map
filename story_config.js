@@ -39,7 +39,7 @@ var config = {
         image: '',
         description: 'But vulnerability can be expressed in many different ways. For example the CDC\'s Social Vulnerability Index (SVI) uses census data and takes into account factors including socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one, specific way. But measured at a national scale, county by county, no single metric can account for all of the communities that need resources and we need to examine vulnerability from many angles and perspectives.'
             +'<br><br>Let\'s go to Arizona and we can show you what we mean ..<br><br>'
-            +'<br><img src="images/key.png" width="300px">',
+            +'<br><br><br><br><br><br><img src="images/story/key.png" width="300px">',
         location: {
             center: [-95, 39],
             zoom:3,
@@ -55,7 +55,7 @@ var config = {
         onChapterExit: [
             {
                 layer: 'sviAll',
-                opacity: .2
+                opacity: 0
             }
         ]
     },
@@ -63,7 +63,12 @@ var config = {
             id: 'sviArizona',
             title: 'SVI in Arizona',
             image: '',
-            description: 'SVI is a composite index and calls attention to counties where there are a high proportion of residents which fit into multiple of its categories of vulnerability. In Arizona we have ranked each county according to its SVI score relative to the other counties in the state. The state’s more rural counties stand out with the highest vulnerability. Many of these are sites in Arizona are  Indian reservations. But this is not the only way to locate vulnerable populations.',
+            description: 'SVI is a composite index and calls attention to counties where there are a high '
+            +'proportion of residents which fit into multiple of its categories of vulnerability. '
+            +'In Arizona we have ranked each county according to its SVI score relative to the other counties '
+            +'in the state. The state’s more rural counties stand out with the highest vulnerability. '
+            +'Many of these are sites in Arizona are  Indian reservations. But this is not the only way to locate vulnerable populations.'
+            +'<br><img src="images/story/vulneralbilities.png" width="1000px">',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -72,17 +77,13 @@ var config = {
             },
             onChapterEnter: [
                 {
-                    layer: 'SVI',
-                    opacity: 1
+                    layer: 'mapbox-satellite',
+                    opacity: .2
                 }
             ],
             onChapterExit: [
                 {
-                    layer: 'SVI',
-                    opacity: 0
-                },
-                {
-                    layer: 'sviAll',
+                    layer: 'mapbox-satellite',
                     opacity: 0
                 }
             ]
@@ -101,7 +102,7 @@ var config = {
             onChapterEnter: [
                 {
                     layer: 'YPLL',
-                    opacity: 1
+                    opacity: 0
                 }
             ],
             onChapterExit: [

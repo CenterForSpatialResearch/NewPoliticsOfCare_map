@@ -332,7 +332,7 @@ function drawMap(data,outline){
              'source': 'counties',
              'paint': {
              'fill-color': "#aaa",
-                 'fill-opacity':1
+                 'fill-opacity':0
              },
              'filter': ['==', '$type', 'Polygon']
          },"ST-OUTLINE");
