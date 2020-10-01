@@ -424,7 +424,6 @@ function drawMap(data,outline){
     })
      map.on('mousemove', 'counties', function(e) {
          var feature = e.features[0]
-         console.log(feature)
         //console.log(map.getZoom())
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
@@ -507,6 +506,13 @@ function drawMap(data,outline){
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
                      +feature.properties[pub.column]+"</span><br>"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +roundedValue+"</span><br>"   
+             }else if(pub.column=="Medicaid_capita"){
+             var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
+                     +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +feature.properties["Medicaid_demand"]*55+"</span><br>"
                      +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
