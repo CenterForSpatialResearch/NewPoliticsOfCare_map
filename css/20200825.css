@@ -85,7 +85,7 @@ font-family: 'Hammersmith One', sans-serif;}
 #mapPopup{
     margin:0px;
     width:200px;
-    height:130px;
+    height:200px;
     filter: drop-shadow(2px 2px 4px rgba(0,0,0,.2));
     
 /*    border:1px solid #000;

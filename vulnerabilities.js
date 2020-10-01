@@ -115,7 +115,7 @@ var states = d3.json("simplestates.geojson")
 
 
 var measureDisplayText = {
-     Medicaid_capita:"MEDICAID ENROLLEES PER CAPITA",
+     Medicaid_capita:"MEDICAID ENROLLEES / 100K",
      SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
      YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
      Unemployment_capita:"UNEMPLOYMENT",
@@ -125,7 +125,7 @@ var measureDisplayText = {
    
 }
 var measureDisplayTextPop={
-     Medicaid_capita:"Total estimated medicaid enrollment",
+     Medicaid_capita:"Medicaid enrollment / 100K",
      SVI:"Social Vulneralbility Index*",
      YPLL:"Years of Potential Life Lost",
      Unemployment_capita:"Unemployment",
@@ -512,8 +512,11 @@ function drawMap(data,outline){
              }else if(pub.column=="Medicaid_capita"){
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
-                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +"Total estimated medicaid enrollment"+":<br><span class=\"popupTitle\">"
                      +feature.properties["Medicaid_demand"]+"</span><br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +Math.round(feature.properties[pub.column])+"</span><br>"
+                 
                      +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
