@@ -13,7 +13,8 @@ var config = {
             id: 'intro',
             title: 'Vulnerability in health',
             image: '',
-            description: 'We hear a lot about it these days. About how COVID19 affectsour communities. And yet the impact has not been the same everywhere. Vulnerabilities that predated the pandemic have fueled these uneven effects across the country. Unless we address  the immediate needs of the pandemic  along with the the longstanding inequalities embedded in the social and political landscape of the US we will come out of the current crisis just as vulnerable when this all began. Thus, we have proposed a New Deal for Public Health with a Community Health Corps of 1 million people to lift up the health of Americans: it confronts the pandemic and the centuries of neglect and discrimination that have mired our communities in sickness and disease for generations by investing in health from the ground up .’ Let’s start talking about vulnerability, what it means, what it looks like in America, before we turn to talk about how to address it with a new Community Health Corps and a New Politics of Care.',
+            description: 'COVID19 affects our communities differently.. Vulnerabilities that predated the pandemic have fueled uneven effects across the country. Unless we address the immediate needs of the pandemic along with the longstanding inequalities embedded in the social and political landscape of the US we will come out of the current crisis just as vulnerable as when this all began. '
+            +'<br><br>We propose a New Deal for Public Health with a Community Health Corps of 1 million people to lift up the health of Americans. By investing in health from the ground up, we can confront the pandemic and the centuries of neglect and discrimination that have mired our communities in sickness and disease for generations by addressing vulnerable communities..',
             location: {
                 center: [-95, 39],
                 zoom:3,
@@ -37,8 +38,8 @@ var config = {
         id: 'vulnerabilities',
         title: 'Vulnerabilities',
         image: '',
-        description: 'But vulnerability can be expressed in many different ways. For example the CDC\'s Social Vulnerability Index (SVI) uses census data and takes into account factors including socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one, specific way. But measured at a national scale, county by county, no single metric can account for all of the communities that need resources and we need to examine vulnerability from many angles and perspectives.'
-            +'<br><br>Let\'s go to Arizona and we can show you what we mean ..<br><br>'
+        description: 'But communities can be vulnerable in many different ways. For example, the CDC\'s Social Vulnerability Index (SVI) aggregates fifteen factors related to  socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one single metric. But measured at a national scale, county by county, neither  a single factor nor a single index can capture  all of a community’s resource needs. Instead,  we must examine vulnerability from many angles and perspectives.'
+            +'<br><br>Let\'s go to Arizona and we can show you what we mean.<br><br>'
             +'<br><br><br><br><br><br><img src="images/story/key.png" width="300px">',
         location: {
             center: [-95, 39],
@@ -63,12 +64,14 @@ var config = {
             id: 'sviArizona',
             title: 'SVI in Arizona',
             image: '',
-            description: 'SVI is a composite index and calls attention to counties where there are a high '
-            +'proportion of residents which fit into multiple of its categories of vulnerability. '
-            +'In Arizona we have ranked each county according to its SVI score relative to the other counties '
-            +'in the state. The state’s more rural counties stand out with the highest vulnerability. '
-            +'Many of these are sites in Arizona are  Indian reservations. But this is not the only way to locate vulnerable populations.'
-            +'<br><img src="images/story/vulneralbilities.png" width="1000px">',
+            description: 
+            '<br><br><br><img src="images/story/vulneralbilities.png" width="600px">'
+            +'SVI calls attention to counties with the greatest number of its highly-vulnerable per-capita factors.. In Arizona we have ranked each of the fifteen counties according to its SVI score relative to the other counties in the state. The state’s more rural counties stand out with the highest vulnerability. Many of these are sites in Arizona are Indian reservations. But this is not the only way to locate vulnerable populations.'
+            +'<br><br>Years-of-Potential-Life-Lost (YPLL) is another way to  examine community-specific health vulnerability in the United States,as a metric of premature death.. Some of the counties which had the state’s highest values for SVI also have the highest levels of YPLL. But other counties are newly visible as vulnerable.'
+            +'<br><br>Another means to measure vulnerability is how many residents are enrolled in  Medicaid. The enrollment criteria [link]  shares some factors with SVI, such as income, household composition, and point to social and economic vulnerability that can affect health.'
+            +'<br><br>And finally, as the pandemic has rolled through the US, unemployment has dramatically risen in the past few months, and is a sign of the economic toll the virus has taken. While unemployment may not seem like a measure of health vulnerability, many Americans’ health care is tied to their jobs. With rising unemployment, many in the US are left uninsured or underinsured.  [still need stats here for AZ]... '
+            +'<br><br>An influx of community health workers could help to address each of the underlying conditions revealed by these forms of vulnerability.'
+            ,
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -77,94 +80,21 @@ var config = {
             },
             onChapterEnter: [
                 {
-                    layer: 'mapbox-satellite',
-                    opacity: .2
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: 'mapbox-satellite',
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'ypll',
-            title: 'YPLL',
-            image: '',
-            description: 'Years-of-Potential-Life-Lost (YPLL) is another way to understand how structural disinvestment has created vulnerability in health in America YPLL in these maps  is an indicator which shows where a large proportion of the population dies young. YPLL measures the cumulative number of years that were not lived by people who died before the age of 75--it’s a signal of premature death. Some of the counties which had the state’s highest values for SVI also have the highest YPLL. But other counties are newly visible as vulnerable.',
-            location: {
-                center: [-111.730422, 34.232006],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: 'YPLL',
+                    layer: 'state-abbr',
                     opacity: 0
                 }
             ],
             onChapterExit: [
-                {
-                    layer:'YPLL',
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'medicaid',
-            title: 'Medicaid',
-            image: '',
-            description: 'Yet another means to measure vulnerability is how many residents use Medicaid. The enrollment criteria [link] includes similar factors to SVI, such as age, income, household composition and point to social and economic vulnerability that can affect health .  And if we look at where medicaid enrollees are concentrated in AZ we see places that are dense and ...',
-            location: {
-                center: [-111.730422, 34.232006],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: 'Medicaid_capita',
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: 'Medicaid_capita',
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'unemployement',
-            title: 'unemployement',
-            image: '',
-            description: 'And finally, as the pandemic has rolled through the US, unemployment has dramatically riseng in the past few months, and is a signof the economic toll the virus has taken. While unemployment may not seem like a measure of health vulnerability, many Americans’ health care is tied to their jobs. With rising unemployment, many in the US are left uninsured or underinsured.  [still need stats here for AZ]... <br><br>some stats.... <br><br>In Arizona, we see it here and here....',
-            location: {
-                center: [-111.730422, 34.232006],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: 'Unemployment_capita',
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: 'Unemployment_capita',
-                    opacity: 0
-                }
+                
             ]
         },
         {
             id: 'covid1',
             title: 'Of course, Covid has changed this landscape',
             image: '',
-            description: 'The direct effectsof COVID19 have exacerbated many of the pre-existing vulnerablities in the US But the pandemic has also revealed placesh with acute and immediate needs and where combating the epidemic requires an influx of community health workerss. Sometimes long-term vulnerabilities and the impact of COVID19 co-incide in our maps, but sometimes they do not.  On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.',
+            description: 
+            '<br><br><br><img src="images/story/covid.png" width="400px">'
+            +'The direct effectsof COVID19 have exacerbated many of the pre-existing vulnerablities in the US But the pandemic has also revealed placesh with acute and immediate needs and where combating the epidemic requires an influx of community health workerss. Sometimes long-term vulnerabilities and the impact of COVID19 co-incide in our maps, but sometimes they do not.  On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.',
             location: {
                 center: [-111.730422, 34.232006],
                 zoom: 6,
@@ -174,60 +104,12 @@ var config = {
             onChapterEnter: [
                 {
                     layer: 'Covid',
-                    opacity: 1
+                    opacity: 0
                 }
             ],
             onChapterExit: [
                 {
                     layer: 'Covid',
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'covid2',
-            title: 'When we look at recent COVID cases  normalized by population...',
-            image: '',
-            description: 'we see something different. In big cities, the number of COVID19 cases in absolute terms may be large but do not necessarily represent hotspots were large proportions of a community have been infected with the virus. COVID19 cases per capita shows SARSCOV2 infections as a proportion of population, which indicates a highly concentrated epidemic ...',
-            location: {
-                center: [-111.730422, 34.232006],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: "Covid_capita",
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: "Covid_capita",
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'covid3',
-            title: 'And when we look at covid deaths ...',
-            image: '',
-            description: 'Cumulative COVID19 deaths tell yet another story about the pandemic. New York City was hard hit by SARSCOV2 early, and the toll of deaths there was horrific. However, current cases over the past 14 days in NYC aren’t reflective of the current state of the epidemic there, which has shifted to other places in the country. Cumulative COVID19 cases can tell different stories--they can indicate a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago. In Arizona….The patterns are most similar to YPLL and SVI. [say something more here] ....',
-            location: {
-                center: [-111.730422, 34.232006],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: "Covid_death_capita",
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: "Covid_death_capita",
                     opacity: 0
                 }
             ]
@@ -238,7 +120,7 @@ var config = {
             image: '',
             description: 'All 7 expose different places as vulnerable...<br><br> [This will be a map that shows a layer that points to counties for the most for each of the 7], [SO WILL THIS SHOW ALL SEVEN METRICS FOR AZ SIDE-BY-SIDE?]', 
             location: {
-                center: [-111.730422, 34.232006],
+                center: [-109, 34.232006],
                 zoom: 6,
                 pitch: 0,
                 bearing: 0

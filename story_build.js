@@ -173,6 +173,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
         map.setFilter("CT",["==","stateAbbr","CT"])
         map.setFilter("NY",["==","stateAbbr","NY"])
         //d3.select("#"+pub.column).style("background-color",highlightColor)
+    console.log(map.getStyle().layers)
     })
 }
 
@@ -315,6 +316,7 @@ function drawMap(data,outline){
                  'filter': ['==', '$type', 'Polygon']
              },"ST-OUTLINE");
          }
+         
          map.addLayer({
              'id':"sviAll",
              'type': 'fill',
@@ -411,9 +413,7 @@ function drawMap(data,outline){
   
  map.on('mousemove','SVi', function(e) {
           var feature = e.features[0]
-         
           map.getCanvas().style.cursor = 'pointer';
-          console.log(feature)
    
      });
           return map
@@ -740,7 +740,7 @@ function strategyMenu(map,data){
 
                 
 function colorByPriority(map,layer,column){
-    map.setPaintProperty(layer, 'fill-opacity',0.1)
+    map.setPaintProperty(layer, 'fill-opacity',0)
     // var matchString = ["match",
  //                ["get","group_"+pub.column]].concat(newColors)
     d3.select("#currentSelection").html("Normalized "+column)
