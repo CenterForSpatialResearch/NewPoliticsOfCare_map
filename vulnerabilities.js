@@ -115,7 +115,7 @@ var states = d3.json("simplestates.geojson")
 
 
 var measureDisplayText = {
-     Medicaid_capita:"MEDICAID ENROLLEES",
+     Medicaid_capita:"MEDICAID ENROLLEES PER CAPITA",
      SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
      YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
      Unemployment_capita:"UNEMPLOYMENT",
@@ -424,6 +424,7 @@ function drawMap(data,outline){
     })
      map.on('mousemove', 'counties', function(e) {
          var feature = e.features[0]
+         console.log(feature.properties)
         //console.log(map.getZoom())
         //console.log(feature["properties"]["Normalized_Covid_capita"])
          map.getCanvas().style.cursor = 'pointer'; 
@@ -512,7 +513,7 @@ function drawMap(data,outline){
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
-                     +feature.properties["Medicaid_demand"]*55+"</span><br>"
+                     +feature.properties["Medicaid_demand"]+"</span><br>"
                      +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
