@@ -513,10 +513,9 @@ function drawMap(data,outline){
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
                      +"Total estimated medicaid enrollment"+":<br><span class=\"popupTitle\">"
-                     +feature.properties["Medicaid_demand"]+"</span><br>"
+                     +Math.round(feature.properties["Medicaid_demand"])+"</span><br>"
                      +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
                      +Math.round(feature.properties[pub.column])+"</span><br>"
-                 
                      +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
                      +roundedValue+"</span><br>"   
              }
