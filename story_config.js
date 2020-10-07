@@ -131,7 +131,8 @@ var config = {
             title: 'Taken all together',
             image: '',
             description:'<br><br><br><img src="images/story_draft2/ALL7.png">'
-                    +'These four metrics of socio-economic vulnerability and three measures of Covid19 burden show us where vulnerabilities are in the state, but the terrain of vulnerability shifts depending on which of the seven measures we use to define it. All seven expose different places as vulnerable...', 
+                    +'These four metrics of socio-economic vulnerability and three measures of Covid19 burden show us where vulnerabilities are in the state, but the terrain of vulnerability shifts depending on which of the seven measures we use to define it. All seven expose different places as vulnerable...'
+            +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>",  
             location: {
                 center: [-109, 34.232006],
                 zoom: 6,
@@ -157,7 +158,7 @@ var config = {
             image: '',
             description: 'for example, Apache County—where much of the county falls within the Navajo Nation and the Fort Apache Reservation— has among the highest levels of vulnerability across multiple metrics. It ranks the highest in the state in Years of Potential Life Lost, has the second highest unemployment rate, and the second highest number of Medicaid enrollees per capita. As of late September, Apache county ranks in the middle for the number of Covid cases but  has the greatest total of COVID deaths per capita.', 
             location: {
-                center: [-110.146788,34.906213],
+                center: [-109.508795, 35.601732],
                 zoom: 10,
                 pitch: 0,
                 bearing: 0
@@ -205,8 +206,8 @@ var config = {
             image: '',
             description: 'However the county is less vulnerable according to other metrics. Normalized by population, the county’s number of recent COVID cases was near the state’s median. Maricopa has the lowest number of medicaid enrollees per capita, and relatively low rates of unemployment and YPLL. ', 
             location: {
-                center: [-109.5399656,35.780524],
-                zoom: 10,
+                center: [-112.067965, 33.446035],
+                zoom: 14,
                 pitch: 0,
                 bearing: 0
             },
@@ -230,14 +231,14 @@ var config = {
             description: 'Nonetheless, these different vulnerabilities help communicate the unequal distribution of risk and needs, and suggest where interventions could have the greatest impact. ', 
             location: {
                 center: [-112.039339, 33.459597],
-                zoom: 10,
+                zoom: 4,
                 pitch: 0,
                 bearing: 0
             },
             onChapterEnter: [
                  {
                      layer: "mapbox-satellite",
-                     opacity: 1
+                     opacity: 0
                  }
             ],
             onChapterExit: [
@@ -256,14 +257,14 @@ var config = {
             , 
             location: {
                 center: [-111.662871,35.227247],
-                zoom: 10,
+                zoom: 4,
                 pitch: 0,
                 bearing: 0
             },
             onChapterEnter: [
                  {
                      layer: "mapbox-satellite",
-                     opacity: 1
+                     opacity: 0
                  }
             ],
             onChapterExit: [
@@ -277,17 +278,21 @@ var config = {
             id: 'highlightAZCounty6',
             title: 'We can also show you the trade-offs',
             image: '',
-            description: 'Any pair of choices sends more resources to some areas and less to others. By comparing vulnerabilities you can see how each county differs by need: who is included in each and who is left out.', 
+            description: '<br><br><br><img src="images/story_draft2/all_comparisons.png">'
+            +'Any pair of choices sends more resources to some areas and less to others. By comparing vulnerabilities you can see how each county differs by need: who is included in each and who is left out.'
+            +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
+            +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>", 
+             
             location: {
                 center: [-112.098988,33.649693],
-                zoom: 10,
+                zoom: 4,
                 pitch: 0,
                 bearing: 0
             },
             onChapterEnter: [
                  {
                      layer: "mapbox-satellite",
-                     opacity: 1
+                     opacity: 0
                  }
             ],
             onChapterExit: [
@@ -301,17 +306,17 @@ var config = {
             id: 'highlightAZCounty7',
             title: '‘Explore each state on your own',
             image: '',
-            description: 'GO TO MAP', 
+            description: '<span style=\"font-size:48px; color:black; letter-spacing:10px\"><a href="index.html">GO TO MAP</a></span>', 
             location: {
                 center: [-109.463005,35.052533],
-                zoom: 10,
+                zoom: 4,
                 pitch: 0,
                 bearing: 0
             },
             onChapterEnter: [
                  {
                      layer: "mapbox-satellite",
-                     opacity: 1
+                     opacity: 0
                  }
             ],
             onChapterExit: [
