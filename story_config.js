@@ -67,7 +67,12 @@ var config = {
             '<br><br><br><img src="images/story_draft2/svi.jpg">'
             +"SVI* calls attention to counties with the greatest number of its highly-vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type. In Arizona we have ranked each of the fifteen counties according to its SVI* score relative to the other counties in the state. Several of the most vulnerable counties contain Indian reservations. But this is not the only way to locate vulnerable populations.",
             location: {},
-            onChapterEnter: [],
+            onChapterEnter: [
+                {
+                layer: 'state-abbr',
+                    opacity: 0
+                }
+            ],
             onChapterExit: []
         },
         {
@@ -116,16 +121,17 @@ var config = {
             +'The direct effectsof COVID19 have exacerbated many of the pre-existing vulnerablities in the US But the pandemic has also revealed placesh with acute and immediate needs and where combating the epidemic requires an influx of community health workerss. Sometimes long-term vulnerabilities and the impact of COVID19 co-incide in our maps, but sometimes they do not.  On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.'
             +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
              +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
-             +"<br><br><br><br><br><br>",
+             +"<br><br><br><br><br><br><br><br><br><br><br><br>",
             location: {},
             onChapterEnter: [],
             onChapterExit: []
         },
         {
             id: 'highlightAZ',
-            title: 'Taken all together these 4 indexes and 3 measures of Covid19 burden show us where vulnerabilities are in the state but the terrain of vulnerability shifts depending on which  of the seven measures we use to define it.',
+            title: 'Taken all together',
             image: '',
-            description: 'All 7 expose different places as vulnerable...<br><br> [This will be a map that shows a layer that points to counties for the most for each of the 7], [SO WILL THIS SHOW ALL SEVEN METRICS FOR AZ SIDE-BY-SIDE?]', 
+            description:'<br><br><br><img src="images/story_draft2/ALL7.png">'
+                    +'These four metrics of socio-economic vulnerability and three measures of Covid19 burden show us where vulnerabilities are in the state, but the terrain of vulnerability shifts depending on which of the seven measures we use to define it. All seven expose different places as vulnerable...', 
             location: {
                 center: [-109, 34.232006],
                 zoom: 6,
@@ -135,7 +141,7 @@ var config = {
             onChapterEnter: [
                 {
                     layer: "Covid_death_capita",
-                    opacity: 1
+                    opacity: 0
                 }
             ],
             onChapterExit: [
@@ -147,9 +153,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty',
-            title: 'Each county has a range depending on which vulnerability is measured, let\'s look closer...',
+            title: 'For some counties the levels of vulnerability described by each metric are similar, but for others they can be very different, let\'s look closer..',
             image: '',
-            description: 'for example, Navajo County in AZ ranks the highest the state in Medicaid enrollment, but not that. Its population makeup is ... average income is ... age ...', 
+            description: 'for example, Apache County—where much of the county falls within the Navajo Nation and the Fort Apache Reservation— has among the highest levels of vulnerability across multiple metrics. It ranks the highest in the state in Years of Potential Life Lost, has the second highest unemployment rate, and the second highest number of Medicaid enrollees per capita. As of late September, Apache county ranks in the middle for the number of Covid cases but  has the greatest total of COVID deaths per capita.', 
             location: {
                 center: [-110.146788,34.906213],
                 zoom: 10,
@@ -171,9 +177,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty2',
-            title: 'And across the state in the southwest corner,',
+            title: 'Across the state in the southwest corner, Yuma County tells a different story',
             image: '',
-            description: 'Yuma county tells a  a different story, and ranks the highest in unemployment and SVI', 
+            description: 'Yuma County ranks highest in the state in terms of SVI*, just above Apache County, but it has a relatively low rate of YPLL, and the second lowest unemployment rate in the state. In late September the county ranked fifth in terms of total recent COVID cases, but third in terms of total deaths from COVID per capita. In other words the county shows varying levels of vulnerability across the different metrics.', 
             location: {
                 center: [-114.616099,32.685676],
                 zoom: 10,
@@ -195,9 +201,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty3',
-            title: 'But you have to cross back to the northeast of the state to Apache County to find the highest rates of YPLL',
+            title: 'It is not surprising that Maricopa, in which  Phoenix and many of its suburbs are located–the most populous county in the state–had the highest total number of recent COVID cases in late September.',
             image: '',
-            description: '', 
+            description: 'However the county is less vulnerable according to other metrics. Normalized by population, the county’s number of recent COVID cases was near the state’s median. Maricopa has the lowest number of medicaid enrollees per capita, and relatively low rates of unemployment and YPLL. ', 
             location: {
                 center: [-109.5399656,35.780524],
                 zoom: 10,
@@ -219,9 +225,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty4',
-            title: 'But for COVID19',
+            title: 'These seven different ways to look at vulnerability—although partial and imperfect— highlight different populations and tell sometimes conflicting stories about the needs of each county. ',
             image: '',
-            description: 'it all changes. Maricopa County has the highest recent COVID19 cases', 
+            description: 'Nonetheless, these different vulnerabilities help communicate the unequal distribution of risk and needs, and suggest where interventions could have the greatest impact. ', 
             location: {
                 center: [-112.039339, 33.459597],
                 zoom: 10,
@@ -243,9 +249,11 @@ var config = {
         },
         {
             id: 'highlightAZCounty5',
-            title: 'But for COVID19',
+            title: 'But within states? That’s up to you.',
             image: '',
-            description: 'While Coconino County to the north has the highest per capita burden of recent COVID19 cases. ', 
+            description: "It is about how you define communities in greatest need. Here we have allocated each state’s total CHWs proportionally based on the seven types of vulnerabilities we just discussed."
+            +"<br><br>These maps then can show you how allocation of CHWs changes based on which metric among the seven you would like to use to target CHWs"
+            , 
             location: {
                 center: [-111.662871,35.227247],
                 zoom: 10,
@@ -267,9 +275,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty6',
-            title: 'But for COVID19',
+            title: 'We can also show you the trade-offs',
             image: '',
-            description: 'But for COVID19, it all changes. Maricopa County has the highest recent COVID19 cases.', 
+            description: 'Any pair of choices sends more resources to some areas and less to others. By comparing vulnerabilities you can see how each county differs by need: who is included in each and who is left out.', 
             location: {
                 center: [-112.098988,33.649693],
                 zoom: 10,
@@ -291,9 +299,9 @@ var config = {
         },
         {
             id: 'highlightAZCounty7',
-            title: 'While we are back to Apache county in the northeast of the state to find the highest number of cumulative deaths in the state.',
+            title: '‘Explore each state on your own',
             image: '',
-            description: '', 
+            description: 'GO TO MAP', 
             location: {
                 center: [-109.463005,35.052533],
                 zoom: 10,
@@ -309,103 +317,6 @@ var config = {
             onChapterExit: [
                 {
                     layer: "mapbox-satellite",
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'highlightAZCounty8',
-            title: 'Seven ways to look at vulnerability',
-            image: '',
-            description: 'and the counties with the highest need are different in many cases. only apache county with ypll and cumulative covid19 cases and yuma county with unemployment and svi rank highest in more than one metric. in fact the correlations between each of these measures can be seen here for arizona (suzan’s graphic)  but these patterns and correlations change by state...', 
-            location: {
-                center: [-109.463005,35.052533],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                 {
-                     layer: "mapbox-satellite",
-                     opacity: 1
-                 }
-            ],
-            onChapterExit: [
-                {
-                    layer: "mapbox-satellite",
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'CT',
-            title: 'And across the country, CT exhibits similar patterns',
-            image: '',
-            description: 'Here, ___ is concentrated in ___ and ... is concentrated in ...', 
-            location: {
-                center: [-72.661883, 41.704817],
-                zoom: 9,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: "CT",
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: "CT",
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'NY',
-            title: 'While its neighbor New York is completely different ...',
-            image: '',
-            description: 'Here, ___ is concentrated in ___ and ... is concentrated in ...', 
-            location: {
-                center: [-74.668854,43],
-                zoom: 6,
-                pitch: 0,
-                bearing: 0
-            },
-            onChapterEnter: [
-                {
-                    layer: "NY",
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: "NY",
-                    opacity: 0
-                }
-            ]
-        },
-        {
-            id: 'allocation',
-            title: 'if all these vulnerabilities are in different places ... how do we help?',
-            image: '',
-            description: 'We can start here ...Imagine 1,000,000  Community Health Workers ...  community health workers do this... each of these vulnerabilities mean a different way of allocating community health workers.'
-            +'<br><br>Where should they go? ...', 
-            location: {
-                center: [-95, 39],
-                zoom:3,
-                pitch: 0.00,
-                bearing: 0.00
-            },
-            onChapterEnter: [
-                {
-                    layer: 'allocation',
-                    opacity: 1
-                }
-            ],
-            onChapterExit: [
-                {
-                    layer: 'allocation',
                     opacity: 0
                 }
             ]

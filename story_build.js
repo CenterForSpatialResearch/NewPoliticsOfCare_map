@@ -161,6 +161,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
         }
       
     map.once("idle",function(){
+        
         map.setLayoutProperty("mapbox-satellite", 'visibility', 'visible');
         map.setPaintProperty("mapbox-satellite","raster-opacity",0)
         for(var m in measureSet){
