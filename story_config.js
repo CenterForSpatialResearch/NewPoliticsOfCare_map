@@ -13,12 +13,15 @@ var config = {
             id: 'intro',
             title: 'Vulnerability in health',
             image: '',
-            description:"COVID affects our communities differently. Vulnerabilities that predated the pandemic have fueled uneven effects across the country. Unless we address the immediate needs of the pandemic along with the longstanding inequalities embedded in the social and political landscape of the US we will come out of the current crisis just as vulnerable as when this all began."
+            description:
+            "COVID affects our communities differently. Vulnerabilities that predated the pandemic have fueled uneven effects across the country. Unless we address the immediate needs of the pandemic along with the longstanding inequalities embedded in the social and political landscape of the US we will come out of the current crisis just as vulnerable as when this all began."
             +"<br><br>We propose a New Deal for Public Health with a Community Health Corps of 1 million community health workers (CHWs) to lift up the health of Americans. Community health workers in the midst of a pandemic will help people get tested, trace their contacts, but they will have to tackle more than that in the short-term. They’ll have to take on the role of social workers, navigating the web of services that address the social and economic burdens of social distancing and isolation, from food and medicine delivery, rent assistance and protection from eviction,to child care and elder care. "
-            +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the community members to which they serve. It is in this capacity—as community members—that community health workers are empowered to redress the health disparities that have lingered for generations.",
+            + '<img src="images/story_draft2/introNumbers.png">'
+            +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the community members to which they serve. It is in this capacity—as community members—that community health workers are empowered to redress the health disparities that have lingered for generations."
+            ,
             location: {
                 center: [-73, 30],
-                zoom:2.5,
+                zoom:2.9,
                 pitch: 0.00,
                 bearing: 0.00
             },
