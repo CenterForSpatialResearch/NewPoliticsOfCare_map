@@ -339,7 +339,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-             'fill-color': "#aaa",
+             'fill-color': "#000",
                  'fill-opacity':0
              },
              'filter': ['==', '$type', 'Polygon']
@@ -384,12 +384,7 @@ function drawMap(data,outline){
              'source': 'counties',
              'paint': {
                  'line-color':"#fff",
-                 'line-opacity':[
-                    'case',
-                    ['boolean', ['feature-state', 'hover'], false],
-                    1,
-                    .5
-                 ],
+                 'line-opacity':0,
                  'line-width':[
                     'case',
                     ['boolean', ['feature-state', 'hover'], false],
