@@ -966,12 +966,13 @@ function drawGridWithoutCoverage(map){
                     d3.select("#gridHover").style("visibility","hidden")
                     // console.log(currentState)
   //                   console.log(clicked)
-
                      if(clicked == false){
                          //map.setFilter("counties",["!=","group_"+pub.column," "])
                          currentClickedGroup = "_"+i
+                    // console.log(clicked)
+ //                         console.log(currentState)
                          
-                         if(currentState=="C48"){
+                         if(currentState=="C48"|| currentState==""){
                              map.setFilter("counties",["!=","group_"+pub.column," "])
                              
                          }else{
@@ -993,9 +994,10 @@ function drawGridWithoutCoverage(map){
                     currentClickedGroup = "_"+i
                     var filter = ["==","group_"+pub.column,groupName]
 
-                    if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
+                    //if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
+                    if(clicked==true){
                         d3.select(this).attr("stroke","none")
-                        if(currentState=="C48"){
+                        if(currentState=="C48" ||currentState==""){
                             currentFilter =["!=","stateAbbr"," "]
                         }else{
                             currentFilter =["==","stateAbbr",currentState]
