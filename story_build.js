@@ -284,13 +284,18 @@ function drawMap(data,outline){
     map = new mapboxgl.Map({
          container: 'map',
         style:"mapbox://styles/c4sr-gsapp/ckcnnqpsa2rxx1hp4fhb1j357",//newest
-        bounds:bounds,
-        maxZoom:10,
-         zoom: 3.8,
+       // bounds:bounds,
+       // maxZoom:10,
+         //zoom: 3.8,
          preserveDrawingBuffer: true,
-        minZoom:3.5,
-       maxBounds: maxBounds    
+       // maxBounds: maxBounds,
+                center: [-73, 10],
+                zoom:10,
+                pitch: 0.00,
+                bearing: 0.00    
      });
+     
+                
      
      map.on("load",function(){
          

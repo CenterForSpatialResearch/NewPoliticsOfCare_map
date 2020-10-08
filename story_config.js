@@ -17,8 +17,8 @@ var config = {
             +"<br><br>We propose a New Deal for Public Health with a Community Health Corps of 1 million community health workers (CHWs) to lift up the health of Americans. Community health workers in the midst of a pandemic will help people get tested, trace their contacts, but they will have to tackle more than that in the short-term. They’ll have to take on the role of social workers, navigating the web of services that address the social and economic burdens of social distancing and isolation, from food and medicine delivery, rent assistance and protection from eviction,to child care and elder care. "
             +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the community members to which they serve. It is in this capacity—as community members—that community health workers are empowered to redress the health disparities that have lingered for generations.",
             location: {
-                center: [-95, 39],
-                zoom:3,
+                center: [-73, 30],
+                zoom:2.5,
                 pitch: 0.00,
                 bearing: 0.00
             },
@@ -40,12 +40,12 @@ var config = {
         title: 'Vulnerabilities',
         description:"But communities can be vulnerable in many different ways. For example, the CDC's Social Vulnerability Index (SVI*) aggregates fifteen factors related to socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one single metric. But measured at a national scale, county by county, neither a single factor nor a single index can capture all of a community’s resource needs. Instead, we must examine vulnerability from many angles and perspectives."
             +"<br><br>Let's go to Arizona and we can show you what we mean.",
-        location: {
-            center: [-95, 39],
-            zoom:3,
-            pitch: 0.00,
-            bearing: 0.00
-        },
+         location: {
+               center: [-111, 34],
+                   zoom:4,
+  //             pitch: 0.00,
+  //             bearing: 0.00
+       },
         onChapterEnter: [
             {
                 layer: 'sviAll',
@@ -66,7 +66,10 @@ var config = {
             description: 
             '<br><br><br><img src="images/story_draft2/svi.jpg">'
             +"<br><br>SVI* calls attention to counties with the greatest number of its highly-vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type. In Arizona we have ranked each of the fifteen counties according to its SVI* score relative to the other counties in the state. Several of the most vulnerable counties contain Indian reservations. But this is not the only way to locate vulnerable populations.",
-            location: {},
+            location: {
+                //center: [-73, 30],
+                zoom:10
+            },
             onChapterEnter: [
                 {
                 layer: 'state-abbr',
@@ -159,7 +162,7 @@ var config = {
             description: 'for example, Apache County—where much of the county falls within the Navajo Nation and the Fort Apache Reservation— has among the highest levels of vulnerability across multiple metrics. It ranks the highest in the state in Years of Potential Life Lost, has the second highest unemployment rate, and the second highest number of Medicaid enrollees per capita. As of late September, Apache county ranks in the middle for the number of Covid cases but  has the greatest total of COVID deaths per capita.', 
             location: {
                 center: [-109.508795, 35.601732],
-                zoom: 14,
+                zoom: 15,
                 pitch: 0,
                 bearing: 0
             },
@@ -183,7 +186,7 @@ var config = {
             description: 'Yuma County ranks highest in the state in terms of SVI*, just above Apache County, but it has a relatively low rate of YPLL, and the second lowest unemployment rate in the state. In late September the county ranked fifth in terms of total recent COVID cases, but third in terms of total deaths from COVID per capita. In other words the county shows varying levels of vulnerability across the different metrics.', 
             location: {
                 center: [-114.616099,32.685676],
-                zoom: 18,
+                zoom: 15,
                 pitch: 0,
                 bearing: 0
             },
@@ -207,7 +210,7 @@ var config = {
             description: 'However the county is less vulnerable according to other metrics. Normalized by population, the county’s number of recent COVID cases was near the state’s median. Maricopa has the lowest number of medicaid enrollees per capita, and relatively low rates of unemployment and YPLL. ', 
             location: {
                 center: [-112.067965, 33.446035],
-                zoom: 22,
+                zoom: 15,
                 pitch: 0,
                 bearing: 0
             },
@@ -304,9 +307,10 @@ var config = {
         },
         {
             id: 'highlightAZCounty7',
-            title: '‘Explore each state on your own',
+            title: 'Explore each state on your own',
             image: '',
-            description: '<span style=\"font-size:48px; color:black; letter-spacing:10px\"><a href="index.html">GO TO MAP</a></span>', 
+            description: 
+            '<span id="gotoMap"><a href="index.html">GO TO MAP</a></span>', 
             location: {
                 center: [-109.463005,35.052533],
                 zoom: 4,
