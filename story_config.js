@@ -65,7 +65,7 @@ var config = {
             image: '',
             description: 
             '<br><br><br><img src="images/story_draft2/svi.jpg">'
-            +"SVI* calls attention to counties with the greatest number of its highly-vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type. In Arizona we have ranked each of the fifteen counties according to its SVI* score relative to the other counties in the state. Several of the most vulnerable counties contain Indian reservations. But this is not the only way to locate vulnerable populations.",
+            +"<br><br>SVI* calls attention to counties with the greatest number of its highly-vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type. In Arizona we have ranked each of the fifteen counties according to its SVI* score relative to the other counties in the state. Several of the most vulnerable counties contain Indian reservations. But this is not the only way to locate vulnerable populations.",
             location: {},
             onChapterEnter: [
                 {
@@ -118,10 +118,10 @@ var config = {
             image: '',
             description: 
             '<br><br><br><img src="images/story_draft2/10062020_covid.png">'
-            +'The direct effectsof COVID19 have exacerbated many of the pre-existing vulnerablities in the US But the pandemic has also revealed placesh with acute and immediate needs and where combating the epidemic requires an influx of community health workerss. Sometimes long-term vulnerabilities and the impact of COVID19 co-incide in our maps, but sometimes they do not.  On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.'
+            +'<br><br>The direct effectsof COVID19 have exacerbated many of the pre-existing vulnerablities in the US But the pandemic has also revealed placesh with acute and immediate needs and where combating the epidemic requires an influx of community health workerss. Sometimes long-term vulnerabilities and the impact of COVID19 co-incide in our maps, but sometimes they do not.  On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.'
             +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
              +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
-             +"<br><br><br><br><br><br><br><br><br><br><br><br>",
+             +"<br><br><br><br><br>",
             location: {},
             onChapterEnter: [],
             onChapterExit: []
@@ -159,7 +159,7 @@ var config = {
             description: 'for example, Apache County—where much of the county falls within the Navajo Nation and the Fort Apache Reservation— has among the highest levels of vulnerability across multiple metrics. It ranks the highest in the state in Years of Potential Life Lost, has the second highest unemployment rate, and the second highest number of Medicaid enrollees per capita. As of late September, Apache county ranks in the middle for the number of Covid cases but  has the greatest total of COVID deaths per capita.', 
             location: {
                 center: [-109.508795, 35.601732],
-                zoom: 10,
+                zoom: 14,
                 pitch: 0,
                 bearing: 0
             },
@@ -183,7 +183,7 @@ var config = {
             description: 'Yuma County ranks highest in the state in terms of SVI*, just above Apache County, but it has a relatively low rate of YPLL, and the second lowest unemployment rate in the state. In late September the county ranked fifth in terms of total recent COVID cases, but third in terms of total deaths from COVID per capita. In other words the county shows varying levels of vulnerability across the different metrics.', 
             location: {
                 center: [-114.616099,32.685676],
-                zoom: 10,
+                zoom: 18,
                 pitch: 0,
                 bearing: 0
             },
@@ -207,7 +207,7 @@ var config = {
             description: 'However the county is less vulnerable according to other metrics. Normalized by population, the county’s number of recent COVID cases was near the state’s median. Maricopa has the lowest number of medicaid enrollees per capita, and relatively low rates of unemployment and YPLL. ', 
             location: {
                 center: [-112.067965, 33.446035],
-                zoom: 14,
+                zoom: 22,
                 pitch: 0,
                 bearing: 0
             },
