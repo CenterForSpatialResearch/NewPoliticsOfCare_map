@@ -174,7 +174,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
         map.setFilter("CT",["==","stateAbbr","CT"])
         map.setFilter("NY",["==","stateAbbr","NY"])
         //d3.select("#"+pub.column).style("background-color",highlightColor)
-    console.log(map.getStyle().layers)
+   // console.log(map.getStyle().layers)
     })
 }
 
@@ -412,9 +412,10 @@ function drawMap(data,outline){
       d3.select("#mapPopup").append("div").attr("id","popMap")
     
   
- map.on('mousemove','SVi', function(e) {
+ map.on('mousemove','counties', function(e) {
           var feature = e.features[0]
           map.getCanvas().style.cursor = 'pointer';
+          console.log(feature.properties)
    
      });
           return map

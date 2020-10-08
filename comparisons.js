@@ -446,8 +446,8 @@ function drawKey(key){
        .attr("stop-color", keyColors[k2])
        .attr("stop-opacity", 1);
        
-    svg.append("text").text("More workers allocated with".toUpperCase()).attr("y",10).attr("x",20)
-       .attr("fill","#000").style("font-size","12px").style("font-weight","bold")
+    svg.append("text").text("More workers allocated with".toUpperCase()).attr("y",10).attr("x",5)
+       .attr("fill","#000").style("font-size","11px")//.style("font-weight","bold")
     //
     // svg.append("text").text("More workers by".toUpperCase()).attr("y",1).attr("x",width)
     //    .attr("fill","#000").style("font-size","12px").attr("text-anchor","end").style("font-weight","bold").attr("fill",keyColors[k2])
@@ -457,14 +457,14 @@ function drawKey(key){
     svg.append("rect")
     .attr("class","key")
     .attr('width',width)
-    .attr('height',13)
-    .attr("x",20)
+    .attr('height',8)
+    .attr("x",5)
     .attr("y",15)
     .attr("fill","url(#svgGradient)")
-       .attr("stroke","rgba(0,0,0,.5)")
-       .attr("stroke-width",.1)
+       // .attr("stroke","rgba(0,0,0,.5)")
+//        .attr("stroke-width",.1)
 
-svg.append("text").text(measureDisplayText["Proportional_allocation_to_"+k1].toUpperCase()).attr("y",40).attr("x",20).style("font-size","12px").style("font-weight","bold").attr("fill",keyColors[k1])//.attr("fill",keyColors[k1])
+svg.append("text").text(measureDisplayText["Proportional_allocation_to_"+k1].toUpperCase()).attr("y",40).attr("x",5).style("font-size","12px").style("font-weight","bold").attr("fill",keyColors[k1])//.attr("fill",keyColors[k1])
     svg.append("text").text(measureDisplayText["Proportional_allocation_to_"+k2].toUpperCase()).attr("y",40).attr("x",width).style("font-size","12px").style("font-weight","bold").attr("text-anchor","end").attr("fill",keyColors[k2])//.attr("fill",keyColors[k2])
        
  //
