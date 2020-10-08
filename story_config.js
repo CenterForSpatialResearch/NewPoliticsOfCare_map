@@ -258,7 +258,9 @@ var config = {
             id: 'highlightAZCounty5',
             title: 'But within states? That’s up to you.',
             image: '',
-            description: "It is about how you define communities in greatest need. Here we have allocated each state’s total CHWs proportionally based on the seven types of vulnerabilities we just discussed."
+            description: 
+            '<br><br><br><img src="images/story_draft2/cartogram.png">'
+            +"It is about how you define communities in greatest need. Here we have allocated each state’s total CHWs proportionally based on the seven types of vulnerabilities we just discussed."
             +"<br><br>These maps then can show you how allocation of CHWs changes based on which metric among the seven you would like to use to target CHWs"
             , 
             location: {
