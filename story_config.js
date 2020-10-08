@@ -231,7 +231,9 @@ var config = {
             id: 'highlightAZCounty4',
             title: 'Allocating workers for a new Community Health Corps',
             image: '',
-            description: "To address a nation in crisis, how should we deploy a new Community Health Corps? The terrain of vulnerability in the US shifts from county to county, state to state, and will shift over time as the pandemic waxes and wanes. And yet, we must start somewhere. One approach would be to allocate CHWs according to the maximum estimated number of lives or dollars saved. However the data that would be needed to estimate the benefits of CHWs does not exist outside a narrow range of research studies."
+            description: 
+            '<img src="images/story_draft2/cartogram.png">'
+            +"To address a nation in crisis, how should we deploy a new Community Health Corps? The terrain of vulnerability in the US shifts from county to county, state to state, and will shift over time as the pandemic waxes and wanes. And yet, we must start somewhere. One approach would be to allocate CHWs according to the maximum estimated number of lives or dollars saved. However the data that would be needed to estimate the benefits of CHWs does not exist outside a narrow range of research studies."
             +"<br><br> CHWs are urgently needed in the U.S. How they should be distributed is a subjective choice."
             +" <br><br> In the map of the US here, we propose to allocate 1 million CHWs to states based on the proportion of Medicaid enrollees, so big states like New York, California and Texas, start off with 8.15%, 15.54% and 5.84% of the nation’s total CHW pool.", 
             location: {
