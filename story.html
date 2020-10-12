@@ -260,7 +260,7 @@ if (config.showMarkers) {
 // instantiate the scrollama
 var scroller = scrollama();
 
-map.on("load", function() {
+map.on("idle", function() {
     // setup the instance, pass callback functions
     scroller
     .setup({

@@ -303,7 +303,7 @@ function drawMap(data,outline){
 
         map.resize();
 
-    map.addControl(new mapboxgl.NavigationControl(),'bottom-left');
+  //  map.addControl(new mapboxgl.NavigationControl(),'bottom-left');
     map.dragRotate.disable();
     map.addSource("counties",{
              "type":"geojson",
