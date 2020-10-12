@@ -38,7 +38,9 @@ var config = {
         {
         id: 'vulnerabilities',
         title: 'Vulnerabilities',
-        description:"But communities can be vulnerable in many different ways. For example, the Centers for Disease Control's (CDC) Social Vulnerability Index (SVI*) aggregates fifteen factors related to socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one single metric. But measured at a national scale, county by county, neither a single factor nor a single index can capture all of a community’s resource needs. Instead, we must examine vulnerability from many angles and perspectives."
+        description:
+            '<br><br><br><img src="images/story_draft2/key.png" width="200px">'
+        +"But communities can be vulnerable in many different ways. For example, the Centers for Disease Control's (CDC) Social Vulnerability Index (SVI*) aggregates fifteen factors related to socioeconomic status, household composition and disability, minority status and language, and housing type to define vulnerability in one single metric. But measured at a national scale, county by county, neither a single factor nor a single index can capture all of a community’s resource needs. Instead, we must examine vulnerability from many angles and perspectives."
             +"<br><br>Let's go to Arizona and we can show you what we mean.",
          location: {
                center: [-111, 34],
@@ -68,7 +70,7 @@ var config = {
             +"<br><br>SVI* calls attention to counties with the greatest number of its highly-vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type. In Arizona we have ranked each of the fifteen counties according to its SVI* score relative to the other counties in the state. But this is not the only way to locate vulnerable populations.",
             location: {
                 //center: [-73, 30],
-                zoom:10
+                zoom:1
             },
             onChapterEnter: [
                 {
@@ -120,7 +122,7 @@ var config = {
             title: 'Of course, COVID has changed this landscape',
             image: '',
             description: 
-            '<br><br><br><img src="images/story_draft2/10062020_covid.png">'
+            '<img src="images/story_draft2/10062020_covid.png">'
             +'<br><br>The direct effects of COVID have exacerbated many of the pre-existing vulnerabilities in the US. But the pandemic has also revealed places with acute and immediate needs, where combating the epidemic requires an influx of community health workers. Sometimes long-term vulnerabilities and the impact of COVID coincide in our maps, but sometimes they do not. On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.'
             +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
              +"<br><br><br><br><br><br>",
@@ -237,7 +239,7 @@ var config = {
             +" <br><br> In the map of the US here, we propose to allocate 1 million CHWs to states based on the proportion of Medicaid enrollees, so big states like New York, California and Texas, start off with 8.15%, 15.54% and 5.84% of the nation’s total CHW pool.", 
             location: {
                 center: [-112.039339, 33.459597],
-                zoom: 8,
+                zoom: 0,
                 pitch: 0,
                 bearing: 0
             },
