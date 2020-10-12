@@ -123,9 +123,11 @@ var config = {
             image: '',
             description: 
             '<img src="images/story_draft2/10062020_covid.png">'
-            +'<br><br>The direct effects of COVID have exacerbated many of the pre-existing vulnerabilities in the US. But the pandemic has also revealed places with acute and immediate needs, where combating the epidemic requires an influx of community health workers. Sometimes long-term vulnerabilities and the impact of COVID coincide in our maps, but sometimes they do not. On September 24, here is the distribution of recent COVID cases over past two weeks in Arizona. Maricopa county, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities has the highest current rate of infection.'
-            +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>"
-             +"<br><br><br><br><br><br>",
+            +'<br><br>The direct effects of COVID have exacerbated many of the pre-existing vulnerabilities in the US. Sometimes long-term vulnerabilities and the impact of COVID coincide in our maps, but sometimes they do not.' 
+            +"<br><br>Here is the distribution of new COVID cases over the two weeks from September 21th to October 5th in Arizona. Maricopa County, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities, had the largest epidemic."
+            +"Normalizing recent COVID cases by population highlights the less populous counties where large proportions of a community have acquired the virus, such as Gila County."
+            +"Cumulative COVID deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago. As of late September 2020 cumulative deaths for Arizona have the most similar patterns as YPLL and SVI*. Apache County, which contains a large portion of the Navajo Nation, ranks highest in the state for this metric."
+            +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>",
             location: {},
             onChapterEnter: [],
             onChapterExit: []
