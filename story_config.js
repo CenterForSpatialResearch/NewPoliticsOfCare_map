@@ -125,8 +125,8 @@ var config = {
             '<img src="images/story_draft2/10062020_covid.png">'
             +'<br><br>The direct effects of COVID have exacerbated many of the pre-existing vulnerabilities in the US. Sometimes long-term vulnerabilities and the impact of COVID coincide in our maps, but sometimes they do not.' 
             +"<br><br>Here is the distribution of new COVID cases over the two weeks from September 21th to October 5th in Arizona. Maricopa County, the most populous county in the state which had relatively lower values for the socioeconomic and preexisting health vulnerabilities, had the largest epidemic."
-            +"Normalizing recent COVID cases by population highlights the less populous counties where large proportions of a community have acquired the virus, such as Gila County."
-            +"Cumulative COVID deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago. As of late September 2020 cumulative deaths for Arizona have the most similar patterns as YPLL and SVI*. Apache County, which contains a large portion of the Navajo Nation, ranks highest in the state for this metric."
+            +"<br><br>Normalizing recent COVID cases by population highlights the less populous counties where large proportions of a community have acquired the virus, such as Gila County."
+            +"<br><br>Cumulative COVID deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago. As of late September 2020 cumulative deaths for Arizona have the most similar patterns as YPLL and SVI*. Apache County, which contains a large portion of the Navajo Nation, ranks highest in the state for this metric."
             +"<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>",
             location: {},
             onChapterEnter: [],
