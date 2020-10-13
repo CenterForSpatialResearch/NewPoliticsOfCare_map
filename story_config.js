@@ -102,7 +102,7 @@ var config = {
             image: '',
             description: 
             '<br><br><br><img src="images/story_draft2/medicaid.jpg" width="800px">'
-            +"<br><br>Another means to measure vulnerability is how many residents are enrolled in  Medicaid. The enrollment criteria shares some factors with SVI*, such as income, household composition, and points to social and economic vulnerability that can affect health."
+            +'<br><br>Another means to measure vulnerability is how many residents are enrolled in Medicaid, a means-tested health insurance program largely determined by income. Medicaid enrollment shares some criteria with SVI*&mdash;income, poverty, and disability&mdash;and similarly points to social and economic vulnerability that can affect health.'
             ,
             location: {},
             onChapterEnter: [],
