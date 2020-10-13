@@ -18,7 +18,7 @@ var config = {
             +"<br><br>We propose a New Deal for Public Health with a Community Health Corps of 1 million community health workers (CHWs) to lift up the health of Americans. Community health workers in the midst of a pandemic will help people get tested and trace their contacts, but they will have to tackle more than that in the short-term. They will have to take on the role of social workers, navigating the web of services that address the social and economic burdens of social distancing and isolation, from food and medicine delivery, rent assistance and protection from eviction, to child care and elder care."
             +'<img src="images/story_draft2/introNumbers.png" width="200px">'
             +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the people who they serve. It is in this capacity as community members that community health workers are empowered to redress the health disparities that have lingered for generations."
-            +'<br><br><br>Skip intro and <span id=\"skipStory\"><a href="index.html">go to map</a></span>'
+            +'<br><br><br>Skip intro and <span id=\"skipStory\"><a href="map.html">go to map</a></span>'
             , 
             location: {
                 center: [-73, 30],
@@ -345,7 +345,7 @@ var config = {
             title: 'Explore each state on your own',
             image: '',
             description: 
-            '<span id="gotoMap"><a href="index.html">GO TO MAP</a></span>', 
+            '<span id="gotoMap"><a href="map.html">GO TO MAP</a></span>', 
             location: {
                 center: [-109.463005,35.052533],
                 zoom: 4,
