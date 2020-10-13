@@ -15,7 +15,8 @@ var config = {
             image: '',
             description:"COVID affects our communities differently. Vulnerabilities that predated the pandemic have fueled uneven effects across the United States. Unless we address the immediate needs of the pandemic along with the longstanding inequalities embedded in the social and political landscape of the US we will come out of the current crisis just as vulnerable as when this all began."
             +"<br><br>We propose a New Deal for Public Health with a Community Health Corps of 1 million community health workers (CHWs) to lift up the health of Americans. Community health workers in the midst of a pandemic will help people get tested and trace their contacts, but they will have to tackle more than that in the short-term. They will have to take on the role of social workers, navigating the web of services that address the social and economic burdens of social distancing and isolation, from food and medicine delivery, rent assistance and protection from eviction, to child care and elder care."
-            +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the people who they serve. It is in this capacity as community members that community health workers are empowered to redress the health disparities that have lingered for generations.",
+            +"<br><br>Beyond providing comprehensive and holistic healthcare services, community health workers are unique in their role as advocates of the people who they serve. It is in this capacity as community members that community health workers are empowered to redress the health disparities that have lingered for generations."
+            +'<br><br><br>Skip intro and <span id=\"skipStory\"><a href="index.html">go to map</a></span>', 
             location: {
                 center: [-73, 30],
                 zoom:3,
