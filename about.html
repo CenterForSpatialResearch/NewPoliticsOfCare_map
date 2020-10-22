@@ -255,14 +255,16 @@ We can make better choices with better data. This project begins with what data 
  </p><p>
   </div> 
    
-  <div class="question"> A proposal for a Community Health Corps of 1 million workers </div> 
+  <div class="question">A Proposal for a Community Health Corps of One Million Workers</div> 
   
    <div class="answer"> <p>
-   Earlier this year, proposals for a national health corps were promoted by several members of Congress, including Senators Kirsten Gillibrand (D-NY), Michael Bennet (D-CO), Dick Durbin (D-IL), Chris Coons (D-DE), Brian Schatz (D-HI), Ed Markey (D-MA), Chris Van Hollen (D-MD), Elizabeth Warren (D-MA), Jeff Merkley (D-OR), Tina Smith (D-MN), and Cory Booker (D-NJ). We have called directly for a million-person community health corps to address the myriad needs presented by the Covid pandemic and the pre-existing health disparities in communities hardest hit by the coronavirus.
+   Earlier this year, proposals for a national health corps were promoted by several members of Congress, including Senators Kirsten Gillibrand (D-NY), Michael Bennet (D-CO), Dick Durbin (D-IL), Chris Coons (D-DE), Brian Schatz (D-HI), Ed Markey (D-MA), Chris Van Hollen (D-MD), Elizabeth Warren (D-MA), Jeff Merkley (D-OR), Tina Smith (D-MN), and Cory Booker (D-NJ). We have called directly for a million-person community health corps to address the myriad needs presented by the COVID-19 pandemic and the preexisting health disparities in communities hardest hit by the coronavirus. 
    </p><p>
-   We allocate the proposed 1,000,000 CHWs to states in proportion to their respective Medicaid enrollment numbers, which we update monthly as enrollment has been increasing as a result of rising unemployment.<sup>10</sup> We then use the vulnerability metrics above–Covid cases, Covid cases per capita, SVI, YPLL, unemployment, and Medicaid enrollees–to outline multiple ways to allocate CHW resources to counties within states. 
-  </p><p>
-   Again, none of these choices is the “right” one–they all depend on your vision for how you conceptualize vulnerability. This project visualizes the differences and tradeoffs between each of these choices.  
+
+   We allocate the proposed one million CHWs to states in proportion to their respective Medicaid enrollment numbers, which we update monthly as we have seen enrollment increasing as a result of rising unemployment.<sup>10</sup> We then use the vulnerability metrics above—COVID-19 cases, COVID-19 cases per capita, SVI, YPLL, unemployment, and number of Medicaid enrollees—to outline multiple ways to allocate CHW resources to counties within states. 
+   </p><p>
+   Again, none of these choices is the “right” one—they all depend on your vision for how you conceptualize vulnerability. This project visualizes the differences and trade-offs between each of these choices. 
+   
    </p>
 
   </div>
@@ -270,17 +272,20 @@ We can make better choices with better data. This project begins with what data 
   
   <div class="question">Data about Vulnerability </div>
   <div class="answer"><p>
-  Each method of quantifying vulnerability captures some populations and excludes others. As well, key data are limited by their geographic resolution, and the frequency with which they are updated. In what follows we outline what factors are included in each metric, differences in the availability of data on vulnerability, and discuss advantages and limitations of each dataset. 
+Each method of quantifying vulnerability captures some populations and excludes others. As well, key data are limited by their geographic resolution and the frequency with which they are updated. In what follows, we outline what factors are included in each metric and differences in the availability of data on vulnerability, and we discuss advantages and limitations of each dataset. 
   </p>
   
       <div class="question data"> 
-      Social Vulnerability Index (SVI)*</div>
-       <div class="answer">The Social Vulnerability Index (SVI) is a metric published by the Centers for Disease Control (CDC) to spatially identify communities that are likely to be the most vulnerable to the adverse impacts of disasters and disease outbreaks. SVI is a composite score of fifteen social factors equally weighted and organized under four themes derived from the U.S. Census Bureau’s American Community Survey (ACS). 
-        </p><p>
-      *The CDC considers percentile rank of fifteen different factors while calculating SVI, we consider proportional value of these fifteen factors in each state compared to the state and then take the average of these proportional values for the fifteen different factors.
-        </p><p>
-      The table below helps to highlight places that would receive the most CHW resources when prioritizing by SVI. As a composite index, locations with high values across multiple of these four categories would receive the most resources. 
-      </p>
+     Social Vulnerability Index (SVI)*</div>
+       <div class="answer">
+         <p>
+         The Social Vulnerability Index (SVI) is a metric published by the Centers for Disease Control (CDC) to spatially identify communities that are likely to be the most vulnerable to the adverse impacts of disasters and disease outbreaks. SVI is a composite score of 15 social factors equally weighted and organized under four themes derived from the US Census Bureau’s American Community Survey (ACS). 
+</p><p>
+
+Our study uses a modified version of the CDC SVI index to facilitate the proportional allocation of CHWs. The CDC generates their SVI index by calculating percentile rankings for each county within states across 15 individual variables, summing these percentile rankings and then calculating an overall percentile ranking for each county within its state. In our method, we first calculate the ratio between each county’s value and overall state value for each of the 15 variables. We then take the average of these ratios across the 15 individual variable values for each county. We use the resulting value as the SVI* for each county in our model. 
+</p><p>
+The table below highlights places that would receive the most CHW resources when prioritizing by SVI. As a composite index, locations with high values across more than one of these four categories would receive the most resources. 
+</p>
       <table>
         <tr>
          <th> Socioeconomic Status</th>
@@ -319,42 +324,41 @@ We can make better choices with better data. This project begins with what data 
       </ul>
       <i>Limitations of SVI Data</i>
       <ul><li>Data is lagged. The SVI is calculated using the latest available data from the US Census Bureau’s American Community Survey (ACS) 5-year estimates which 2014-2018 and county demographics and characteristics may have changed since then.</li>
-      <li>SVI has limited empirical validation. SVI was initially designed as a theoretical model for natural disasters and has since been expanded to include disease outbreaks. While many of the vulnerabilities associated with natural disasters and pandemics overlap, some factors may have different impacts on communities facing a natural disaster or a pandemic.
+      <li>SVI has limited empirical validation. SVI was initially designed as a theoretical model for natural disasters and has since been expanded to include disease outbreaks. While many of the vulnerabilities associated with natural disasters and pandemics overlap, some factors may have different impacts on communities facing a natural disaster or a pandemic.</li>
         <ul><li>
-      Much of the recent research on the relationship between SVI and Covid should be read with the understanding that the Covid data was from early in the pandemic. <sup>11–13</sup></li></ul>
+     Much of the recent research on the relationship between SVI and Covid should be read with the understanding that the Covid data was from early in the pandemic. <sup>11–13</sup></li></ul>
       </li>
       </ul>
-
       <i>Data Source for SVI</i>
       <br><a href="https://www.atsdr.cdc.gov/placeandhealth/svi/index.html" target="_blank">Centers for Disease Control <sup>5</sup></a>
       </div>
+      <br>
 
       <div class="question data"> Years of Potential Life Lost (YPLL)</div>
       <div class="answer">
-      <p>Years of Potential Life Lost measures the rate of premature deaths by region. YPLL is calculated as the sum of the estimated number of years that individuals would have lived if they had not died before the age of 75 per 100,000 people.
-      </p>
+      <p>Years of Potential Life Lost measures the rate of premature deaths by region. YPLL is calculated as the sum of the estimated number of years that individuals would have lived if they had not died before the age of 75 per 100,000 people.</p>
       <p>
-        Using YPLL to allocate CHWs would send the most resources to counties where a large proportion of the population dies before the age of 75. 
+       Using YPLL to allocate CHWs would send the most resources to counties where a large proportion of the population dies before the age of 75. 
       </p>
       <p><br>
-       <i> Strengths of YPLL data as an indicator of vulnerability</i>
-       <ul><li> Captures and compares health trends at the county level</li></ul>
+       <i>Strength of YPLL Data as an Indicator of Vulnerability</i>
+       <ul><li>Data captures and compares health trends at the county level.</li></ul>
       </p><br>
       <p>
-       <i> Limitations of YPLL data as an indicator of vulnerability</i>
-        <ul><li>  Data is lagged YPLL is calculated using the CDC’s National Vital Statistics System (NVSS) mortality data for 2016-18 and county rates may have changed since then.</li>
-       <li> Speaks to preexisting health disparities in counties but does not reflect elderly populations at a high risk for Covid related hospitalization and mortality. Current data supports a strong association between age and the risk of Covid related hospitalization and mortality.<sup>14</sup> </li></ul>
+       <i>Limitations of YPLL Data as an Indicator of Vulnerability</i>
+        <ul><li>Data is lagged. YPLL is calculated using the CDC’s National Vital Statistics System (NVSS) mortality data for 2016–2018, and county rates may have changed since then.</li>
+       <li>YPLL speaks to preexisting health disparities in counties but does not reflect elderly populations at a high risk for COVID-19-related hospitalization and mortality. Current data supports a strong association between age and the risk of COVID-19-related hospitalization and mortality.<sup>14</sup> </li></ul>
       </p><br>
       <p>
-       <i> Data Sources for YPLL</i>
+       <i>Data Sources for YPLL</i>
        </p><p>
-        YPLL rankings for the United States (and Washington DC) were provided by the County Health Rankings YPLL data for 2016-2018 
-        (<a href="https://doi.org/10.1186/s12963-015-0044-2" target="_blank">source 1<sup>15</sup></a>, 
-        <a href="https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation" target="_blank">source 2<sup>7</sup></a>)
-        YPLL for Puerto Rico municipios was calculated using 
-        <a href="http://www.salud.gov.pr/Estadisticas-Registros-y-Publicaciones/Estadisticas%20Vitales/Informe%20Anual%20Estad%C3%ADsticas%20Vitales%20Defunciones%202015-2016.pdf" target="_blank">Puerto Rico mortality records for 2015-16 <sup>16</sup></a>
-         in conjunction with the 
-        <a href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-puerto-rico-municipios.html" target="_blank">U.S. Census population estimates<sup>17</sup></a>.
+        YPLL rankings for the United States (including Washington, DC) were provided by the County Health Rankings YPLL data for 2016–2018.
+        (<a href="https://doi.org/10.1186/s12963-015-0044-2" target="_blank"><sup>15</sup></a>, 
+        <a href="https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation" target="_blank"><sup>7</sup></a>)
+       YPLL for Puerto Rico municipios was calculated using Puerto Rico mortality records for 2015–2016
+        <a href="http://www.salud.gov.pr/Estadisticas-Registros-y-Publicaciones/Estadisticas%20Vitales/Informe%20Anual%20Estad%C3%ADsticas%20Vitales%20Defunciones%202015-2016.pdf" target="_blank"><sup>16</sup></a>
+         in conjunction with the US Census population estimates.
+        <a href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-puerto-rico-municipios.html" target="_blank"><sup>17</sup></a>.
       </p>
       </div>
 
@@ -362,174 +366,174 @@ We can make better choices with better data. This project begins with what data 
       </div>
       <div class="answer">
         <p>Medicaid is a means-tested health insurance program for low-income children, pregnant women, adults, seniors, and people with disabilities. Medicaid is jointly funded by federal and state governments and managed by states within federal standards and a wide range of state options.
-      </p>
+</p><p>
+Using Medicaid enrollment to allocate CHWs would send the most resources to counties that had the greatest share of Medicaid enrollees as of the 2018 ACS 5-year estimates. 
+</p><br>
       <p>
-      Using Medicaid enrollment to allocate CHWs would send the most resources to counties that had the greatest share of Medicaid enrollees as of the 2018 ACS 5 year estimates. 
+      <i>Strengths of Medicaid Enrollment Data as an Indicator of Vulnerability</i>
+      <li>Data measures health-care needs of vulnerable populations.</li>
+     <li>Data is recent Medicaid data at the state level, which is reported monthly, with a three-month lag. </li>
+    <li>Medicaid may likely be used to pay for CHWs.</li>
+     <li>Much of the research literature on the efficacy of CHWs in the United States was done with Medicaid populations.
+     </li></ul>
       </p><br>
       <p>
-      <i>Strengths of Medicaid enrollment data as an indicator of vulnerability</i>
-      <li>Measures healthcare needs of vulnerable populations</li>
-      <li>Data is recent Medicaid data at the state level is reported monthly with a three-month lag</li>
-      <li>Medicaid may likely be used to pay for CHWs</li>
-      <li>Much of the research literature on the efficacy of CHWs in the US was done with Medicaid populations</li></ul>
-      </p><br>
-      <p>
-      <i>Limitations of Medicaid enrollment data as an indicator of vulnerability</i>
+      <i>Limitations of Medicaid Enrollment Data as an Indicator of Vulnerability</i>
       <ul>
-      <li>County-level Medicaid enrollment is estimated. Recent state-level data is allocated to counties based on the US Census</li> <li>Bureau’s 5-year estimates from the 2014-2018 American Community Survey (ACS)</li>
+      <li>County-level Medicaid enrollment is estimated. Recent state-level data is allocated to counties based on the US Census Bureau’s 5-year estimates from the 2014–2018 ACS.</li>
       <li>States are not comparable. Medicaid eligibility differs by state.</li></ul>
       </p><br>
       <p>
       <i>Data Source for Medicaid Enrollment</i>
        </p><p>
-      <a href="https://data.medicaid.gov/Enrollment/State-Medicaid-and-CHIP-Applications-Eligibility-D/n5ce-jxme" target="_blank">State-level Medicaid Enrollees: Centers for Medicaid and Medicare Services<sup>6<sup></a>
+      State-level Medicaid enrollees: Centers for Medicaid and Medicare Services<a href="https://data.medicaid.gov/Enrollment/State-Medicaid-and-CHIP-Applications-Eligibility-D/n5ce-jxme" target="_blank"><sup>6<sup></a>
 
-      <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank">County-level Medicaid Enrollee Estimates: U.S. Census Bureau’s 2014-2018 ACS 5-year Estimates<sup>18</sup></a>
+     County-level Medicaid enrollee estimates: US Census Bureau’s 2014–2018 ACS 5-year estimates <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank"><sup>18</sup></a>
       </p>
       </div>
 
       <div class="question data">Unemployment </div>
       <div class="answer">
        <p>
-        The U.S. Bureau of Labor Statistics releases monthly estimates of the number of people in the civilian labor force who are without jobs.<sup>8</sup> 
+       The US Bureau of Labor Statistics releases monthly estimates of the number of people in the civilian labor force who are without jobs.<sup>8</sup> 
       </p>
       <p>
-        Using unemployment figures to allocate CHWs would send the most resources to counties that have the greatest share of each state’s total unemployed residents. 
-      </p>
+Using unemployment figures to allocate CHWs would send the most resources to counties that have the greatest share of each state’s total unemployed residents.       </p>
       <p>
-       <i> Strengths of unemployment data as an indicator of vulnerability</i>
+       <i>Strength of Unemployment Data as an Indicator of Vulnerability</i>
        <ul>
-       <li> Data is recent. Unemployment data at the county level is released every month with a one month lag.</li></ul>
+       <li>•	Data is recent. Unemployment data at the county level is released every month, with a one-month lag.</li></ul>
       </p><br>
       <p>
-       <i> Limitations of unemployment data as an indicator of vulnerability</i>
+       <i>Limitations of Unemployment Data as an Indicator of Vulnerability</i>
        <ul>
-       <li> Unemployment figures available at the county level does not include (a) individuals who are unemployed and have not looked for work in the past month and (b) the underemployed.</li></ul>
+       <li>Unemployment figures available at the county level do not include (a) individuals who are unemployed and have not looked for work in the past month and (b) the underemployed.</li></ul>
       </p><br>
       <p>
         <i>Data Source for Unemployment Rate</i>
       </p>
       <p>
-        <a href="https://www.bls.gov/web/metro/laucntycur14.txt" target="_blank">U.S. Bureau of Labor Statistics - Local Area Unemployment Statistics (LAUS)<sup>19</sup></a>
+        US Bureau of Labor Statistics—Local Area Unemployment Statistics (LAUS)<a href="https://www.bls.gov/web/metro/laucntycur14.txt" target="_blank"><sup>19</sup></a>
       </p>
       </div>
 
-      <div class="question data">COVID Cases & COVID Cases per 100,000 residents
+      <div class="question data">COVID-19 Cases and COVID-19 Cases per 100,000 Residents
       </div>
       <div class="answer">
-      <p>COVID cases is an absolute metric of the total number of COVID cases in a county over the last fourteen days. COVID cases per 100,000 is a relative metric calculated by dividing the number of COVID cases by the estimated county population and multiplying by 100,000. Cases include both confirmed cases, based on viral testing, and probable cases, based on specific criteria for symptoms and epidemiological exposure.<sup>20</sup>
+      <p>The number of COVID-19 cases is an absolute metric of the total number of COVID-19 cases in a county over the last 14 days. COVID-19 cases per 100,000 is a relative metric calculated by dividing the number of COVID-19 cases by the estimated county population and multiplying by 100,000. Cases include both confirmed cases, based on viral testing, and probable cases, based on specific criteria for symptoms and epidemiological exposure.<sup>20</sup>
        </p><p>
-      Using COVID cases in the past 14 days to allocate CHWs would target resources to counties that have the largest overall epidemic within the state. Using COVID cases per 100,000 residents would send resources to counties where the epidemic is largest in proportion to the population size compared with the state overall. 
+     Using COVID-19 cases in the past 14 days to allocate CHWs would target resources to counties that have the largest overall epidemic within the state. Using COVID-19 cases per 100,000 residents would send resources to counties where the epidemic is largest in proportion to the population size compared with the state overall. 
        </p><br><p>
 
-      <i>Strengths of Covid Cases as a measure of vulnerability</i>
+      <i>Strengths of COVID-19 Cases as a Measure of Vulnerability</i>
        <ul>
-       <li>Both measurements of Covid are the best available metrics of absolute and relative Covid incidence.
-       </li><li>
-      Covid casese, as an absolute metric, measures the total disease incidence regardless of population size and therefore gives an estimate of total healthcare demand.
-       </li><li>
-      Covid cases per 100,000, as a relative metric, takes into account different population sizes and allows comparisons of disease incidence by county. </li></ul>
+       <li>Both measurements of COVID-19 are the best available metrics of absolute and relative COVID-19 incidence.</li>
+
+<li>The number of COVID-19 cases, as an absolute metric, measures the total disease incidence regardless of population size and therefore gives an estimate of total health-care demand.</li>
+<li>COVID-19 cases per 100,000, as a relative metric, takes into account different population sizes and allows comparisons of disease incidence by county.</li></ul>
 
        </p><br><p>
 
-      <i>Limitations of Covid Cases as a measure of vulnerability</i>
+      <i>Limitations of COVID-19 Cases as a Measure of Vulnerability</i>
        <ul>
-       <li>Both measurements of Covid are based on testing data and therefore underestimate the total persons with the disease due to a combination of low testing rates in general and asymptomatic patients.
-       </li><li>
-      Covid cases, as an absolute metric, does not take into account background populations and therefore allocates resources to more populous areas.
-       </li><li>
-      Covid cases per 100,000, as a relative metric, will shift resources proportionally and does not take into account any marginal benefits of treating infectious disease populations by their absolute size.
-       </li></ul>
+       <li>Both measurements of COVID-19 are based on testing data and therefore underestimate the total number of persons with the disease due to a combination of low testing rates in general and asymptomatic patients.</li>
+<li>The number of COVID-19 cases, as an absolute metric, does not take into account background populations and therefore allocates resources to more populous areas.</li>
+<li>COVID-19 cases per 100,000, as a relative metric, will shift resources proportionally and does not take into account any marginal benefits of treating infectious disease populations by their absolute size.
+</li></ul>
        </p>
        <br><p>
 
-      <i>Data sources for Covid Cases and Covid Cases per 100,000</i>
+      <i>Data Sources for COVID-19 Cases and COVID-19 Cases per 100,000</i>
        </p><p>
-      <a href="https://github.com/nytimes/covid-19-data" target="_blank">Covid case data: The New York Times’ Coronavirus (Covid-19) Data in the United States<sup>9</sup></a> <br>
-      <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank">County population data: U.S. Census Bureau’s 2014-2018 ACS 5-year Estimates</a><sup>18</sup>
+      COVID-19 case data: New York Times Coronavirus (COVID-19) Data in the United States<a href="https://github.com/nytimes/covid-19-data" target="_blank"><sup>9</sup></a> <br>
+     County population data: US Census Bureau’s 2014–2018 ACS 5-year estimates<a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank"><sup>18</sup></a>
        </p>
       </div>
 
 
 
 
-      <div class="question data">Covid Deaths per 100,000 Residents </div>
+      <div class="question data">COVID-19 Deaths per 100,000 Residents</div>
       <div class="answer">
        <p>
-          What are Covid Deaths per 100,000 residents?
+         <i>What Are COVID-19 Deaths per 100,000 Residents?</i>
        </p><p>
-        Covid deaths per capita is the total number of deaths per county population where Covid is listed on the death certificate as either the cause of death or a significant contributing condition to death. Similar to cases, deaths include both confirmed deaths, based on viral testing, and probable deaths, based on specific criteria for symptoms and epidemiological exposure.<sup>20</sup>
+      The number of COVID-19 deaths per capita is the total number of deaths per county population where COVID-19 is listed on the death certificate as either the cause of death or a significant contributing condition to death. Similar to COVID-19 cases, COVID-19 deaths include both confirmed deaths, based on viral testing, and probable deaths, based on specific criteria for symptoms and epidemiological exposure.<sup>20</sup>
        </p><p>
-
-        Using cumulative COVID deaths per 100,000 residents to allocate CHWs would send resources to counties that have seen the highest rate of death compared to each state overall. 
+Using cumulative COVID-19 deaths per 100,000 residents to allocate CHWs would send resources to counties that have seen the highest rate of death compared to each state overall. 
        </p><p>
  
-        <i>Strengths of Covid deaths as a measure of vulnerability</i>
+        <i>Strength of COVID-19 Deaths as a Measure of Vulnerability</i>
         <ul><li>
-        Covid death data provides information on which communities were impacted by Covid.
-      </li></ul>
+COVID-19 death data provides information on which communities have been impacted by COVID-19.      </li></ul>
        </p><br><p>
 
-        <i>Limitations of Covid deaths as a measure of vulnerability</i>
+        <i>Limitations of COVID-19 Deaths as a Measure of Vulnerability</i>
         <ul><li>
-        Mortality rates can be driven by numerous factors, including the number of cases, underlying conditions, age of population, and access to care.
-       </li><li>
-        Mortality rates speak to the horrible loss of life from the virus, however they do not capture any of the ongoing long-term health effects associated with Covid which contribute to community vulnerability. 
+Mortality rates can be driven by numerous factors, including the number of cases, underlying conditions, age of population, and access to care.       </li><li>
+       Mortality rates speak to the horrible loss of life from the virus; however, they do not capture any of the ongoing long-term health effects associated with COVID-19 that contribute to community vulnerability. 
        </li></ul>
        </p><br><p>
 
-        <i>Data sources for Covid Deaths per 100,000</i>
+        <i>Data Sources for COVID-19 Deaths per 100,000 Residents</i>
        </p><p>
-        <a href="https://github.com/nytimes/covid-19-data" target="_blank">Covid death data: The New York Times’ Coronavirus (Covid-19) Data in the United States<sup>9</sup></a> <br>
-        <a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank">County population data: U.S. Census Bureau’s 2014-2018 ACS 5-year Estimates<sup>18</sup></a>
+        COVID-19 death data: New York Times Coronavirus (COVID-19) Data in the United States<a href="https://github.com/nytimes/covid-19-data" target="_blank"><sup>9</sup></a> <br>
+        County population data: US Census Bureau’s 2014–2018 ACS 5-year estimates<a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank"><sup>18</sup></a>
        </p>
       </div>
 </div>
+
+
+<div class="question">Citing This Project</div>
+<div class="answer">
+  If drawing from or reproducing this work, please cite the project as:
+  Columbia Center for Spatial Research and Yale Global Health Partnership. 2020. Mapping the New Politics of Care. newpoliticsofcare.net
+</div>
+<br>
+
 <div class="question">References</div>
 <div class="answer">
   
   <ol>
-  <li>
-   Oppel, R. A., Jr., Gebeloff, R., Lai, K. K. R., Wright, W., & Smith, M. (2020, July 5). The Fullest Look Yet at the Racial Inequity of Coronavirus. <i>The New York Times.</i> <a href="https://www.nytimes.com/interactive/2020/07/05/us/coronavirus-latinos-african-americans-cdc-data.html" target="_blank">https://www.nytimes.com/interactive/2020/07/05/us/coronavirus-latinos-african-americans-cdc-data.html</a>
-  </li>
-  
-  <li>Gonsalves, G., & Kapczynski, A. (2020, April 26). The New Politics of Care. <i>Boston Review</i>.<a href="http://bostonreview.net/politics/gregg-gonsalves-amy-kapczynski-new-politics-care" target="_blank">http://bostonreview.net/politics/gregg-gonsalves-amy-kapczynski-new-politics-care</a></li>
- 
-  <li>Sagynbekov, K., & Graf, M. (2017). Are Community Health Workers Saving Lives? <i>Milken Institute</i>.<a href="https://milkeninstitute.org/sites/default/files/reports-pdf/100617-Community-Health-Workers.pdf" target="_blank">https://milkeninstitute.org/sites/default/files/reports-pdf/100617-Community-Health-Workers.pdf</a></li>
+  <li>Oppel, Richard A., Jr., Robert Gebeloff, K. K. Rebecca Lai, Will Wright, and Mitch Smith. 2020. “The Fullest Look Yet at the Racial Inequity of Coronavirus.” New York Times, July 5, 2020. https://www.nytimes.com/interactive/2020/07/05/us/coronavirus-latinos-african-americans-cdc-data.html.
 
-  <li>Kangovi, S., Mitra, N., Grande, D., Long, J. A., & Asch, D. A. (2020). Evidence-Based Community Health Worker Program Addresses Unmet Social Needs And Generates Positive Return On Investment: A return on investment analysis of a randomized controlled trial of a standardized community health worker program that addresses unmet social needs for disadvantaged individuals. <i>Health Affairs</i>, 39(2), 207–213.<a href="https://doi.org/10.1377/hlthaff.2019.00981" target="_blank"> https://doi.org/10.1377/hlthaff.2019.00981</a></li>
+ <li>Gonsalves, Gregg, and Amy Kapczynski. 2020. “The New Politics of Care.” Boston Review, April 26, 2020. http://bostonreview.net/politics/gregg-gonsalves-amy-kapczynski-new-politics-care.
 
-  <li>CDC. (2020, September 4). <i>CDC Social Vulnerability Index (SVI). <a href="https://www.atsdr.cdc.gov/placeandhealth/svi/index.html" target="_blank"></i>https://www.atsdr.cdc.gov/placeandhealth/svi/index.html</a></li>
-
-  <li>CMS. (2020). <i>State Medicaid and CHIP Applications, Eligibility Determinations, and Enrollment Data, Centers for Medicare and Medicaid Services. Centers for Medicare and Medicaid Services</i>.<a href="https://data.medicaid.gov/Enrollment/State-Medicaid-and-CHIP-Applications-Eligibility-D/n5ce-jxme" target="_blank">https://data.medicaid.gov/Enrollment/State-Medicaid-and-CHIP-Applications-Eligibility-D/n5ce-jxme</a></li>
-
-  <li>University of Wisconsin Population Health Institute and Robert Wood Johnson Foundation. (2020). <i>2020 County Health Rankings National Data</i>. <a href=" https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation" target="_blank">https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation</a></li>
-  
-  <li>BLS. (2020).<i> Local Area Unemployment Statistics</i>.<a href="https://www.bls.gov/lau/laufaq.htm#Q01" target="_blank">https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation</a></li>
-  
-  <li>New York Times, The. (2020, July 20). Covid in the U.S.: Latest Map and Case Count. <i>The New York Times</i>.<a href="https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html" target="_blank">https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html</a></li>
-  
-  <li>Goldstein, A. (2020). Medicaid rolls swell amid the pandemic’s historic job losses, straining state budgets. <i>Washington Post</i>.<a href="https://www.washingtonpost.com/health/covid-medicaid-enrollment-increases/2020/09/14/84b6249a-e6f1-11ea-97e0-94d2e46e759b_story.html" target="_blank"> https://www.washingtonpost.com/health/covid-medicaid-enrollment-increases/2020/09/14/84b6249a-e6f1-11ea-97e0-94d2e46e759b_story.html</a></li>
-  
-  <li>Karaye, I. M., & Horney, J. A. (2020). The Impact of Social Vulnerability on COVID-19 in the U.S.: An Analysis of Spatially Varying Relationships. <i>American Journal of Preventive Medicine</i>, 59(3), 317–325. <a href="https://doi.org/10.1016/j.amepre.2020.06.006" target="_blank">https://doi.org/10.1016/j.amepre.2020.06.006</a></li>
-  
-  <li>Nayak, A., Islam, S. J., Mehta, A., Ko, Y.-A., Patel, S. A., Goyal, A., Sullivan, S., Lewis, T. T., Vaccarino, V., Morris, A. A., & Quyyumi, A. A. (2020). Impact of Social Vulnerability on COVID-19 Incidence and Outcomes in the United States. <i>MedRxiv</i>, 2020.04.10.20060962. <a href="https://doi.org/10.1101/2020.04.10.20060962" target="_blank">https://doi.org/10.1101/2020.04.10.20060962</a></li>
- 
-  <li>Amram, O., Amiri, S., Lutz, R. B., Rajan, B., & Monsivais, P. (2020). Development of a vulnerability index for diagnosis with the novel coronavirus, COVID-19, in Washington State, USA. <i>Health & Place</i>, 64, 102377–102377. PMC.<a href="https://doi.org/10.1016/j.healthplace.2020.102377" target="_blank">https://doi.org/10.1016/j.healthplace.2020.102377</a></li>
-  
-  <li>CDC. (2020, February 11). <i>COVID-19 Hospitalization and Death by Age</i>. Centers for Disease Control and Prevention.<a href="https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/hospitalization-death-by-age.html" target="_blank">https://www.cdc.gov/coronavirus/2019-ncov/covid-data/investigations-discovery/hospitalization-death-by-age.html</a></li>
-  
-  <li>Remington, P. L., Catlin, B. B., & Gennuso, K. P. (2015). The county health rankings: Rationale and methods. <i>Population Health Metrics</i>, 13(1), 11. <a href="https://doi.org/10.1186/s12963-015-0044-2" target="_blank">https://doi.org/10.1186/s12963-015-0044-2</a></li>
-  
-  <li>Departamento de Salud. (2019). <i>Informe Anual de Estadísticas Vitales: Defunciones</i>, años 2015 y 2016. <a href="http://www.salud.gov.pr/Estadisticas-Registros-y-Publicaciones/Estadisticas%20Vitales/Informe%20Anual%20Estad%C3%ADsticas%20Vitales%20Defunciones%202015-2016.pdf" target="_blank">http://www.salud.gov.pr/Estadisticas-Registros-y-Publicaciones/Estadisticas%20Vitales/Informe%20Anual%20Estad%C3%ADsticas%20Vitales%20Defunciones%202015-2016.pdf</a></li>
-  
-  <li>U.S. Census Bureau. (2020). <i>Puerto Rico Municipios Population Totals: 2010-2019</i>.<a href="https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-puerto-rico-municipios.html" target="_blank">https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-puerto-rico-municipios.html</a></li>
- 
-  <li>US Census Bureau. (2019). <i>American Community Survey 5-Year Data (2014-2018)</i>. The United States Census Bureau.<a href="https://www.census.gov/data/developers/data-sets/acs-5year.html" target="_blank">https://www.census.gov/data/developers/data-sets/acs-5year.html</a></li>
-  
-  <li> BLS. (2020). <i>Labor force data by county, not seasonally adjusted, latest 14 months. <a href="https://www.bls.gov/web/metro/laucntycur14.txt" target="_blank"></i>https://www.bls.gov/web/metro/laucntycur14.txt</a></li>
-  
-  <li>CDC. (2020). <i>Coronavirus Disease 2019 (COVID-19) 2020 Interim Case Definition, Approved August 5, 2020</i>.<a href="https://wwwn.cdc.gov/nndss/conditions/coronavirus-disease-2019-covid-19/case-definition/2020/08/05/" target="_blank">https://wwwn.cdc.gov/nndss/conditions/coronavirus-disease-2019-covid-19/case-definition/2020/08/05/</a></li>
+ <li>Sagynbekov, Ken, and Marlon Graf. 2017. “Are Community Health Workers Saving Lives?” Milken Institute. https://milkeninstitute.org/sites/default/files/reports-pdf/100617-Community-Health-Workers.pdf.
+</li>
+ <li>Kangovi, Shreya, Nandita Mitra, David Grande, Judith A. Long, and David A. Asch. 2020. “Evidence-Based Community Health Worker Program Addresses Unmet Social Needs and Generates Positive Return on Investment: A Return on Investment Analysis of a Randomized Controlled Trial of a Standardized Community Health Worker Program That Addresses Unmet Social Needs for Disadvantaged Individuals.” Health Affairs 39 (2): 207–213. https://doi.org/10.1377/hlthaff.2019.00981.
+</li>
+ <li> Centers for Disease Control and Prevention. 2020. “CDC Social Vulnerability Index (SVI),” September 4, 2020. https://www.atsdr.cdc.gov/placeandhealth/svi/index.html.
+</li>
+ <li>Centers for Medicare and Medicaid Services. 2020. “State Medicaid and CHIP Applications, Eligibility Determinations, and Enrollment Data, Centers for Medicare and Medicaid Services.” https://data.medicaid.gov/Enrollment/State-Medicaid-and-CHIP-Applications-Eligibility-D/n5ce-jxme.
+</li>
+ <li>University of Wisconsin Population Health Institute and Robert Wood Johnson Foundation. 2020. “2020 County Health Rankings National Data.” https://www.countyhealthrankings.org/explore-health-rankings/rankings-data-documentation.
+ <li>US Bureau of Labor Statistics. 2020. “Local Area Unemployment Statistics.” https://www.bls.gov/lau/laufaq.htm#Q01.
+</li>
+ <li>New York Times. 2020. “Coronavirus (COVID-19) Data in the United States.” https://github.com/nytimes/COVID-19-data.
+ </li>
+ <li>Goldstein, Amy. 2020. “Medicaid Rolls Swell amid the Pandemic’s Historic Job Losses, Straining State Budgets.” Washington Post, September 14, 2020. https://www.washingtonpost.com/health/COVID-medicaid-enrollment-increases/2020/09/14/84b6249a-e6f1-11ea-97e0-94d2e46e759b_story.html.
+</li>
+ <li>Karaye, Ibraheem M., and Jennifer A. Horney. 2020. “The Impact of Social Vulnerability on COVID-19 in the U.S.: An Analysis of Spatially Varying Relationships.” American Journal of Preventive Medicine 59 (3): 317–325. https://doi.org/10.1016/j.amepre.2020.06.006.
+</li>
+ <li>Nayak, Aditi, Shabatun J. Islam, Anurag Mehta, Yi-An Ko, Shivani A. Patel, Abhinav Goyal, Samaah Sullivan, Tene T. Lewis, Viola Vaccarino, Alanna A. Morris, and Arshed A. Quyyumi. 2020. “Impact of Social Vulnerability on COVID-19 Incidence and Outcomes in the United States.” MedRxiv, 2020.04.10.20060962. https://doi.org/10.1101/2020.04.10.20060962.
+</li>
+ <li>Amram, Ofer, Solmaz Amiri, Robert B. Lutz, Bhardwaj Rajan, and Pablo Monsivais. 2020. “Development of a Vulnerability Index for Diagnosis with the Novel Coronavirus, COVID-19, in Washington State, USA.” Health & Place 64, 102377–102377. PMC. https://doi.org/10.1016/j.healthplace.2020.102377.
+</li>
+ <li>Centers for Disease Control and Prevention. 2020. “COVID-19 Hospitalization and Death by Age.” February 11, 2020. https://www.cdc.gov/coronavirus/2019-ncov/COVID-data/investigations-discovery/hospitalization-death-by-age.html.
+</li>
+ <li>Remington, Patrick L., Bridget B. Catlin, and Keith P. Gennuso. 2015. “The County Health Rankings: Rationale and Methods.” Population Health Metrics 13 (1): 11. https://doi.org/10.1186/s12963-015-0044-2.
+</li>
+ <li>Departamento de Salud. 2019. “Informe Anual de Estadísticas Vitales: Defunciones, años 2015 y 2016.” http://www.salud.gov.pr/Estadisticas-Registros-y-Publicaciones/Estadisticas%20Vitales/Informe%20Anual%20Estad%C3%ADsticas%20Vitales%20Defunciones%202015-2016.pdf.
+</li>
+ <li>US Census Bureau. 2020. “Puerto Rico Municipios Population Totals: 2010–2019.” https://www.census.gov/data/tables/time-series/demo/popest/2010s-total-puerto-rico-municipios.html.
+</li>
+ <li>US Census Bureau. 2019. “American Community Survey 5-Year Data (2014–2018).” https://www.census.gov/data/developers/data-sets/acs-5year.html.
+</li>
+ <li>US Bureau of Labor Statistics. 2020. “Labor Force Data by County, Not Seasonally Adjusted, Latest 14 Months.” https://www.bls.gov/web/metro/laucntycur14.txt.
+</li>
+ <li> Centers for Disease Control and Prevention. 2020. “Coronavirus Disease 2019 (COVID-19) 2020 Interim Case Definition, Approved August 5, 2020.” https://wwwn.cdc.gov/nndss/conditions/coronavirus-disease-2019-COVID-19/case-definition/2020/08/05/.
+</li>
   
 </ol>
   
