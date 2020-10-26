@@ -1,3 +1,7 @@
+This repo contains code for the New Politics of Care interactive map found at: http://newpoliticsofcare.net/map.html
+This is a collaboration between the Center for Spatial Research at Columbia and Yale School of Public Health
+
+
 Shield: [![CC BY 4.0][cc-by-shield]][cc-by]
 
 This work is licensed under a
