@@ -160,19 +160,15 @@ function ready(counties,outline,centroids,modelData,timeStamp,states){
             formattedData.push(combinedGeojson.features[i].properties)
         }
       
-    map.once("idle",function(){
-        for(var m in measureSet){
-            colorByPriority(map,measureSet[m],measureSet[m])
-            map.setFilter(measureSet[m],["==","stateAbbr","AZ"])
-        }
-    colorByPriority(map,"sviAll","SVI")   
-   
-    colorByPriority(map,"CT","SVI")   
-        map.setFilter("CT",["==","stateAbbr","CT"])
-        map.setFilter("NY",["==","stateAbbr","NY"])
-        //d3.select("#"+pub.column).style("background-color",highlightColor)
-   // console.log(map.getStyle().layers)
-    })
+    // map.once("idle",function(){
+   //      console.log(map.getStyle().layers)
+   //     // map.setPaintProperty("mapbox-satellite","raster-opacity",0)
+   //      for(var m in measureSet){
+   //          colorByPriority(map,measureSet[m],measureSet[m])
+   //         // map.setFilter(measureSet[m],["==","stateAbbr","AZ"])
+   //      }
+   //  colorByPriority(map,"sviAll","SVI")
+   //  })
 }
 
 function numberWithCommas(x) {
@@ -235,37 +231,6 @@ function combineGeojson(all,counties){
     }
     return counties
 }
-function drawReservations(data,map){
-    //for pattern: https://docs.mapbox.com/mapbox-gl-js/example/fill-pattern/
-    map.addSource("aiannh",{
-        "type":"geojson",
-        "data":aiannh
-    })
-
-    map.loadImage(
-                  'pattern_transparent.png',
-                  function(err, image) {
-                  // Throw an error if something went wrong
-                      if (err) throw err;
-      
-                      // Declare the image
-                      map.addImage('pattern', image);
-      
-                      // Use it
-                      map.addLayer({
-                          'id': 'aiannh',
-                          'type': 'fill',
-                          'source': 'aiannh',
-                          'layout': {
-                              'visibility': 'visible'
-                           },
-                          'paint': {
-                              'fill-pattern': 'pattern'
-                          }
-                      });
-                  }
-              );
-}
 
 function drawMap(data,outline){
     // d3.select("#map").style("width",window.innerWidth+"px")
@@ -280,142 +245,14 @@ function drawMap(data,outline){
     ]
     map = new mapboxgl.Map({
          container: 'map',
-        style:"mapbox://styles/c4sr-gsapp/ckcnnqpsa2rxx1hp4fhb1j357",//newest
-       // bounds:bounds,
-       // maxZoom:10,
-         //zoom: 3.8,
+        style:"mapbox://styles/c4sr-gsapp/ckgv55fah2szi19qfea0cnug1",//newest
          preserveDrawingBuffer: true,
-       // maxBounds: maxBounds,
-                center: [-73, 30],
-                zoom:3,
-                pitch: 0.00,
-                bearing: 0.00
+               center: [-75.210964,42.348886],
+        zoom:8
      });
-     
-                
-     
-     map.on("load",function(){
-         map.setLayoutProperty("mapbox-satellite", 'visibility', 'visible');
-         map.setPaintProperty("mapbox-satellite","raster-opacity",0)
         $('#map').show();
 
         map.resize();
-
-  //  map.addControl(new mapboxgl.NavigationControl(),'bottom-left');
-    map.dragRotate.disable();
-    map.addSource("counties",{
-             "type":"geojson",
-             "data":data
-         })
-         
-         for(var m in measureSet){
-             map.addLayer({
-                 'id':measureSet[m] ,
-                 'type': 'fill',
-                 'source': 'counties',
-                 'paint': {
-                 'fill-color': "white",
-                     'fill-opacity':0
-                 },
-                 'filter': ['==', '$type', 'Polygon']
-             },"ST-OUTLINE");
-         }
-         
-         map.addLayer({
-             'id':"sviAll",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-             'fill-color': "#eee",
-                 'fill-opacity':0
-             },
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         
-         map.addLayer({
-             'id':"counties",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-             'fill-color': "#000",
-                 'fill-opacity':0
-             },
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         
-         map.addLayer({
-             'id':"CT",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-             'fill-color': "gold",
-                 'fill-opacity':0
-             },
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         map.addLayer({
-             'id':"NY",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-             'fill-color': "blue",
-                 'fill-opacity':0
-             },
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         
-         map.addLayer({
-             'id':"allocation",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-             'fill-color': "red",
-                 'fill-opacity':0
-             },
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         
-        
-         map.addLayer({
-             'id': 'county_outline',
-             'type': 'line',
-             'source': 'counties',
-             'paint': {
-                 'line-color':"#fff",
-                 'line-opacity':0,
-                 'line-width':[
-                    'case',
-                    ['boolean', ['feature-state', 'hover'], false],
-                    2,
-                    1
-                 ]
-             },
-             
-             'filter': ['==', '$type', 'Polygon']
-         },"ST-OUTLINE");
-         
-                  
-            map.setFilter("state_mask",["==","STATEFP","a"])
-        // strategyMenu(map,data)
-      //   placesMenus(map)
-    })
-     var popup = new mapboxgl.Popup({
-         closeButton: false,
-         closeOnClick: false
-     });     
-      var hoveredStateId = null;
-     
-     var firstMove = true
-        d3.select("#mapPopup").append("div").attr("id","popLabel") 
-      d3.select("#mapPopup").append("div").attr("id","popMap")
-    
-  
- map.on('mousemove','counties', function(e) {
-          var feature = e.features[0]
-          map.getCanvas().style.cursor = 'pointer';
-          console.log(feature.properties)
-   
-     });
           return map
 }
 
