@@ -1315,19 +1315,11 @@ function PopulateDropDownList(features,map) {
         
     })          
     var ddlCustomers = document.getElementById("ddlCustomers");
- 
-    // var option = document.createElement("OPTION");
-    // option.innerHTML = "Contiguous 48"
-    // option.value = "C48";
-    //     option.id = "Contiguous 48"
-    //
-    // ddlCustomers.options.add(option);
-    //Add the Options to the DropDownList.
+
     var boundsDict = {}
     
     for (var i = 0; i < sorted .length; i++) {
         var option = document.createElement("OPTION");
-
         //Set Customer Name in Text part.
         option.innerHTML = sorted[i].properties.NAME;
         
@@ -1351,20 +1343,11 @@ function PopulateDropDownList(features,map) {
            zoomToBounds(map)
           var filter = ["!=","stateAbbr"," "]
           map.setFilter("counties",filter)
-           // map.flyTo({
- //               zoom:3.8,
- //               center: [-94,37],
- //               speed: 0.8, // make the flying slow
- //               curve: 1
- //               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
- //           });
+
        }else if(this.value=="02"){
            map.flyTo({
                zoom:4,
                center: [-147.653,63.739]//,
-               // speed: 0.8, // make the flying slow
-     //           curve: 1
-               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
            });
        }
        else{
@@ -1379,16 +1362,7 @@ function PopulateDropDownList(features,map) {
            cartoGoToState( currentState )
            d3.selectAll(".hex").attr("opacity",.5)
            d3.select("#"+currentState+"_carto").attr("opacity",1)
-          // var filter = ["==","stateAbbr",currentState]
-   //        map.setFilter("counties",filter)
-   //
-   //         map.setFilter("county-name",["==","STATEFP",this.value])
-   //         map.setFilter("state-abbr",["==","STATEFP",this.value])
-   //         map.setFilter("reservation-name",["==","STATE",currentState])
-   //         map.setFilter("state_mask",["!=","STATEFP",this.value])
-   //
-           
-  //    
+
        }
     })
     $('select').val("06")
