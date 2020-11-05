@@ -75,12 +75,12 @@ function configureStory(){
         
         var newChapter = {}
         newChapter["id"]=label
-        newChapter["title"]=measureDisplayTextPop[label]+" in "+ filteredToState
+        newChapter["title"]=measureDisplayTextPop[label]
         // newChapter["location"]={center:filteredStateCentroid,zoom:6}
         newChapter["description"]=introDescription[label]+"<br>"
         //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
         newChapter["onChapterEnter"] = [
-            {layer: label,opacity:.8} ,
+            {layer: label,opacity:1} ,
             {layer: "least_"+label,opacity:1},
              {layer: "most_"+label,opacity:1}
         ]
@@ -99,10 +99,10 @@ function configureStory(){
     var varianceChapter = {}
     varianceChapter["id"]="variance"
     varianceChapter["title"]="In some counties, measures of vulnerability paint very different pictures"
-    varianceChapter["description"]="Here are the 2 counties in "+filteredToState+" with the most and least variability across the 7 rankings of vulnerability we showed."
+    varianceChapter["description"]="Here are the 2 counties with the most and least variability across the 7 rankings of vulnerability we showed."
     //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
     varianceChapter["onChapterEnter"] = [
-        {layer: "variance",opacity:.8} ,
+        {layer: "variance",opacity:1} ,
         {layer: "least_variance",opacity:1},
          {layer: "most_variance",opacity:1}
     ]
@@ -120,7 +120,7 @@ function configureStory(){
       frequencyChapter["description"]="Here (is)are the county(counties) that displayed the most extremes in the 7 rankings of vulnerability we showed."
       //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
      frequencyChapter["onChapterEnter"] = [
-           {layer: "frequency",opacity:.8} ,
+           {layer: "frequency",opacity:1} ,
      //      {layer: "least_variance",opacity:1},
      //       {layer: "least_variance",opacity:1}
       ]

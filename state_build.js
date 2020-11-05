@@ -242,7 +242,9 @@ function addMarker(gid,text,layer){
                 "paint": {
                     "text-halo-color": "rgba(255,255,255,.8)",
                     "text-halo-width": 25,
-                    "text-halo-blur":5
+                    "text-halo-blur":5,
+                'text-opacity':0
+                    
                 }
         });
     
@@ -480,7 +482,16 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-                 'fill-color': "#ddd",
+                 'fill-color': "#dedede",
+                 'fill-opacity':1
+             }
+         },"county-name");
+         map.addLayer({
+             'id':"selectedStateBase",
+             'type': 'fill',
+             'source': 'counties',
+             'paint': {
+                 'fill-color': "#aaa",
                  'fill-opacity':1
              }
          },"county-name");
@@ -531,6 +542,7 @@ function drawMap(data,outline){
             colorByPriority(map,measureSet[m],measureSet[m])
             
         }
+    map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
         map.setFilter("variance",["==","stateAbbr",filteredToState])
         map.setFilter("frequency",["==","stateAbbr",filteredToState])
      //   map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
@@ -836,6 +848,8 @@ function PopulateDropDownList(features,map,combinedGeojson) {
           ddlCustomers.options.add(option);
       }
     }
+    document.getElementById("ddlCustomers").value = "36";
+    
    $('select').on("change",function(){
       // console.log(this.value)
        if(this.value=="C48"){
@@ -927,8 +941,15 @@ function setToState(combinedGeojson){
     }
     map.setFilter("variance",["==","stateAbbr",filteredToState])
     map.setFilter("frequency",["==","stateAbbr",filteredToState])
+    map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
+    
     map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
     map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
+    
+    
+       var chapter1 = d3.select("#start")
+    var ch1Content = chapter1.select(".light").append("p").html("Scroll down to read the story")
+    
        console.log(map.getStyle().layers)
 }
 
