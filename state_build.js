@@ -545,6 +545,10 @@ function drawMap(data,outline){
     map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
         map.setFilter("variance",["==","stateAbbr",filteredToState])
         map.setFilter("frequency",["==","stateAbbr",filteredToState])
+    
+    map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
+    map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
+    
      //   map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
       //  map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
       
