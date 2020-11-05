@@ -133,7 +133,7 @@ function configureStory(){
     
     if(filteredToState=="NY"){
       //  console.log(filteredStateCentroid)
-        config["chapters"][1]["location"]={center:[-74.645228, 43],zoom:6}
+        config["chapters"][1]["location"]={center:[-74.645228, 43],zoom:6.3}
     }else{
         config["chapters"][1]["location"]={}
         
