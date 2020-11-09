@@ -33,7 +33,8 @@ var pub = {
     dataByFIPS:null,
     fipsToName:null,
     chapters:[],
-    stateCentroids:null
+    stateCentroids:null,
+    fipsToPopulation:null
 }
 var mostLeastDescription = {}
 var currentState = ""
@@ -108,7 +109,6 @@ var states = d3.json("simplestates.geojson")
      "Covid_death_capita"
 ]
 
-
 Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states,stateCentroids])
 .then(function(data){
     ready(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
@@ -121,14 +121,12 @@ var centroids = null
 var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids){ 
-   // console.log(sCentroids)   
     
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
     })
     pub.states = states
      d3.select("#date").html("Model run as of "+timeStamp["columns"][1])
-    //convert to geoid dict
     var dataByFIPS = turnToDictFIPS(modelData,"County_FIPS")
     pub.dataByFIPS=dataByFIPS
     //pub.all = {"highDemand":highDemand,"hotspot":hotspot,"SVI":SVI,"hotspotSVI":hotspotSVI,"normal":normalizedP}
@@ -136,19 +134,18 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
     //add to geojson of counties
     var combinedGeojson = combineGeojson(dataByFIPS,counties)
     pub.all = combinedGeojson
-    console.log(combinedGeojson)
     
-    pub.fipsToName =  fipsCountyName(counties)
+    pub.fipsToName =  fipsCountyName(counties,"county")
+   pub.fipsToPopulation = fipsCountyName(counties,"totalPopulation")
+
+    drawMap(combinedGeojson,outline)
     
-    
-       drawMap(combinedGeojson,outline)
     
     var formattedData = []
     for(var i in combinedGeojson.features){
         formattedData.push(combinedGeojson.features[i].properties)
     }
         PopulateDropDownList(pub.states.features,map,combinedGeojson)
-    
         var stateData = filterDataByState(combinedGeojson)
         var mostLeast = calculateMostLeast(stateData)
         var mostLeastVariance = calculateVariance(stateData)    
@@ -158,36 +155,61 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
         var label = j
         var most = mostLeast[j].most
         var least = mostLeast[j].least
-       // console.log([pub.fipsToName[most.county],pub.fipsToName[least.county]])        //
-        // addMarker(least.county,"test","least_"+label.replace("Percentile_ranks_",""))
-        // addMarker(most.county,"test","most_"+label.replace("Percentile_ranks_",""))
         addMarker(least.county,"Lowest: ","least_"+label.replace("Percentile_ranks_",""))
         addMarker(most.county,"Highest: ","most_"+label.replace("Percentile_ranks_",""))
-     //   break
+        var existingText = d3.select("#"+label.replace("Percentile_ranks_","")).select("p").html()
+        var newText = "<br>In "+filteredToState+", <strong>"+pub.fipsToName[least.county]
+            +" County</strong>, population "+  numberWithCommas(pub.fipsToPopulation[least.county])+", has the lowest percentile ranking when prioritized according to "
+            +measureDisplayTextPop[label.replace("Percentile_ranks_","")]
+        +", and <strong>"+pub.fipsToName[most.county]+" County</strong>, population "+numberWithCommas(pub.fipsToPopulation[most.county])+", has the highest."
+        d3.select("#"+label.replace("Percentile_ranks_","")).select("p").html(existingText+newText)
     }
-   // console.log(mostLeast)
-    
-        // addMarker(mostLeast["Percentile_ranks_Covid_capita"].county," ranks in the lowest percentile","least_"+label.replace("Percentile_ranks_",""))
- //        addMarker(mostLeast["Percentile_ranks_Covid_capita"].county," has the highest percentile in","most_"+label.replace("Percentile_ranks_",""))
-    
-   // console.log(mostLeastFrequency)
+
+    if(mostLeastFrequency.length>1){
+        var existingText = "Here are the counties that displayed across the most extremes in rankings of vulnerability we mapped."
+    }else{
+        var existingText = "Here is the county that displayed across the most extremes in rankings of vulnerability we mapped."
+    }
+
     for(var f in mostLeastFrequency){
         //console.log(mostLeastFrequency[f])
-        addMarker(mostLeastFrequency[f].county,mostLeastFrequency[f].count+" extremes: ","most_"+f)
+        var county = pub.fipsToName[mostLeastFrequency[f].county]
+        existingText+= "<br><br><strong>"+county + " County</strong> is "
+        
+        for(var c in mostLeastFrequency[f].content){
+            if(c ==mostLeastFrequency[f].content.length-1){
+                var formattedText = " and "+mostLeastFrequency[f].content[c].ml +" in "
+                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
+                    +"."
+            }else{
+                var formattedText = mostLeastFrequency[f].content[c].ml +" in "
+                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
+                    +", "
+            }
+            existingText+=formattedText
+            
+        }
+        
+        
+        d3.select("#frequency").select("p").html(existingText)
+        
+        config["chapters"][config["chapters"].length-1].description=existingText
+        
+        addMarker(mostLeastFrequency[f].county,"","most_"+f)
         config["chapters"][0]["onChapterEnter"].push({layer:"most_"+f,opacity:0})
         config["chapters"][config["chapters"].length-1]["onChapterEnter"].push({layer:"most_"+f,opacity:1})
         config["chapters"][config["chapters"].length-1]["onChapterExit"].push({layer:"most_"+f,opacity:0})
     }
- //
+    
         addMarker(mostLeastVariance.least.county,"Lowest variance across rankings: ","least_variance")
         addMarker(mostLeastVariance.most.county,"Highest variance across rankings: ","most_variance")
+        
 }
 
-
-function fipsCountyName(data){
+function fipsCountyName(data,columName){
     var dict = {}
     for(var i in data.features){
-        var county = data.features[i].properties.county
+        var county = data.features[i].properties[columName]
         var fips = data.features[i].properties.FIPS
         dict[fips]=county
     }
@@ -195,15 +217,12 @@ function fipsCountyName(data){
 }
 
 function addMarker(gid,text,layer){
-    console.log([layer,gid])
+  //  console.log([layer,gid])
     if(gid.length==4){
         gid = "0"+gid
-        
     }
     var coords = pub.centroids[gid]
         
-    
-    
     if(coords!=undefined){
        // console.log(gid)
         var countyName = pub.fipsToName[gid]
@@ -267,10 +286,30 @@ function addMarker(gid,text,layer){
 }
 
 function calculateMostLeasetFrequency(mostLeast){
-    var mostLeastIds = []
+        var mostLeastIds = []
+        var idsFreq = {}
         for(var i in mostLeast){
-        var mostId = mostLeast[i].most.county
-        var leastId = mostLeast[i].least.county
+        //console.log(i)
+            var mostId = mostLeast[i].most.county
+            var leastId = mostLeast[i].least.county
+            
+            
+            if(Object.keys(idsFreq).indexOf(mostId)==-1){
+                idsFreq[mostId]=[]
+                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
+            }else{
+                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
+            }
+            
+            if(Object.keys(idsFreq).indexOf(leastId)==-1){
+                idsFreq[leastId]=[]
+                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
+            }else{
+                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
+            }
+            
+            
+            
             if(mostId.length==4){
                 mostLeastIds.push("0"+String(mostId))
                 mostLeastIds.push("0"+String(mostId))
@@ -278,9 +317,20 @@ function calculateMostLeasetFrequency(mostLeast){
                 mostLeastIds.push(mostId)
                 mostLeastIds.push(leastId)
             }
-
     }
-    var count=frequencyCount(mostLeastIds)
+   // console.log(idsFreq)
+    
+    var count = []
+    for(var id in idsFreq){
+        if(idsFreq[id].length>1){
+            count.push({county:id,count:idsFreq[id].length,content:idsFreq[id]})
+        }
+    }
+    
+    // console.log(mostLeastIds)
+ //    var count=frequencyCount(mostLeastIds)
+ // 
+  //  console.log(count)
     return count
 }
 
@@ -501,7 +551,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-                 'fill-color': "red",
+                 'fill-color': "#a9a9a9",
                  'fill-opacity':0
              }
          },"county-name");
@@ -511,7 +561,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-                 'fill-color': "blue",
+                 'fill-color': "#a9a9a9",
                  'fill-opacity':0
              }
          },"county-name");
@@ -788,7 +838,7 @@ function zoomToBounds(mapS){
     //https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
     var bounds =  new mapboxgl.LngLatBounds([-155, 20], 
         [-55, 55]);
-    map.fitBounds(bounds,{padding:40},{bearing:0})
+    map.fitBounds(bounds,{padding:500},{bearing:0})
 }
 function getMaxMin(coords){
     var maxLat = -999
@@ -883,7 +933,7 @@ function PopulateDropDownList(features,map,combinedGeojson) {
            var coords = boundsDict[this.value]
            //console.log(coords)
            var bounds =  new mapboxgl.LngLatBounds(coords);
-           map.fitBounds(bounds,{padding:60},{bearing:0})
+           map.fitBounds(bounds,{padding:200},{bearing:0})
            var state_tiger_dict = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY','60':'AS','66':'GU','69':'MP','72':'PR','78':'VI'}
            currentState = state_tiger_dict[this.value]
           var filter = ["==","stateAbbr",currentState]
@@ -892,11 +942,13 @@ function PopulateDropDownList(features,map,combinedGeojson) {
   //    
        }
        
-       filterToState =currentState
+       filteredToState =currentState
+       
        setToState(combinedGeojson)
     })
 }
 function setToState(combinedGeojson){
+    //le.log(filteredToState)
     config["chapters"][1]["location"]={}
     
     var allLayers = map.getStyle().layers
@@ -914,21 +966,64 @@ function setToState(combinedGeojson){
         var mostLeastVariance = calculateVariance(stateData)    
         var mostLeastFrequency = calculateMostLeasetFrequency(mostLeast)
     
+    var introDescription = {
+          "Medicaid_capita":"Vulnerability is also reflected by the number of residents enrolled in Medicaid, a means-tested health insurance program with eligibility largely determined by income. The enrollment criteria share some factors with SVI*, such as income, household composition, disability, and employment status.",
+          "Unemployment_capita":"As the pandemic has rolled through the United States, unemployment has increased dramatically; this increase is a sign of the economic toll the virus has taken. For many workers in America, health care access is tied to a job. With rising unemployment, many have been left uninsured or underinsured.",
+          "SVI": "SVI* calls attention to counties with the greatest number of its highly vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type.",
+          "YPLL":"Years of Potential Life Lost (YPLL) represents community-specific health vulnerability in the United States by measuring rates of premature death. Some of the counties that have the state’s highest values for SVI* also have the highest levels of YPLL. But other counties are newly visible as vulnerable.",
+            "Covid":"The direct effects of COVID-19 have exacerbated many of the preexisting vulnerabilities in the United States. Sometimes long-term vulnerabilities and the impact of COVID-19 coincide in our maps, but sometimes they do not.",
+          "Covid_capita":"Normalizing recent COVID-19 cases by population highlights the less populous counties where large proportions of a community have acquired the virus",
+        "Covid_death_capita":"Cumulative COVID-19 deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago."
+    }
     
     for(var j in mostLeast){
+       // console.log(j)
+       // console.log(mostLeast[j])
         var label = j
         var most = mostLeast[j].most
         var least = mostLeast[j].least
         addMarker(least.county,"Lowest: ","least_"+label.replace("Percentile_ranks_",""))
         addMarker(most.county,"Highest: ","most_"+label.replace("Percentile_ranks_",""))
-      //  console.log(label)
-        config["chapters"][0]["onChapterEnter"].push({layer:"most_"+label.replace("Percentile_ranks_",""),opacity:0})
-        config["chapters"][0]["onChapterEnter"].push({layer:"least_"+label.replace("Percentile_ranks_",""),opacity:0})
-        
+        var existingText = introDescription[label.replace("Percentile_ranks_","")]
+        var newText = "<br><br>In "+filteredToState+", <strong>"+pub.fipsToName[least.county]
+            +" County</strong>, population "+  numberWithCommas(pub.fipsToPopulation[least.county])+", has the lowest percentile ranking when prioritized according to "
+            +measureDisplayTextPop[label.replace("Percentile_ranks_","")]
+        +", and <strong>"+pub.fipsToName[most.county]+" County</strong>, population "+numberWithCommas(pub.fipsToPopulation[most.county])+", has the highest."
+        d3.select("#"+label.replace("Percentile_ranks_","")).select("p").html(existingText+newText)
     }
     
+    if(mostLeastFrequency.length>1){
+        var existingText = "Here are the counties that displayed across the most extremes in rankings of vulnerability we mapped."
+    }else{
+        var existingText = "Here is the county that displayed across the most extremes in rankings of vulnerability we mapped."
+    }
+
+//console.log(mostLeastFrequency)
     for(var f in mostLeastFrequency){
-        addMarker(mostLeastFrequency[f].county,mostLeastFrequency[f].count+" extremes: ","most_"+f)
+        mostLeastFrequency[f]
+        var county = pub.fipsToName[mostLeastFrequency[f].county]
+        existingText+= "<br><br><strong>"+county + " County</strong> is "
+        
+        for(var c in mostLeastFrequency[f].content){
+            if(c ==mostLeastFrequency[f].content.length-1){
+                var formattedText = " and "+mostLeastFrequency[f].content[c].ml +" in "
+                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
+                    +"."
+            }else{
+                var formattedText = mostLeastFrequency[f].content[c].ml +" in "
+                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
+                    +", "
+            }
+            existingText+=formattedText
+            
+        }
+        
+        
+        d3.select("#frequency").select("p").html(existingText)
+        
+        config["chapters"][config["chapters"].length-1].description=existingText
+        
+        addMarker(mostLeastFrequency[f].county,"","most_"+f)
         config["chapters"][0]["onChapterEnter"].push({layer:"most_"+f,opacity:0})
         config["chapters"][config["chapters"].length-1]["onChapterEnter"].push({layer:"most_"+f,opacity:1})
         config["chapters"][config["chapters"].length-1]["onChapterExit"].push({layer:"most_"+f,opacity:0})
@@ -952,9 +1047,6 @@ function setToState(combinedGeojson){
     
     
        var chapter1 = d3.select("#start")
-    var ch1Content = chapter1.select(".light").append("p").html("Scroll down to read the story")
-    
-       console.log(map.getStyle().layers)
 }
 
 function placesMenus(map){
