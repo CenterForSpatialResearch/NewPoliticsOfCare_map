@@ -118,8 +118,8 @@ const transformRequest = (url) => {
 var map = new mapboxgl.Map({
     container: 'map',
     style: config.style,
-    center: [-73, 30],
-    zoom:3,
+    center: [-74.645228, 43],
+    zoom:5.7,
     scrollZoom: false,
     transformRequest: transformRequest
 });

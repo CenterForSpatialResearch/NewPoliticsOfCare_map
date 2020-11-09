@@ -534,7 +534,7 @@ function drawMap(data,outline){
              'type': 'fill',
              'source': 'counties',
              'paint': {
-                 'fill-color': "#dedede",
+                 'fill-color': "#ffffff",
                  'fill-opacity':1
              }
          },"county-name");
@@ -583,10 +583,10 @@ function drawMap(data,outline){
        // colorByPriority(map,"Unemployment_capita","Unemployment_capita")
         
     })
-        console.log(map.getStyle().layers)
+    //    console.log(map.getStyle().layers)
     
     map.once("idle",function(){
-        console.log(map.getStyle().layers)
+       // console.log(map.getStyle().layers)
         d3.select("#loader").attr("opacity",1).transition().duration(1000).attr("opacity",0).remove()
       //  map.showCollisionBoxes = true
          //map.setFilter("state-abbr",["==","stateAbbr",filteredToState])

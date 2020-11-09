@@ -18,9 +18,8 @@ function configureStory(){
                 image: '',
                 description: 'COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States. Unless we address the long-standing inequalities embedded in the social and political landscape of the country along with the immediate needs produced by the pandemic, we will come out of the current crisis just as vulnerable as when this all began.'
                 +"<br><br>Our map compares four indexes of vulnerability alongside COVID-19 data and presents multiple options for addressing the effects of the pandemic with a Community Health Corps."
-                +"<br><br>For a quick tour of our measures, select a state to start, then scroll down: "
+                +"<br><br><strong>For a quick tour of our measures, select a state to start, then scroll down: </strong>"
                 +"<nav id=\"placesMenu\" ><select id=\"ddlCustomers\"></select></nav>",
-            
                 location: {
                     
                 },
