@@ -135,6 +135,8 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
     var combinedGeojson = combineGeojson(dataByFIPS,counties)
     pub.all = combinedGeojson
     
+   // console.log(combinedGeojson)
+    
     pub.fipsToName =  fipsCountyName(counties,"county")
    pub.fipsToPopulation = fipsCountyName(counties,"totalPopulation")
 
@@ -382,7 +384,7 @@ function calculateMostLeast(stateData){
          for(var i in stateData){
              var countyData = stateData[i]
              var keyValue = countyData[key]
-             var FIPS = countyData["County_FIPS"]
+             var FIPS = countyData["FIPS"]
               if(FIPS.length==4){
                   var gid = "0"+String(FIPS)
               }
@@ -998,7 +1000,6 @@ function setToState(combinedGeojson){
         var existingText = "Here is the county that displayed across the most extremes in rankings of vulnerability we mapped."
     }
 
-//console.log(mostLeastFrequency)
     for(var f in mostLeastFrequency){
         mostLeastFrequency[f]
         var county = pub.fipsToName[mostLeastFrequency[f].county]
