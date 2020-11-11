@@ -110,7 +110,7 @@ var config = {
         },
         {
             id: 'unemployementArizona',
-            title: 'Unemployement rate',
+            title: 'Unemployment rate',
             image: '',
             description: 
             '<br><br><br><img src="images/story_draft2/unemployement.jpg" width="800px">'
