@@ -119,7 +119,7 @@ var map = new mapboxgl.Map({
     container: 'map',
     style: config.style,
     center:userCoordinates,
-    zoom:16,
+    zoom:12,
     scrollZoom: false,
     transformRequest: transformRequest
 });

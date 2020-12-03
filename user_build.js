@@ -197,7 +197,7 @@ function getCountyCountByState(counties){
 
 function calculateRankFromPercentile(value,state){
     var numCounties = countiesCount[state]
-    var rank = Math.round(value/(100/numCounties))
+    var rank = value/(100/numCounties)
     console.log(rank)
     console.log(value)
 }
