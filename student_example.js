@@ -29,14 +29,8 @@ var pub = {
     SVIFIPS:null,
     sviZoom:10,
     SVIcenter:null,
-    column:"Covid",
-    dataByFIPS:null,
-    fipsToName:null,
-    chapters:[],
-    stateCentroids:null,
-    fipsToPopulation:null
+    column:"Covid"
 }
-var mostLeastDescription = {}
 var currentState = ""
 var highlightColor = "gold"
 var bghighlightColor = "gold"
@@ -48,6 +42,17 @@ var colors = ["#10B6A3","#A2D352","#FFF100"]
 //var colors = ["#E0ECF4","#9EBCDA","#8856A7"]
 var pStops = [[0,.1],[.1,.2],[.2,.3],[.3,.4],[.4,.5],[.5,.6],[.6,.7],[.7,.8],[.8,.9],[.9,1]]
 var pStops = [[0,10],[10,20],[20,30],[30,40],[40,50],[50,60],[60,70],[70,80],[80,90],[90,100]]
+//var cStops = [[0,34],[34,67],[67,100]]
+
+/*
+var groupColorDict = []
+for(var g =0; g<colorGroups.length; g++){
+    groupColorDict.push("_"+String(g+1))
+    groupColorDict.push(colorGroups[g])
+}
+groupColorDict.push("red")
+*/
+
 function loader(){
     function myFunction() {
       var myVar = setTimeout(showPage, 1000);
@@ -91,7 +96,6 @@ function toTitleCase(str){
 var colorColumn = "_priority"
 var countyCentroids = d3.json("county_centroids.geojson")
 var counties = d3.json("counties.geojson")
-var stateCentroids = d3.json("us-state-centroids.json")
 var usOutline = d3.json("simple_contiguous.geojson")
 var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
 var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
@@ -109,9 +113,30 @@ var states = d3.json("simplestates.geojson")
      "Covid_death_capita"
 ]
 
-Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states,stateCentroids])
+
+var measureDisplayText = {
+     Medicaid_capita:"MEDICAID ENROLLEES / 100K",
+     SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
+     YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
+     Unemployment_capita:"UNEMPLOYMENT",
+      Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
+     Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
+     Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"
+   
+}
+var measureDisplayTextPop={
+     Medicaid_capita:"Medicaid enrollment / 100K",
+     SVI:"Social Vulneralbility Index*",
+     YPLL:"Years of Potential Life Lost",
+     Unemployment_capita:"Unemployment",
+      Covid:"Total Covid Cases (14 Days)",
+     Covid_capita:"Covid Cases per 100,000 Residents",
+     Covid_death_capita:"Covid Deaths per 100,000 Residents"
+}
+
+Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states])
 .then(function(data){
-    ready(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+    ready(data[0],data[1],data[2],data[3],data[4],data[5])
 })
 var hoveredStateId = null;
 
@@ -119,340 +144,49 @@ var lineOpacity = {stops:[[0,1],[100,0.3]]}
 var lineWeight = {stops:[[-1,0],[-0.01,0],[0,2],[99,.5],[100,0]]}
 var centroids = null
 var latestDate = null
-var countiesCount = null
-function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids){ 
-    
-    
-        // d3.select("#userLocation").on("click",function(){
-  //           console.log("get location")
-  //
-  //
-  //           navigator.geolocation.getCurrentPosition(position => {
-  //             userCoordinates = [position.coords.longitude, position.coords.latitude];
-  //             console.log([position.coords.longitude, position.coords.latitude])
-  //         })
-  //         console.log(config)
-  //       })
-    
-    getCountyCountByState(counties)
+
+function ready(counties,outline,centroids,modelData,timeStamp,states){    
+    //console.log(modelData)
+    //console.log(modelData)
     
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
     })
     pub.states = states
+   loader()
      d3.select("#date").html("Model run as of "+timeStamp["columns"][1])
     var dataByFIPS = turnToDictFIPS(modelData,"County_FIPS")
-    pub.dataByFIPS=dataByFIPS
-    //pub.all = {"highDemand":highDemand,"hotspot":hotspot,"SVI":SVI,"hotspotSVI":hotspotSVI,"normal":normalizedP}
-    countiesCount = getCountyCountByState(counties)
     
     pub.centroids = formatCentroids(centroids.features)
     //add to geojson of counties
     var combinedGeojson = combineGeojson(dataByFIPS,counties)
     pub.all = combinedGeojson
-    
-   // console.log(combinedGeojson)
- //  console.log(combinedGeojson)
-            
-    pub.fipsToName =  fipsCountyName(counties,"county")
-   pub.fipsToPopulation = fipsCountyName(counties,"totalPopulation")
-
-    drawMap(combinedGeojson,outline)
-    
         
-}
-function setMapToUser(userCoordinates){
-    config.chapters[1].location = {center:userCoordinates}
-}
-
-function getUserCounty(userCoordinates){
-    console.log(userCoordinates)
-    var userPoint = map.project(userCoordinates)
-    console.log(userPoint)
-    var features = map.queryRenderedFeatures(userPoint,{layers:["base"]});
- 
-    console.log(features[0])
-    var properties = features[0].properties
-    var county = properties.county
-    var state = properties.state
-    var pop = properties.totalPopulation
-    var covid = "test"
-    
-    var existingText = d3.select("#user p").html()
-    var newText = existingText+"<strong>Let's start with where you are. <br> You are here: You are currently in "+ county+" County "+toTitleCase(state)+", population "+numberWithCommas(pop)+"</strong>."
-    
-    newText+="<br><br>"+county+" county percentile ranks in "+toTitleCase(state)+" State: <br>"
-    for(var m in measureSet){
-        var mKey = "Percentile_ranks_"+measureSet[m]
-        var mValue = Math.round(properties[mKey]*100)/100
+       var map = drawMap(combinedGeojson,outline)
         
-        var rank = calculateRankFromPercentile(properties[mKey],state)
-        
-        var displayKey = measureDisplayTextPop[measureSet[m]]
-        newText+=displayKey+": "+ mValue+"(rank of "+rank[0]+" out of "+rank[1]+" counties)<br>"
-    }
-    newText+="<strong>What does this actually mean in terms of vulnerability during covid?</strong>"
-    d3.select("#user p").html(newText)
-}
-
-
-function getCountyCountByState(counties){
-    var stateTally = []
-    
-    for(var c in counties.features){
-        var county = counties.features[c]
-        var state = county.properties.state
-        stateTally.push(state)
-    }
-    var counts = {};
-    for (var i = 0; i < stateTally.length; i++) {
-      var num = stateTally[i];
-      counts[num] = counts[num] ? counts[num] + 1 : 1;
-    }
-    return counts
-}
-
-function calculateRankFromPercentile(value,state){
-    var numCounties = countiesCount[state]
-    var rank = numCounties - Math.round(value/(100/numCounties))
-    
-    // console.log(rank)
- //    console.log(value)
-    return [rank,numCounties]
-}
-
-function filterByPercentile(column,value){
-    
-}
-
-function fipsCountyName(data,columName){
-    var dict = {}
-    for(var i in data.features){
-        var county = data.features[i].properties[columName]
-        var fips = data.features[i].properties.FIPS
-        dict[fips]=county
-    }
-    return dict
-}
-
-function addMarker(gid,text,layer){
-  //  console.log([layer,gid])
-    if(gid.length==4){
-        gid = "0"+gid
-    }
-    var coords = pub.centroids[gid]
-        
-    if(coords!=undefined){
-       // console.log(gid)
-        var countyName = pub.fipsToName[gid]
-        map.addSource(layer,{
-            "type":"geojson",
-            "data":{
-                        'type': 'Feature',
-                        'properties': {
-                            'description': text+countyName,
-                            'icon': 'music'
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [coords.lng,coords.lat]//[-77.007481, 38.876516]
-                    }
-                }
-        })
-    
-        // var marker = new mapboxgl.Marker().setLngLat([coords.lng,coords.lat]).addTo(map);
-       //    console.log(marker);
-      
-        map.addLayer({
-            'id': layer,
-            'type': 'symbol',
-            'source': layer,
-            'layout': {
-                'text-field': ['get', 'description'],
-                'icon-allow-overlap': true,
-                'text-allow-overlap': true,
-                //'font-scale': 0.8,
-                //'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-                'text-radial-offset': 10 ,
-                 'text-justify': 'left'//,
-    //             'icon-image': ['concat', ['get', 'icon'], '-15']
-            },
-                "paint": {
-                    "text-halo-color": "rgba(255,255,255,.8)",
-                    "text-halo-width": 25,
-                    "text-halo-blur":5,
-                'text-opacity':0
-                    
-                }
-        });
-    
-    
-        map.setLayoutProperty(layer, 'text-field', [
-        'format',
-        ['get', 'description'],
-        {
-        'font-scale':1,
-        'text-font': [
-        'literal',
-        ['Arial Unicode MS Regular']
-        ]
+        var formattedData = []
+        for(var i in combinedGeojson.features){
+            formattedData.push(combinedGeojson.features[i].properties)
         }
-        ]);
-        
-    }
-   
-    
-}
-
-function calculateMostLeasetFrequency(mostLeast){
-        var mostLeastIds = []
-        var idsFreq = {}
-        for(var i in mostLeast){
-        //console.log(i)
-            var mostId = mostLeast[i].most.county
-            var leastId = mostLeast[i].least.county
-            
-            
-            if(Object.keys(idsFreq).indexOf(mostId)==-1){
-                idsFreq[mostId]=[]
-                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
-            }else{
-                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
-            }
-            
-            if(Object.keys(idsFreq).indexOf(leastId)==-1){
-                idsFreq[leastId]=[]
-                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
-            }else{
-                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
-            }
-            
-            
-            
-            if(mostId.length==4){
-                mostLeastIds.push("0"+String(mostId))
-                mostLeastIds.push("0"+String(mostId))
-            }else{
-                mostLeastIds.push(mostId)
-                mostLeastIds.push(leastId)
-            }
-    }
-   // console.log(idsFreq)
-    
-    var count = []
-    for(var id in idsFreq){
-        if(idsFreq[id].length>1){
-            count.push({county:id,count:idsFreq[id].length,content:idsFreq[id]})
-        }
-    }
-    
-    // console.log(mostLeastIds)
- //    var count=frequencyCount(mostLeastIds)
- // 
-  //  console.log(count)
-    return count
-}
-
-function frequencyCount(arr) {
-    var a = [], b = [], prev;
-    arr.sort();
-    for ( var i = 0; i < arr.length; i++ ) {
-        if ( arr[i] !== prev ) {
-            a.push(arr[i]);
-            b.push(1);
-        } else {
-            b[b.length-1]++;
-        }
-        prev = arr[i];
-    }
-    var c = []
-    for(var j in a){
-        if(b[j]>1){
-            c.push({county:a[j],count:b[j]})
-        }
-    }
-    c.sort(function(a,b){
-        return b.count-a.count
+       
+    map.once("idle",function(){
+        colorByPriority(map)
+        d3.select("#"+pub.column).style("background-color",highlightColor)
     })
-    return c;
-}
-
-function filterDataByState(data){
-    var stateData = []
-    for(var i in data.features){
-        if(data.features[i].properties.stateAbbr == filteredToState){
-                stateData.push(data.features[i].properties)
-        }
-    }
-    return stateData
-}
-function calculateMostLeast(stateData){
-    var dictionary = {}
-    for(var m in measureSet){
-        var key = "Percentile_ranks_"+measureSet[m]
-        dictionary[key]={}
-        dictionary[key]["most"]={county:null, value:0}
-        dictionary[key]["least"]={county:null, value:100}
-    }
     
-    
-    for(var m in measureSet){
-        var key = "Percentile_ranks_"+measureSet[m]
-         for(var i in stateData){
-             var countyData = stateData[i]
-             var keyValue = countyData[key]
-             var FIPS = countyData["FIPS"]
-              if(FIPS.length==4){
-                  var gid = "0"+String(FIPS)
-              }
-              else{
-                  var gid = String(FIPS)
-              }
-          //    console.log(gid)
-             
-             if(keyValue>dictionary[key]["most"].value){
-                 dictionary[key]["most"].county = gid
-                 dictionary[key]["most"].value = keyValue
-             }
-             if(keyValue<dictionary[key]["least"].value){
-                 dictionary[key]["least"].county = gid
-                 dictionary[key]["least"].value = keyValue
-             }
-         }
-    }
-    return dictionary
-}
-
-function calculateVariance(stateData){
-    var varianceData = []
-    for(var i in stateData){
-        var countyData = stateData[i]
-        var countyId = countyData["FIPS"]
-        var sum = 0
-        for(var m in measureSet){
-            var key = "Percentile_ranks_"+measureSet[m]
-            var value = countyData[key]
-            sum+=value
+    d3.select("#univar").on("click",function(){
+        if(pub.univar==false){
+            d3.select("#univar").html("<strong>Show "+pub.column+"</strong> / Show Workers Assigned")
+        colorByWorkers(map)
+            pub.univar= true
         }
-        var average = sum/measureSet.length        
-        var variance = 0
-        for(var m in measureSet){
-            var key = "Percentile_ranks_"+measureSet[m]
-            var value = countyData[key]
-            var deviation = Math.abs(value-average)
-            variance+=(deviation*deviation)
+        else{
+            d3.select("#univar").html("Show "+pub.column+" / <strong>Show Workers Assigned</strong>")
+        colorByPriority(map)
+            pub.univar= false
         }
-        variance = variance/measureSet.length
-        varianceData.push({county:countyId,variance:variance})
-    }
-    varianceData.sort(function(a,b){
-        return b.variance-a.variance
     })
-    var mostVariance = varianceData[0]
-    var leastVariance = varianceData[varianceData.length-1]
-    return {most:mostVariance,least:leastVariance}
 }
-
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -484,18 +218,12 @@ function turnToDictFIPS(data,keyColumn){
                 }                
             }
             values["group_"+measureKey]=pGroup
-            if(values["County_FIPS"]!=undefined && values["County_FIPS"].length==4){
-                var oldFIPS = values["County_FIPS"]
-                values["County_FIPS"] = "0"+oldFIPS
-               // console.log( values["County_FIPS"])
-            }
                       
         }
         
         newDict[key]=values
         //break
     }
- //   console.log(newDict)
     return newDict
 }
 function combineGeojson(all,counties){
@@ -503,7 +231,7 @@ function combineGeojson(all,counties){
         var countyFIPS = counties.features[c].properties.FIPS
         var data = all[countyFIPS]
        // console.log(data)
-        counties.features[c]["id"]=countyFIPS        
+        counties.features[c]["id"]=countyFIPS
         //for now PR is undefined
         if(data!=undefined){            
             var keys = Object.keys(data)
@@ -520,6 +248,37 @@ function combineGeojson(all,counties){
     }
     return counties
 }
+function drawReservations(data,map){
+    //for pattern: https://docs.mapbox.com/mapbox-gl-js/example/fill-pattern/
+    map.addSource("aiannh",{
+        "type":"geojson",
+        "data":aiannh
+    })
+
+    map.loadImage(
+                  'pattern_transparent.png',
+                  function(err, image) {
+                  // Throw an error if something went wrong
+                      if (err) throw err;
+      
+                      // Declare the image
+                      map.addImage('pattern', image);
+      
+                      // Use it
+                      map.addLayer({
+                          'id': 'aiannh',
+                          'type': 'fill',
+                          'source': 'aiannh',
+                          'layout': {
+                              'visibility': 'visible'
+                           },
+                          'paint': {
+                              'fill-pattern': 'pattern'
+                          }
+                      });
+                  }
+              );
+}
 
 function drawMap(data,outline){
     // d3.select("#map").style("width",window.innerWidth+"px")
@@ -532,116 +291,217 @@ function drawMap(data,outline){
    var bounds = [[-120, 26], 
         [-40, 50]
     ]
+    map = new mapboxgl.Map({
+         container: 'map',
+        style:"mapbox://styles/c4sr-gsapp/ckcnnqpsa2rxx1hp4fhb1j357",//newest
+        bounds:bounds,
+        maxZoom:10,
+         zoom: 3.8,
+         preserveDrawingBuffer: true,
+        minZoom:3.5,
+       maxBounds: maxBounds    
+     });
      
      map.on("load",function(){
-
-         map.setLayoutProperty("mapbox-satellite", 'visibility', 'visible');
-         map.setPaintProperty("mapbox-satellite","raster-opacity",1)
+         
+        $('#map').show();
 
         map.resize();
 
+    map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
     map.dragRotate.disable();
     map.addSource("counties",{
              "type":"geojson",
              "data":data
          })
          
+                  
          map.addLayer({
-             'id':"base",
+             'id': 'counties',
              'type': 'fill',
              'source': 'counties',
              'paint': {
-                 'fill-color': "#ffffff",
-                 'fill-opacity':.1
-             }
-         },"county-name");
-         map.addLayer({
-             'id':"selectedStateBase",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#aaa",
-                 'fill-opacity':.1
-             }
-         },"county-name");
-         
-         map.addLayer({
-             'id':"variance",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#a9a9a9",
+             'fill-color': "white",
                  'fill-opacity':0
-             }
-         },"county-name");
+             },
+             'filter': ['==', '$type', 'Polygon']
+         },"ST-OUTLINE");
          
          map.addLayer({
-             'id':"frequency",
-             'type': 'fill',
+             'id': 'county_outline',
+             'type': 'line',
              'source': 'counties',
              'paint': {
-                 'fill-color': "#a9a9a9",
-                 'fill-opacity':0
-             }
-         },"county-name");
+                 'line-color':"#fff",
+                 'line-opacity':[
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    1,
+                    .5
+                 ],
+                 'line-width':[
+                    'case',
+                    ['boolean', ['feature-state', 'hover'], false],
+                    2,
+                    1
+                 ]
+             },
+             
+             'filter': ['==', '$type', 'Polygon']
+         },"ST-OUTLINE");
          
-         for(var m in measureSet){
-             map.addLayer({
-                 'id':measureSet[m],
-                 'type': 'fill',
-                 'source': 'counties',
-                 'paint': {
-                     'fill-color': "#aaaaaa",
-                     'fill-opacity':0
-                 }
-             },"county-name");
-         }
          
-       // colorByPriority(map,"Unemployment_capita","Unemployment_capita")
-        
-    })
-    //    console.log(map.getStyle().layers)
-    
-    map.once("idle",function(){
-       // console.log(map.getStyle().layers)
-        d3.select("#loader").attr("opacity",1).transition().duration(1000).attr("opacity",0).remove()
-        
-        
-        $.getJSON('https://geoip-db.com/json/')//this line alone gets the location
-        .done (function(location) {//this line indicates that once we have a response...
-            //check your developer console for all the things we get
-            
-            userCoordinates = [location.longitude, location.latitude]
-            console.log(userCoordinates)
-            getUserCounty(userCoordinates)
-            setMapToUser(userCoordinates)
-            
-            
-        //the line below displays the info on our page
-        //d3.select("#location").html("Lng: "+location.longitude+"<br>Lat: "+location.latitude+"<br>Your IP Address: "+location.IPv4)
-        });
-        
-      //  map.showCollisionBoxes = true
-         //map.setFilter("state-abbr",["==","stateAbbr",filteredToState])
-        // for(var m in measureSet){
- //
- //             map.setFilter(measureSet[m],["==","stateAbbr",filteredToState])
- //            colorByPriority(map,measureSet[m],measureSet[m])
- //
- //        }
-    // map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
- //        map.setFilter("variance",["==","stateAbbr",filteredToState])
- //        map.setFilter("frequency",["==","stateAbbr",filteredToState])
- //
- //    map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
- //    map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
-    
-     //   map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
-      //  map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
+        // },"county_outline");         
+         
+            map.setFilter("state_mask",["==","STATEFP","a"])
+    //     console.log(map.getStyle().layers)        
+         zoomToBounds(map)
+         strategyMenu(map,data)
+         //toggleLayers(map)
+         placesMenus(map)
+         
+      /*
+        lineOpacity["property"]=pub.strategy+"_"+pub.coverage
+              lineWeight["property"]=pub.strategy+"_"+pub.coverage
+              fillColor["property"]="priority_"+pub.strategy.replace("percentage_scenario_","")
+              d3.select("."+pub.coverage+"_radialC")//.style("border","1px solid "+ highlightColor)
+              d3.selectAll("."+pub.coverage).style("background-color","#000").style("color","#fff")
+              d3.selectAll("."+pub.strategy).style("background-color","#000").style("color","#fff")
+              d3.selectAll("."+pub.strategy+"_radialS")//.style("background-color","#000").style("color","#fff")//.style("border","1px solid "+ highlightColor)*/
       
-       // console.log(map.getStyle().layers)
+     })
+     var popup = new mapboxgl.Popup({
+         closeButton: false,
+         closeOnClick: false
+     });     
+      var hoveredStateId = null;
+     
+     var firstMove = true
+        d3.select("#mapPopup").append("div").attr("id","popLabel") 
+      d3.select("#mapPopup").append("div").attr("id","popMap")
+    
+    map.on('click', 'counties', function(e) {
+        
+        
+        var feature = e.features[0]
+        pub.SVIFIPS = feature.properties.FIPS
+        pub.sviZoom = 10
+        pub.SVIcenter = pub.centroids[feature.properties["FIPS"]]
+        
+        
     })
-
+     map.on('mousemove', 'counties', function(e) {
+         var feature = e.features[0]
+         console.log(feature.properties)
+        //console.log(map.getZoom())
+        //console.log(feature["properties"]["Normalized_Covid_capita"])
+         map.getCanvas().style.cursor = 'pointer'; 
+         if(feature["properties"].FIPS!=undefined){
+             //console.log(feature["properties"])
+             if (hoveredStateId) {
+             map.setFeatureState(
+             { source: 'counties', id: hoveredStateId },
+             { hover: false }
+             );
+             }
+             hoveredStateId = e.features[0].id;
+             map.setFeatureState(
+             { source: 'counties', id: hoveredStateId },
+             { hover: true }
+             );
+             
+             
+             var x = event.clientX+20;     // Get the horizontal coordinate
+             var y = event.clientY+20;             
+             var w = window.innerWidth;
+             var h = window.innerHeight;
+             if(x+200>w){
+                 x = x-280
+             }
+             if(y+200>h){
+                 y= h-220
+             }else if(y-200<150){
+                 y = 150
+             }
+             
+              d3.select("#mapPopup").style("visibility","visible")
+              .style("left",x+"px")
+              .style("top",y+"px") 
+             
+             var countyName = feature["properties"]["county"]+" County, "+feature["properties"]["stateAbbr"]
+             var population = feature["properties"]["totalPopulation"]
+             var geometry = feature["geometry"]
+             var chwNeed = feature["properties"]["CHW_need"]
+             var cases = feature["properties"]["Covid_cases"]             
+             var countyId = feature["properties"]["FIPS"]
+             var SVI = Math.round(feature["properties"]["SVI_county"]*100)/100
+             
+             var actualCoverage = feature.properties[pub.strategy+"_base_case_capacity_0"]
+           //  var columnsToShow = ["hotspotSVI_priority","hotspot_priority","SVI_priority","highDemand_priority"]       
+             
+            var currentSelection = pub.strategy+"_"+pub.coverage
+             
+             
+             var currentSelectionCoverage = Math.round(feature["properties"][currentSelection]*100)/100
+             
+             var chwAssigned = Math.round(chwNeed*(feature["properties"][currentSelection]/100))
+             
+             // var groupLabels = {
+  //                _0:"Low Priority",
+  //                _1:"Medium Priority",
+  //                _2:"High Priority"
+  //            }
+             
+         //    var currentGroup = feature.properties[currentSelection +"_group"]
+             
+         //    var currentGroupDescription = groupLabels[currentGroup]
+             //console.log(pub.column)
+            //  console.log(feature.properties["Percentile_ranks_"+pub.column])
+             // console.log(feature.properties)
+             var roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*100)/100
+             if(roundedValue==0){
+                 roundedValue = Math.round(feature.properties["Percentile_ranks_"+pub.column]*10000)/10000
+             }
+           
+             var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
+                     +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +Math.ceil(feature.properties[pub.column])+"</span><br>"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +roundedValue+"</span><br>"                 
+             var needsMetString = currentSelectionCoverage+"% of needs met</strong>"
+             if(pub.column=="SVI"){
+             var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
+                     +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +feature.properties[pub.column]+"</span><br>"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +roundedValue+"</span><br>"   
+             }else if(pub.column=="Medicaid_capita"){
+             var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
+                     +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
+                     +"Total estimated medicaid enrollment"+":<br><span class=\"popupTitle\">"
+                     +Math.round(feature.properties["Medicaid_demand"])+"</span><br>"
+                     +measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +Math.round(feature.properties[pub.column])+"</span><br>"
+                     +"Percentile Ranking ("+measureDisplayTextPop[pub.column]+"):<br><span class=\"popupTitle\">"
+                     +roundedValue+"</span><br>"   
+             }
+             
+             if(currentSelectionCoverage ==-1){
+                 needsMetString = "Currently No Cases Reported"
+             }
+             d3.select("#popLabel").html(displayString)//+"<br><i>Click on county for more</i>")
+            var coords = pub.centroids[feature.properties["FIPS"]]
+            var formattedCoords =coords
+         }       
+         
+         map.on("mouseleave",'counties',function(){
+             d3.select("#mapPopup").style("visibility","hidden")
+         })  
+         var coordinates = geometry.coordinates[0]
+              });
+          return map
 }
 
 function drawSmallMapKey(svg){
@@ -680,6 +540,41 @@ function drawSmallMapKey(svg){
        
       svg.append("text").text("High SVI: 1").attr("x",180).attr("y",32).attr("text-anchor","end")
       svg.append("text").text("Low SVI: 0").attr("x",20).attr("y",32)//.attr("text-anchor","end")
+}
+function subMap(detailMap, center,geometry,countyId){    
+    var coordinates = geometry.coordinates[0]
+   // console.log(countyId)
+    var bounds = getMaxMin(flatDeep(coordinates,Infinity))
+    var mapboxBounds = new mapboxgl.LngLatBounds(bounds)
+    // var filter = ["==","COUNTY",String(countyId)]
+    // detailMap.setFilter("tractSVI",filter)
+    
+    // var bounds = coordinates.reduce(function(bounds, coord) {
+ //            return bounds.extend(coord);
+ //        }, new mapboxgl.LngLatBounds(coordinates[0], coordinates[0]));
+ //     console.log(bounds)
+        // detailMap.flyTo(
+   //          {
+   //
+   //              center:[center.lat,center.lng],
+   //              curve: 0,
+   //             // zoom: 9,
+   //              speed:10
+   //
+   //          }
+   //      )
+             detailMap.fitBounds(mapboxBounds, {
+                 padding: 5,
+                 animate: false
+             })
+         
+ 
+    
+     
+     // var filter = ['!=',["get",'FIPS'],["literal",[countyId]]];
+   //   detailMap.setFilter("county-small-4yr1gy",filter)
+
+     
 }
 
 function sumProperty(prop,list){
@@ -857,21 +752,264 @@ function drawHistogram(strategy){
     }
 }
 
-function colorByPriority(map,layer,column){
+
+
+function strategyMenu(map,data){
+    
+    //var svg = d3.select("#strategiesMenu").append("svg").attr("width",220).attr("height",220)
+    var gridSize = 70
+    
+     var clickedId = "Covid_capita"
+     for (var i = 0; i < measureSet.length; i++) {
+         var id = measureSet[i];
+         if(measureSet[i]!= "percentage_scenario_SVI_pop"){
+             d3.select("#strategiesMenu").append("div")//.attr("width",gridSize-4).attr("height",gridSize-4)
+             .attr("id",id)
+             .html(measureDisplayText[id])
+             .attr("class","measures")
+             .attr("fill",function(){
+                 if(id =="percentage_scenario_SVI_hotspot"){
+                     return "black"
+                 }else{
+                     return "#fff"
+                 }
+             })
+             .attr("cursor","pointer")
+             .attr("stroke","black")
+             .style("cursor","pointer")
+             .on("click",function(){
+                         var filter = ["!=","percentage_scenario_SVI_hotspot_base_case_capacity_30",-1]
+                         d3.selectAll(".measureGrid").attr("fill","white")
+                         d3.select(this).attr("fill","black")
+                         //map.setFilter("counties",filter)
+                         clickedId = d3.select(this).attr("id")
+                         pub.column = clickedId
+                         d3.selectAll(".measures").style("background-color","white").style("color","#000")
+            
+/*
+                         d3.selectAll("#"+clickedId).style("color","#fff").style("background-color","#000")
+*/
+                         d3.selectAll("#"+clickedId).style("background-color",highlightColor)
+          
+                         if(pub.univar==true){
+                             //drawGridWithoutCoverage(map)
+                             colorByWorkers(map)
+                         }else{
+                             colorByPriority(map)
+                             //drawGrid(map,pub.all)
+                         }
+                         pub.histo = histo(pub.all)
+                     })
+           
+         }
+       
+     }
+     d3.selectAll(".measureGridLabel").style("font-size","12px")
+     
+     
+     
+     
+     d3.select("#strategiesMenu")
+     .append("div")
+     .attr("id","sviAsterLabel").html("CDC considers percentile rank of fifteen different factors while calculating SVI, we consider proportional value of these fifteen factors in each state compared to the state and then take the average of these proportional values for the fifteen different factors.")
+     .style("position","absolute").style("left","225px").style("top","85px")
+     .style("width","150px")
+     .style('padding',"5px")
+     .style('background-color',"#ffffff")
+     .style("border","1px solid black")
+     .style('visibility',"hidden")
+     
+    d3.select(".sviAster")
+     .style('text-decoration',"underline")
+     .on("mouseover", function(){
+         d3.select("#sviAsterLabel").style('visibility',"visible")
+     })
+     .on("mouseout", function(){
+         d3.select("#sviAsterLabel").style('visibility',"hidden")
+     })
+     
+}
+
+                
+function colorByPriority(map){
+    map.setPaintProperty("counties", 'fill-opacity',1)
+    // var matchString = ["match",
+ //                ["get","group_"+pub.column]].concat(newColors)
+    d3.select("#currentSelection").html("Normalized "+pub.column)
     var matchString = {
-    property: "Percentile_ranks_"+column,
+    property: "Percentile_ranks_"+pub.column,
    // stops: [[0, 'rgba(19,182,163, 1)'],[.5,"#A2D352"],[1, 'rgba(255, 241, 0, 1)']]
     stops: [[0,"#ddd"],[Math.pow(.01, 30), colors[0]],[50,colors[1]],[100, colors[2]]]
     }
-    map.setPaintProperty(layer, 'fill-color', matchString)
+    
+    
+    
+    map.setPaintProperty("counties", 'fill-color', matchString)
+    drawGridWithoutCoverage(map)
+    d3.select("#coverage").style("display","block")
     
 }
+
+function colorByWorkers(map){
+    d3.select("#coverage").style("display","none")
+    var matchString = ["match",
+                    ["get","Proportional_allocation_to_"+pub.column],
+                    "_0","rgba(19,182,163, 1)",
+                    "_1","rgba(162,211,82, 1)",
+                    "_2","rgba(255, 241, 0, 1)",
+                    '#ccc'
+                    ]
+   map.setPaintProperty("counties", 'fill-color', matchString)  
+   drawGridWithoutCoverage(map)
+}
+
+function drawGridWithoutCoverage(map){
+    var gridHeight = 280
+    var gridWidth = 240
+    var gridSize = 60
+    d3.select("#colorGrid svg").remove()
+    var uniSVG = d3.select("#colorGrid").append("svg").attr("width",gridWidth).attr("height",gridHeight)
+    // var colorsArray =["rgba(19,182,163, 1)","rgba(162,211,82, 1)","rgba(255, 241, 0, 1)"]
+    var label = []
+    for(var ps in pStops){
+        var range = pStops[ps]
+        if(range[0]==0){
+           label.push(range[0]+" < - "+range[1])
+        }else{
+            label.push(range[0]+" - "+range[1])
+        }
+        
+        
+    }
+    var clicked = false
+    var currentFilter = null
+    
+    
+    uniSVG.append("text").text("high").attr("x",215).attr("y",60).attr("text-anchor","start")
+    uniSVG.append("text").text("low").attr("x",215).attr("y",215).attr("text-anchor","start")
+    
+
+    uniSVG.append("text").text(measureDisplayTextPop[pub.column]).attr("x",0).attr("y",15).style("font-size","14px")    
+    uniSVG.append("text").text("Percentile ranking relative to rest of State").attr("x",0).attr("y",30)
+    .style("font-size","12px")
+    
+    uniSVG.append("text").text("Click to filter map").attr("x",0).attr("y",55)
+    .style("font-size","12px")
+    .style("font-style","italic")
+    
+    // uniSVG.append("rect").attr("width",gridSize/2).attr("height",gridSize/2).attr("x",10).attr("y",190).attr("fill","#ddd")
+   //  uniSVG.append("text").attr("x",35).attr("y",204).text("Counties with no recorded cases")
+   //  
+    var cScale = d3.scaleLinear().domain([0,50,100]).range(colors)
+    uniSVG.selectAll(".uniRect")
+                .data(pStops)
+                .enter()
+                .append("rect")
+                .attr("fill",function(d){return cScale(d[0])})
+                .attr("width",gridSize)
+                .attr("height",gridSize/4)
+                .attr("x",20)
+                .attr("y",function(d,i){return gridHeight - (i+1)*(gridSize/4+2)})
+                .attr("transform","translate(130,-60)")
+                .attr("class","gridCell")
+                .on("mouseover",function(d,i){
+                    var groupName = "_"+(i)            
+                    var filter = ["==","group_"+pub.column,groupName]
+                    map.setFilter("counties",filter)
+                    d3.selectAll(".gridCell").attr("opacity",.3)
+                    d3.select(this).attr("opacity",1)
+
+                    // var x = event.clientX;     // Get the horizontal coordinate
+      //               var y = event.clientY;           
+                    //d3.select("#gridHover").style("visibility","visible")
+                    // var gP = ["low","med","high"][Math.floor((i)/3)]
+ //                    var gC = ["low","med","high"][i%3]
+                  //  d3.select("#gridHover").html(pub.histo[i].length+ " counties have "+ gP+" priority and "+gC+" unmet need")[]
+                    //   console.log("over")
+                })
+                .on("mouseout",function(d,i){
+                         //console.log(currentState)
+                    
+                    d3.selectAll(".gridCell").attr("opacity",1)
+                    d3.select("#gridHover").style("visibility","hidden")
+                    // console.log(currentState)
+  //                   console.log(clicked)
+                     if(clicked == false){
+                         //map.setFilter("counties",["!=","group_"+pub.column," "])
+                         currentClickedGroup = "_"+i
+                    // console.log(clicked)
+ //                         console.log(currentState)
+                         
+                         if(currentState=="C48"|| currentState==""){
+                             map.setFilter("counties",["!=","group_"+pub.column," "])
+                             
+                         }else{
+                             currentFilter =["==","stateAbbr",currentState]
+                         }
+ //                        // console.log(currentFilter)
+                             map.setFilter("counties",currentFilter)
+ //
+                    }else{
+ //                        // console.log(clicked)
+ // //                        console.log(currentFilter)
+     // //
+                        var filter = ["==","group_"+pub.column,currentClickedGroup]
+                        map.setFilter("counties",filter)
+                     }
+                })
+                .on("click",function(d,i){
+                    var groupName = "_"+(i)            
+                    currentClickedGroup = "_"+i
+                    var filter = ["==","group_"+pub.column,groupName]
+
+                    //if(JSON.stringify(filter) == JSON.stringify(currentFilter)){
+                    if(clicked==true){
+                        d3.select(this).attr("stroke","none")
+                        if(currentState=="C48" ||currentState==""){
+                            currentFilter =["!=","stateAbbr"," "]
+                        }else{
+                            currentFilter =["==","stateAbbr",currentState]
+                        }
+                        map.setFilter("counties",currentFilter)
+                        clicked = false
+                    }else{
+                        map.setFilter("counties",filter)
+                        currentFilter = filter
+                        d3.selectAll(".gridCell").attr("stroke","none")
+                        d3.select(this).attr("stroke","#000")
+                        clicked = true
+                    }
+                })
+                
+    uniSVG.selectAll(".uniText")
+                .data(pStops)
+                .enter()
+                .append("text")
+                .text(function(d,i){
+                    return label[i]
+                })
+                .attr("text-decoration","underline")
+                .attr("x",20)
+                .attr("y",function(d,i){return gridHeight- i*(gridSize/4+2)-5})
+                .attr("text-anchor","end")
+                .attr("transform","translate(125,-60)")
+}
+function formatSearch(item) {
+    var selectionText = item.text.split("|");
+    var $returnString = $('<span>' + selectionText[0] + '</br><b>' + selectionText[1] + '</b></br>' + selectionText[2] +'</span>');
+    return $returnString;
+};
+function formatSelected(item) {
+    var selectionText = item.text.split("|");
+    var $returnString = $('<span>' + selectionText[0].substring(0, 21) +'</span>');
+    return $returnString;
+};
 
 function zoomToBounds(mapS){
     //https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
     var bounds =  new mapboxgl.LngLatBounds([-155, 20], 
         [-55, 55]);
-    map.fitBounds(bounds,{padding:500},{bearing:0})
+    map.fitBounds(bounds,{padding:40},{bearing:0})
 }
 function getMaxMin(coords){
     var maxLat = -999
@@ -906,220 +1044,7 @@ function flatDeep(arr, d = 1) {
    return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
                 : arr.slice();
 };
-function PopulateDropDownList(features,map,combinedGeojson) {
-           //Build an array containing Customer records.
-    var sorted =features.sort(function(a,b){
-        return parseInt(a.properties.GEOID) - parseInt(b.properties["GEOID"]);
-        
-    })          
-    var ddlCustomers = document.getElementById("ddlCustomers");
- 
-  
-    //Add the Options to the DropDownList.
-    var boundsDict = {}
-    
-    for (var i = 0; i < sorted .length; i++) {
-        var option = document.createElement("OPTION");
 
-        //Set Customer Name in Text part.
-        option.innerHTML = sorted[i].properties.NAME;
-        
-        var coordinates = flatDeep(features[i].geometry.coordinates,Infinity)
-        //console.log(coordinates)
-       boundsDict[sorted[i].properties.GEOID]=getMaxMin(coordinates)
-        //Set CustomerId in Value part.
-        option.value = sorted[i].properties["GEOID"]
-        option.id = sorted[i].properties.NAME
-        //Add the Option element to DropDownList.
-        if(sorted[i].properties.NAME!="United States Virgin Islands"&& sorted[i].properties.NAME!="American Samoa"&& sorted[i].properties.NAME!="Commonwealth of the Northern Mariana Islands"&& sorted[i].properties.NAME!="Guam"){
-          ddlCustomers.options.add(option);
-      }
-    }
-    document.getElementById("ddlCustomers").value = "36";
-    
-   $('select').on("change",function(){
-      // console.log(this.value)
-       if(this.value=="C48"){
-        //   console.log("ok")
-        //   zoomToBounds(map)
-          var filter = ["!=","stateAbbr"," "]
-          map.setFilter("counties",filter)
-           // map.flyTo({
- //               zoom:3.8,
- //               center: [-94,37],
- //               speed: 0.8, // make the flying slow
- //               curve: 1
- //               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
- //           });
-         currentState="C48"
-       }else if(this.value=="02"){
-           map.flyTo({
-               zoom:4,
-               center: [-147.653,63.739]//,
-               // speed: 0.8, // make the flying slow
-     //           curve: 1
-               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
-           });
-           currentState="AK"
-       }
-       else{
-           var coords = boundsDict[this.value]
-           //console.log(coords)
-           var bounds =  new mapboxgl.LngLatBounds(coords);
-           map.fitBounds(bounds,{padding:200},{bearing:0})
-           var state_tiger_dict = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY','60':'AS','66':'GU','69':'MP','72':'PR','78':'VI'}
-           currentState = state_tiger_dict[this.value]
-          var filter = ["==","stateAbbr",currentState]
-         // map.setFilter("counties",filter)
-           filteredToState = currentState
-  //    
-       }
-       
-       filteredToState =currentState
-       
-       setToState(combinedGeojson)
-    })
-}
-function setToState(combinedGeojson){
-    //le.log(filteredToState)
-    config["chapters"][1]["location"]={}
-    
-    var allLayers = map.getStyle().layers
-    for(var i in allLayers){
-        var layerId = allLayers[i].id
-        if(layerId.split("_")[0]=="most"||layerId.split("_")[0]=="least"){
-            map.removeLayer(layerId)
-            map.removeSource(layerId)
-        }
-    }
-     //  console.log(map.getStyle().layers)
-    
-    var stateData = filterDataByState(combinedGeojson)
-        var mostLeast = calculateMostLeast(stateData)
-        var mostLeastVariance = calculateVariance(stateData)    
-        var mostLeastFrequency = calculateMostLeasetFrequency(mostLeast)
-    
-    var introDescription = {
-          "Medicaid_capita":"Vulnerability is also reflected by the number of residents enrolled in Medicaid, a means-tested health insurance program with eligibility largely determined by income. The enrollment criteria share some factors with SVI*, such as income, household composition, disability, and employment status.",
-          "Unemployment_capita":"As the pandemic has rolled through the United States, unemployment has increased dramatically; this increase is a sign of the economic toll the virus has taken. For many workers in America, health care access is tied to a job. With rising unemployment, many have been left uninsured or underinsured.",
-          "SVI": "SVI* calls attention to counties with the greatest number of its highly vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type.",
-          "YPLL":"Years of Potential Life Lost (YPLL) represents community-specific health vulnerability in the United States by measuring rates of premature death. Some of the counties that have the state’s highest values for SVI* also have the highest levels of YPLL. But other counties are newly visible as vulnerable.",
-            "Covid":"The direct effects of COVID-19 have exacerbated many of the preexisting vulnerabilities in the United States. Sometimes long-term vulnerabilities and the impact of COVID-19 coincide in our maps, but sometimes they do not.",
-          "Covid_capita":"Normalizing recent COVID-19 cases by population highlights the less populous counties where large proportions of a community have acquired the virus",
-        "Covid_death_capita":"Cumulative COVID-19 deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago."
-    }
-    
-    for(var j in mostLeast){
-       // console.log(j)
-       // console.log(mostLeast[j])
-        var label = j
-        var most = mostLeast[j].most
-        var least = mostLeast[j].least
-        addMarker(least.county,"Lowest: ","least_"+label.replace("Percentile_ranks_",""))
-        addMarker(most.county,"Highest: ","most_"+label.replace("Percentile_ranks_",""))
-        var existingText = introDescription[label.replace("Percentile_ranks_","")]
-        var newText = "<br><br>In "+filteredToState+", <strong>"+pub.fipsToName[least.county]
-            +" County</strong>, population "+  numberWithCommas(pub.fipsToPopulation[least.county])+", has the lowest percentile ranking when prioritized according to "
-            +measureDisplayTextPop[label.replace("Percentile_ranks_","")]
-        +", and <strong>"+pub.fipsToName[most.county]+" County</strong>, population "+numberWithCommas(pub.fipsToPopulation[most.county])+", has the highest."
-        d3.select("#"+label.replace("Percentile_ranks_","")).select("p").html(existingText+newText)
-    }
-    
-    if(mostLeastFrequency.length>1){
-        var existingText = "Here are the counties that displayed across the most extremes in rankings of vulnerability we mapped."
-    }else{
-        var existingText = "Here is the county that displayed across the most extremes in rankings of vulnerability we mapped."
-    }
-
-    for(var f in mostLeastFrequency){
-        mostLeastFrequency[f]
-        var county = pub.fipsToName[mostLeastFrequency[f].county]
-        existingText+= "<br><br><strong>"+county + " County</strong> is "
-        
-        for(var c in mostLeastFrequency[f].content){
-            if(c ==mostLeastFrequency[f].content.length-1){
-                var formattedText = " and "+mostLeastFrequency[f].content[c].ml +" in "
-                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
-                    +"."
-            }else{
-                var formattedText = mostLeastFrequency[f].content[c].ml +" in "
-                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
-                    +", "
-            }
-            existingText+=formattedText
-            
-        }
-        
-        
-        d3.select("#frequency").select("p").html(existingText)
-        
-        config["chapters"][config["chapters"].length-1].description=existingText
-        
-        addMarker(mostLeastFrequency[f].county,"","most_"+f)
-        config["chapters"][0]["onChapterEnter"].push({layer:"most_"+f,opacity:0})
-        config["chapters"][config["chapters"].length-1]["onChapterEnter"].push({layer:"most_"+f,opacity:1})
-        config["chapters"][config["chapters"].length-1]["onChapterExit"].push({layer:"most_"+f,opacity:0})
-    }
- //
-        addMarker(mostLeastVariance.least.county,"Lowest variance across rankings: ","least_variance")
-        addMarker(mostLeastVariance.most.county,"Highest variance across rankings: ","most_variance")
-    
-    for(var m in measureSet){
-        
-         map.setFilter(measureSet[m],["==","stateAbbr",filteredToState])
-        colorByPriority(map,measureSet[m],measureSet[m])
-        
-    }
-    map.setFilter("variance",["==","stateAbbr",filteredToState])
-    map.setFilter("frequency",["==","stateAbbr",filteredToState])
-    map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
-    
-    map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
-    map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
-    
-    
-       var chapter1 = d3.select("#start")
-}
-
-function placesMenus(map){
-    PopulateDropDownList(pub.states.features,map)
-   // var places = ["Contiguous 48","Alaska","Hawaii","Puerto_Rico"]
-    // var places = ["Contiguous 48"]
- //    var coords = {
- //        "Contiguous 48":{coord:[37,-93],zoom:4},
- //        "Alaska":{coord:[63.739,-147.653],zoom:4},
- //        "Hawaii":{coord:[20.524,-157.063],zoom:7.1},
- //        "Puerto_Rico":{coord:[18.219,-66.338],zoom:8}
- //    }
- //
- //    for (var i = 0; i < places.length; i++) {
- //        var id = places[i];
- //        var link = document.createElement('a');
- //        link.href = '#';
- //        link.className = 'placesLink';
- //        link.textContent = id.split("_").join(" ");
- //        link.id =id;
- //
- //        link.onclick = function(e) {
- //            var id = d3.select(this).attr("id")
- //            var coord = coords[id].coord
- //            var zoom = coords[id].zoom
- //            map.flyTo({
- //                zoom: zoom,
- //            center: [
- //           coord[1] ,
- //            coord[0]
- //            ],
- //            speed: 0.8, // make the flying slow
- //            curve: 1
- //            //essential: true // this animation is considered essential with respect to prefers-reduced-motion
- //            });
- //        };
- //
- //        var layers = document.getElementById('placesMenu');
- //        layers.appendChild(link);
- //    }
-}
 
 function toggleLayers(map){
     // enumerate ids of the layers

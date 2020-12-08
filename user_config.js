@@ -17,27 +17,65 @@ function configureStory(){
                 title: 'Communities can be vulnerable in many different ways',
                 image: '',
                 description: 'COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States.'
-                +"<br><br>",//+"<br><br>Our map compares four indexes of vulnerability alongside COVID-19 data and presents multiple options for addressing the effects of the pandemic with a Community Health Corps."
-                // +"<br><br><strong>For a quick tour of our measures, select a state to start, then scroll down: </strong>"
-//                 +"<nav id=\"placesMenu\" ><select id=\"ddlCustomers\"></select></nav>",
+                ,//+"<div id=\"userLocation\">Click here to start where you are.</div><br><br>",
                 location: {
-                    
+                    center:[-98.57868040403291,39.82847358985151],
+                    zoom:4
                 },
                 onChapterEnter: [
-                    {
-                        layer: measureSet[0],
-                        opacity: 0
-                    },
-                    {
-                        layer:"mapbox-satellite",
-                        opacity:1
-                    }
+                    // {
+//                         layer: measureSet[0],
+//                         opacity: 0
+                        //                     }
                 ],
                 onChapterExit: [
-                    {
-                        layer:measureSet[0],
-                        opacity:0
-                    }
+                    // {
+ //                        layer:measureSet[0],
+ //                        opacity:0
+ //                    }
+                ]
+            },
+            {
+                id: 'user',
+                title: 'You are here',
+                image: '',
+                description: "<br>",
+                location: {
+                    center:userCoordinates,
+                    zoom:18
+                },
+                onChapterEnter: [
+                    // {
+//                         layer: measureSet[0],
+//                         opacity: 0
+                        //                     }
+                ],
+                onChapterExit: [
+                    // {
+ //                        layer:measureSet[0],
+ //                        opacity:0
+ //                    }
+                ]
+            },
+            {
+                id: 'medicaid',
+                title: 'Medicaid',
+                image: '',
+                description: "<br>",
+                location: {
+                    zoom:16
+                },
+                onChapterEnter: [
+                    // {
+//                         layer: measureSet[0],
+//                         opacity: 0
+                        //                     }
+                ],
+                onChapterExit: [
+                    // {
+ //                        layer:measureSet[0],
+ //                        opacity:0
+ //                    }
                 ]
             }
         ]
@@ -69,74 +107,29 @@ function configureStory(){
 
     for(var i in measureSet){
         var label = measureSet[i]        //      //
-           config["chapters"][0]["onChapterEnter"].push({layer:"least_"+label,opacity:0})
-           config["chapters"][0]["onChapterEnter"].push({layer:"most_"+label,opacity:0})
-        
+           // config["chapters"][0]["onChapterEnter"].push({layer:"least_"+label,opacity:0})
+ //           config["chapters"][0]["onChapterEnter"].push({layer:"most_"+label,opacity:0})
+ //
         var newChapter = {}
         newChapter["id"]=label
        // console.log(label)
         newChapter["title"]=measureDisplayTextPop[label]
         // newChapter["location"]={center:filteredStateCentroid,zoom:6}
         newChapter["description"]=introDescription[label]+"<br>"
-        //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
-        newChapter["onChapterEnter"] = [
-            {layer: label,opacity:1} ,
-            {layer: "least_"+label,opacity:1},
-             {layer: "most_"+label,opacity:1}
+        newChapter["location"]={center:userCoordinates}
+         newChapter["onChapterEnter"] = [
+ //            {layer: label,opacity:1} ,
+ //            {layer: "least_"+label,opacity:1},
+ //             {layer: "most_"+label,opacity:1}
         ]
-         newChapter["onChapterExit"] = [
-             {layer: label,opacity:0},
-             {layer: "least_"+label,opacity:0},
-              {layer: "most_"+label,opacity:0}
-          ]
+          newChapter["onChapterExit"] = [
+ //             {layer: label,opacity:0},
+ //             {layer: "least_"+label,opacity:0},
+ //              {layer: "most_"+label,opacity:0}
+           ]
         config.chapters.push(newChapter)
     }
 
-           config["chapters"][0]["onChapterEnter"].push({layer:"least_variance",opacity:0})
-           config["chapters"][0]["onChapterEnter"].push({layer:"most_variance",opacity:0})
 
 
-    var varianceChapter = {}
-    varianceChapter["id"]="variance"
-    varianceChapter["title"]="In some counties, measures of vulnerability paint very different pictures"
-    varianceChapter["description"]="Here are the 2 counties with the most and least variability across the 7 rankings of vulnerability we showed."
-    //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
-    varianceChapter["onChapterEnter"] = [
-        {layer: "variance",opacity:1} ,
-        {layer: "least_variance",opacity:1},
-         {layer: "most_variance",opacity:1}
-    ]
-     varianceChapter["onChapterExit"] = [
-         {layer: "variance",opacity:0},
-         {layer: "least_variance",opacity:0},
-          {layer: "most_variance",opacity:0}
-      ]
-    config.chapters.push(varianceChapter)
-  
-      var frequencyChapter = {}
-      frequencyChapter["id"]="frequency"
-      frequencyChapter["title"]="Counties sometimes show up as most or least vulnerable across more than one measure"
-      // frequencyChapter["location"]={center:filteredStateCentroid,zoom:6}
-      frequencyChapter["description"]="Here (is)are the county(counties) that displayed the most extremes in the 7 rankings of vulnerability we showed."
-      //newChapter["location"]=[pub.centroids[least.county].lng,pub.centroids[least.county].lat]
-     frequencyChapter["onChapterEnter"] = [
-           {layer: "frequency",opacity:1} ,
-     //      {layer: "least_variance",opacity:1},
-     //       {layer: "least_variance",opacity:1}
-      ]
-       frequencyChapter["onChapterExit"] = [
-            {layer: "frequency",opacity:0},
-           // {layer: "least_variance",opacity:0},
-           //  {layer: "most_variance",opacity:0}
-        ]
-    config.chapters.push(frequencyChapter)
-    
-    if(filteredToState=="NY"){
-      //  console.log(filteredStateCentroid)
-        config["chapters"][1]["location"]={center:[-74.645228, 43],zoom:6.3}
-    }else{
-        config["chapters"][1]["location"]={}
-        
-    }
-    console.log(config)
 }
