@@ -21,7 +21,8 @@ function configureStory(){
                 //+"<div id=\"userLocation\">Click here to start where you are.</div><br><br>",
                 location: {
                     center:[-98.57868040403291,39.82847358985151],
-                    zoom:4
+                    zoom:4,
+                    speed: .4
                 },
                 onChapterEnter: [
                     // {

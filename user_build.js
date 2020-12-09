@@ -371,7 +371,7 @@ function drawMap(data,outline){
              newChapter["id"]=label
              newChapter["title"]=measureDisplayTextPop[label]
              newChapter["description"]=introDescription[label]+"<br>"+dataText
-             newChapter["location"]={center:topCounty.centroid,zoom:15,speed: .1}
+             newChapter["location"]={center:topCounty.centroid,zoom:15,speed: .2}
              newChapter["onChapterEnter"] = [
       //            {layer: label,opacity:1} ,
       //            {layer: "least_"+label,opacity:1},
@@ -428,7 +428,7 @@ function filterByValue(matchValue, column, matchCounty){
         var value = pub.all.features[j].properties[column]
             var county = pub.all.features[j].properties.county
         if(value<matchValue*1.01 && value>matchValue*.99&& matchCounty!=county){
-        console.log(value)
+      //  console.log(value)
             
             var state = pub.all.features[j].properties.state
             var population = pub.all.features[j].properties.totalPopulation
