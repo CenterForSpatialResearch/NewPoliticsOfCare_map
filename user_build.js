@@ -342,7 +342,7 @@ function drawMap(data,outline){
         
        // console.log(totalCountiesInState)
         config.chapters[1]["description"]= "You are currently in "+ county+" County, containing "+numberWithCommas(pop)+" residents." 
-        +" 1 of "+ totalCountiesInState+" counties in "+ toTitleCase(state)+"."
+        //+" 1 of "+ totalCountiesInState+" counties in "+ toTitleCase(state)+"."
         
          for(var m in measureSet){
              var label = measureSet[m] 
@@ -392,17 +392,16 @@ function drawMap(data,outline){
 //               console.log(value)
               var newChapter = {}
               newChapter["id"]=capitaSet[n]+"_compare"
-              
-              var title = capitaSetDisplayTitle[capitaSet[n]]
-              newChapter["title"]=title
-              
               var value = countyData[capitaSet[n]]
-              var matches = filterByValue(value,capitaSet[n])
-              var description = matches.length+" counties have similar "
-              +measureDisplayTextPop[capitaSet[n]]+" as where you are."
+              var matches = filterByValue(value,capitaSet[n],county)
+              var title = capitaSetDisplayTitle[capitaSet[n]]
+              newChapter["title"]= matches.length+" counties have similar "
+              +measureDisplayTextPop[capitaSet[n]]+" as where you are: "+value
               
+              
+              var description = ""
               for(var m in matches){
-                  description+= matches[m].county+" county, in "+matches[m].state+"<br>"
+                  description+= matches[m].county+" county, in "+matches[m].state+" "+Math.round(matches[m].value*100)/100+"<br>"
               }
               newChapter["description"]=description
               newChapter["location"]={center:userCoordinates,zoom:18}
@@ -423,15 +422,17 @@ function drawMap(data,outline){
     })
 }
 
-function filterByValue(matchValue, column){
+function filterByValue(matchValue, column, matchCounty){
     var matches = []
     for(var j in pub.all.features){
         var value = pub.all.features[j].properties[column]
-        if(value<matchValue*1.01 && value>matchValue*.99){
             var county = pub.all.features[j].properties.county
+        if(value<matchValue*1.01 && value>matchValue*.99&& matchCounty!=county){
+        console.log(value)
+            
             var state = pub.all.features[j].properties.state
             var population = pub.all.features[j].properties.totalPopulation
-            var match = {county:county, state:state, population:population}
+            var match = {county:county, state:state, population:population,value:value}
             matches.push(match)
         }
     }
