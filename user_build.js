@@ -99,6 +99,8 @@ var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch
 //var allData = d3.csv("County_level_proportional_allocation_for_all_policies 2.csv")
 var states = d3.json("simplestates.geojson")
 
+var userRankings = {}
+
  var measureSet = [
      "Medicaid_capita",
      "Unemployment_capita",
@@ -122,18 +124,6 @@ var latestDate = null
 var countiesCount = null
 function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids){ 
     
-    
-        // d3.select("#userLocation").on("click",function(){
-  //           console.log("get location")
-  //
-  //
-  //           navigator.geolocation.getCurrentPosition(position => {
-  //             userCoordinates = [position.coords.longitude, position.coords.latitude];
-  //             console.log([position.coords.longitude, position.coords.latitude])
-  //         })
-  //         console.log(config)
-  //       })
-    
     getCountyCountByState(counties)
     
     d3.select("#closeMap").on("click",function(){
@@ -143,56 +133,50 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
      d3.select("#date").html("Model run as of "+timeStamp["columns"][1])
     var dataByFIPS = turnToDictFIPS(modelData,"County_FIPS")
     pub.dataByFIPS=dataByFIPS
-    //pub.all = {"highDemand":highDemand,"hotspot":hotspot,"SVI":SVI,"hotspotSVI":hotspotSVI,"normal":normalizedP}
     countiesCount = getCountyCountByState(counties)
     
     pub.centroids = formatCentroids(centroids.features)
-    //add to geojson of counties
     var combinedGeojson = combineGeojson(dataByFIPS,counties)
     pub.all = combinedGeojson
     
-   // console.log(combinedGeojson)
- //  console.log(combinedGeojson)
-            
-    pub.fipsToName =  fipsCountyName(counties,"county")
-   pub.fipsToPopulation = fipsCountyName(counties,"totalPopulation")
-
-    drawMap(combinedGeojson,outline)
+   // pub.fipsToName =  fipsCountyName(counties,"county")
+  // pub.fipsToPopulation = fipsCountyName(counties,"totalPopulation")
     
+ 
+    
+    $.getJSON('https://geoip-db.com/json/')
+    .done (function(location) {
+        userCoordinates = [location.longitude, location.latitude]
+   });
+    
+    drawMap(combinedGeojson,outline)
         
 }
 function setMapToUser(userCoordinates){
-    config.chapters[1].location = {center:userCoordinates}
+    config.chapters[1].location = {center:userCoordinates,zoom:12}
 }
 
 function getUserCounty(userCoordinates){
-    console.log(userCoordinates)
     var userPoint = map.project(userCoordinates)
-    console.log(userPoint)
     var features = map.queryRenderedFeatures(userPoint,{layers:["base"]});
- 
-    console.log(features[0])
-    var properties = features[0].properties
-    var county = properties.county
-    var state = properties.state
+    
+    
+    
+        //
+     var properties = features[0].properties
+     var county = properties.county
+   
+    return properties
+}
+function populateUserChapter(){
+     var state = properties.state
     var pop = properties.totalPopulation
-    var covid = "test"
-    
-    var existingText = d3.select("#user p").html()
-    var newText = existingText+"<strong>Let's start with where you are. <br> You are here: You are currently in "+ county+" County "+toTitleCase(state)+", population "+numberWithCommas(pop)+"</strong>."
-    
-    newText+="<br><br>"+county+" county percentile ranks in "+toTitleCase(state)+" State: <br>"
-    for(var m in measureSet){
-        var mKey = "Percentile_ranks_"+measureSet[m]
-        var mValue = Math.round(properties[mKey]*100)/100
-        
-        var rank = calculateRankFromPercentile(properties[mKey],state)
-        
-        var displayKey = measureDisplayTextPop[measureSet[m]]
-        newText+=displayKey+": "+ mValue+"(rank of "+rank[0]+" out of "+rank[1]+" counties)<br>"
-    }
-    newText+="<strong>What does this actually mean in terms of vulnerability during covid?</strong>"
-    d3.select("#user p").html(newText)
+   var existingText = d3.select("#user p").html()
+     var newText = existingText+"Let's start with where you are. <br><br> You are currently in "+ county+" County, "
+     +toTitleCase(state)+", population "+numberWithCommas(pop)+"."
+     +"<br><br>What does this actually mean in terms of vulnerability during covid?"
+ 
+     d3.select("#user p").html(newText)
 }
 
 
@@ -214,15 +198,11 @@ function getCountyCountByState(counties){
 
 function calculateRankFromPercentile(value,state){
     var numCounties = countiesCount[state]
-    var rank = numCounties - Math.round(value/(100/numCounties))
+    var rank = numCounties - Math.round(value/(100/numCounties))+1
     
     // console.log(rank)
  //    console.log(value)
     return [rank,numCounties]
-}
-
-function filterByPercentile(column,value){
-    
 }
 
 function fipsCountyName(data,columName){
@@ -234,230 +214,9 @@ function fipsCountyName(data,columName){
     }
     return dict
 }
-
-function addMarker(gid,text,layer){
-  //  console.log([layer,gid])
-    if(gid.length==4){
-        gid = "0"+gid
-    }
-    var coords = pub.centroids[gid]
-        
-    if(coords!=undefined){
-       // console.log(gid)
-        var countyName = pub.fipsToName[gid]
-        map.addSource(layer,{
-            "type":"geojson",
-            "data":{
-                        'type': 'Feature',
-                        'properties': {
-                            'description': text+countyName,
-                            'icon': 'music'
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [coords.lng,coords.lat]//[-77.007481, 38.876516]
-                    }
-                }
-        })
-    
-        // var marker = new mapboxgl.Marker().setLngLat([coords.lng,coords.lat]).addTo(map);
-       //    console.log(marker);
-      
-        map.addLayer({
-            'id': layer,
-            'type': 'symbol',
-            'source': layer,
-            'layout': {
-                'text-field': ['get', 'description'],
-                'icon-allow-overlap': true,
-                'text-allow-overlap': true,
-                //'font-scale': 0.8,
-                //'text-variable-anchor': ['top', 'bottom', 'left', 'right'],
-                'text-radial-offset': 10 ,
-                 'text-justify': 'left'//,
-    //             'icon-image': ['concat', ['get', 'icon'], '-15']
-            },
-                "paint": {
-                    "text-halo-color": "rgba(255,255,255,.8)",
-                    "text-halo-width": 25,
-                    "text-halo-blur":5,
-                'text-opacity':0
-                    
-                }
-        });
-    
-    
-        map.setLayoutProperty(layer, 'text-field', [
-        'format',
-        ['get', 'description'],
-        {
-        'font-scale':1,
-        'text-font': [
-        'literal',
-        ['Arial Unicode MS Regular']
-        ]
-        }
-        ]);
-        
-    }
-   
-    
-}
-
-function calculateMostLeasetFrequency(mostLeast){
-        var mostLeastIds = []
-        var idsFreq = {}
-        for(var i in mostLeast){
-        //console.log(i)
-            var mostId = mostLeast[i].most.county
-            var leastId = mostLeast[i].least.county
-            
-            
-            if(Object.keys(idsFreq).indexOf(mostId)==-1){
-                idsFreq[mostId]=[]
-                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
-            }else{
-                idsFreq[mostId].push({cat:i,ml:"highest",value:mostLeast[i].most.value})
-            }
-            
-            if(Object.keys(idsFreq).indexOf(leastId)==-1){
-                idsFreq[leastId]=[]
-                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
-            }else{
-                idsFreq[leastId].push({cat:i,ml:"lowest",value:mostLeast[i].least.value})
-            }
-            
-            
-            
-            if(mostId.length==4){
-                mostLeastIds.push("0"+String(mostId))
-                mostLeastIds.push("0"+String(mostId))
-            }else{
-                mostLeastIds.push(mostId)
-                mostLeastIds.push(leastId)
-            }
-    }
-   // console.log(idsFreq)
-    
-    var count = []
-    for(var id in idsFreq){
-        if(idsFreq[id].length>1){
-            count.push({county:id,count:idsFreq[id].length,content:idsFreq[id]})
-        }
-    }
-    
-    // console.log(mostLeastIds)
- //    var count=frequencyCount(mostLeastIds)
- // 
-  //  console.log(count)
-    return count
-}
-
-function frequencyCount(arr) {
-    var a = [], b = [], prev;
-    arr.sort();
-    for ( var i = 0; i < arr.length; i++ ) {
-        if ( arr[i] !== prev ) {
-            a.push(arr[i]);
-            b.push(1);
-        } else {
-            b[b.length-1]++;
-        }
-        prev = arr[i];
-    }
-    var c = []
-    for(var j in a){
-        if(b[j]>1){
-            c.push({county:a[j],count:b[j]})
-        }
-    }
-    c.sort(function(a,b){
-        return b.count-a.count
-    })
-    return c;
-}
-
-function filterDataByState(data){
-    var stateData = []
-    for(var i in data.features){
-        if(data.features[i].properties.stateAbbr == filteredToState){
-                stateData.push(data.features[i].properties)
-        }
-    }
-    return stateData
-}
-function calculateMostLeast(stateData){
-    var dictionary = {}
-    for(var m in measureSet){
-        var key = "Percentile_ranks_"+measureSet[m]
-        dictionary[key]={}
-        dictionary[key]["most"]={county:null, value:0}
-        dictionary[key]["least"]={county:null, value:100}
-    }
-    
-    
-    for(var m in measureSet){
-        var key = "Percentile_ranks_"+measureSet[m]
-         for(var i in stateData){
-             var countyData = stateData[i]
-             var keyValue = countyData[key]
-             var FIPS = countyData["FIPS"]
-              if(FIPS.length==4){
-                  var gid = "0"+String(FIPS)
-              }
-              else{
-                  var gid = String(FIPS)
-              }
-          //    console.log(gid)
-             
-             if(keyValue>dictionary[key]["most"].value){
-                 dictionary[key]["most"].county = gid
-                 dictionary[key]["most"].value = keyValue
-             }
-             if(keyValue<dictionary[key]["least"].value){
-                 dictionary[key]["least"].county = gid
-                 dictionary[key]["least"].value = keyValue
-             }
-         }
-    }
-    return dictionary
-}
-
-function calculateVariance(stateData){
-    var varianceData = []
-    for(var i in stateData){
-        var countyData = stateData[i]
-        var countyId = countyData["FIPS"]
-        var sum = 0
-        for(var m in measureSet){
-            var key = "Percentile_ranks_"+measureSet[m]
-            var value = countyData[key]
-            sum+=value
-        }
-        var average = sum/measureSet.length        
-        var variance = 0
-        for(var m in measureSet){
-            var key = "Percentile_ranks_"+measureSet[m]
-            var value = countyData[key]
-            var deviation = Math.abs(value-average)
-            variance+=(deviation*deviation)
-        }
-        variance = variance/measureSet.length
-        varianceData.push({county:countyId,variance:variance})
-    }
-    varianceData.sort(function(a,b){
-        return b.variance-a.variance
-    })
-    var mostVariance = varianceData[0]
-    var leastVariance = varianceData[varianceData.length-1]
-    return {most:mostVariance,least:leastVariance}
-}
-
-
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
-
 function turnToDictFIPS(data,keyColumn){
     
     var newDict = {}
@@ -533,6 +292,22 @@ function drawMap(data,outline){
         [-40, 50]
     ]
      
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/c4sr-gsapp/ckgv55fah2szi19qfea0cnug1',
+        center:[-80,35],
+        zoom:6,
+        scrollZoom: false,
+        transformRequest: transformRequest
+    });
+
+
+  //  var marker = new mapboxgl.Marker();
+    // if (config.showMarkers) {
+  //       marker.setLngLat(config.chapters[0].location.center).addTo(map);
+  //   }
+
+
      map.on("load",function(){
 
          map.setLayoutProperty("mapbox-satellite", 'visibility', 'visible');
@@ -540,757 +315,161 @@ function drawMap(data,outline){
 
         map.resize();
 
-    map.dragRotate.disable();
-    map.addSource("counties",{
-             "type":"geojson",
-             "data":data
-         })
+        map.dragRotate.disable();
+        map.addSource("counties",{
+                 "type":"geojson",
+                 "data":data
+             })
          
-         map.addLayer({
-             'id':"base",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#ffffff",
-                 'fill-opacity':.1
-             }
-         },"county-name");
-         map.addLayer({
-             'id':"selectedStateBase",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#aaa",
-                 'fill-opacity':.1
-             }
-         },"county-name");
-         
-         map.addLayer({
-             'id':"variance",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#a9a9a9",
-                 'fill-opacity':0
-             }
-         },"county-name");
-         
-         map.addLayer({
-             'id':"frequency",
-             'type': 'fill',
-             'source': 'counties',
-             'paint': {
-                 'fill-color': "#a9a9a9",
-                 'fill-opacity':0
-             }
-         },"county-name");
-         
-         for(var m in measureSet){
              map.addLayer({
-                 'id':measureSet[m],
+                 'id':"base",
                  'type': 'fill',
                  'source': 'counties',
                  'paint': {
-                     'fill-color': "#aaaaaa",
-                     'fill-opacity':0
+                     'fill-color': "#ffffff",
+                     'fill-opacity':.1
                  }
-             },"county-name");
-         }
+             });
          
-       // colorByPriority(map,"Unemployment_capita","Unemployment_capita")
-        
+         
     })
     //    console.log(map.getStyle().layers)
     
     map.once("idle",function(){
        // console.log(map.getStyle().layers)
         d3.select("#loader").attr("opacity",1).transition().duration(1000).attr("opacity",0).remove()
+        var countyData = getUserCounty(userCoordinates)
+        
+        configureStory()
+    
+        //populate configuration here
+        var county = countyData.county
+        var state = countyData.state
+        var pop = countyData.totalPopulation
+        var  properties = countyData
+        var totalCountiesInState = calculateRankFromPercentile(countyData["Percentile_ranks_"+measureSet[0]],state)[1]
+        
+       // console.log(totalCountiesInState)
+        config.chapters[1]["description"]= "What do measures of vulnerability really mean? Let's start with where you are. "
+        +"<br><br> You are currently in "+ county+" County, containing "+numberWithCommas(pop)+" residents." 
+        +" 1 of "+ totalCountiesInState+" counties in "+ toTitleCase(state)+"."
         
         
-        $.getJSON('https://geoip-db.com/json/')//this line alone gets the location
-        .done (function(location) {//this line indicates that once we have a response...
-            //check your developer console for all the things we get
-            
-            userCoordinates = [location.longitude, location.latitude]
-            console.log(userCoordinates)
-            getUserCounty(userCoordinates)
-            setMapToUser(userCoordinates)
-            
-            
-        //the line below displays the info on our page
-        //d3.select("#location").html("Lng: "+location.longitude+"<br>Lat: "+location.latitude+"<br>Your IP Address: "+location.IPv4)
-        });
+         for(var m in measureSet){
+             var label = measureSet[m] 
+             
+             var mKey = "Percentile_ranks_"+measureSet[m]
+             var mValue = Math.round(properties[mKey]*100)/100
         
-      //  map.showCollisionBoxes = true
-         //map.setFilter("state-abbr",["==","stateAbbr",filteredToState])
-        // for(var m in measureSet){
- //
- //             map.setFilter(measureSet[m],["==","stateAbbr",filteredToState])
- //            colorByPriority(map,measureSet[m],measureSet[m])
- //
- //        }
-    // map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
- //        map.setFilter("variance",["==","stateAbbr",filteredToState])
- //        map.setFilter("frequency",["==","stateAbbr",filteredToState])
- //
- //    map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
- //    map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
-    
-     //   map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
-      //  map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
-      
-       // console.log(map.getStyle().layers)
-    })
-
-}
-
-function drawSmallMapKey(svg){
-    
-    var defs = svg.append("defs");
-    var gradient = defs.append("linearGradient")
-       .attr("id", "svgGradient")
-       .attr("x1", "0%")
-       .attr("x2", "100%")
-       .attr("y1", "0%")
-       .attr("y2", "0%");
-
-    gradient.append("stop")
-       .attr('class', 'end')
-       .attr("offset", "0%")
-       .attr("stop-color", "#e1e0e0")
-       .attr("stop-opacity", 1);
-    gradient.append("stop")
-       .attr('class', 'start')
-       .attr("offset", "100%")
-       .attr("stop-color", "#525252")
-       .attr("stop-opacity", 1);
-
-   
-       
-    svg.append("rect")
-    .attr("class","key")
-    .attr('width',160)
-    .attr('height',10)
-    .attr("x",20)
-    .attr("y",10)
-    //   .attr("fill","red")
-    .attr("fill","url(#svgGradient)")
-       .attr("stroke","rgba(0,0,0,.5)")
-       .attr("stroke-width",.1)
-       
-      svg.append("text").text("High SVI: 1").attr("x",180).attr("y",32).attr("text-anchor","end")
-      svg.append("text").text("Low SVI: 0").attr("x",20).attr("y",32)//.attr("text-anchor","end")
-}
-
-function sumProperty(prop,list){
-     var total = 0
-    for ( var i = 0, _len = list.length; i < _len; i++ ) {
-        total += parseFloat(list[i][prop])
-    }
-    return total
-}
-
-function drawHistogram(strategy){
-  //  var strategy = "SVI"
-    var priority = strategy+"_priority"
-    d3.select("#histogram svg").remove()
-   var svg = d3.select("#histogram")
-                .append("svg")
-                .attr("width",800)
-                .attr("height",140)
-   
-    var height = 80
-    var width = 700
-    var barWidth = 650
-    var activeData = Object.values(pub.all[strategy])
-    
-    var breaks = fillColor[strategy]["stops"]
-
-    var max = Math.max.apply(Math, activeData.map(function(o) { return o[priority]; }))
-    
-    var totalCounties = activeData.length
-    
-    var formattedBreaks = []
-    var cLength = 0    
-    
-    for(var i in breaks){
-        if(i==breaks.length-1){
-            var endValue = max
-            var startValue = breaks[i][0]
-
-        }else{
-            var startValue = breaks[i][0]
-            var endValue = breaks[parseInt(i)+1][0]
-        }
+             var rank = calculateRankFromPercentile(properties[mKey],state)
+             var topCounty = mostVulnerableCounty(mKey,state)
+             //console.log(topCounty)
+             var displayKey = measureDisplayTextPop[measureSet[m]]
         
-        var group =activeData.filter(function(d){
-            return d[priority]>=startValue && d[priority]<=endValue
-        })        
-        var sum = sumProperty(strategy+"_total_demand_of_county",group)
-        
-        var startX = cLength
-        cLength+=Math.round((group.length/totalCounties)*10000)/100
-        actualLength = group.length
-        var color = colors[strategy][i]
-        formattedBreaks.push({cases:sum,color:color,cLength:cLength, sLength:startX,actualLength:actualLength,length:Math.round((group.length/totalCounties)*10000)/100})
-    }
-    var xScale = d3.scaleLinear().domain([0,100]).range([0, barWidth])
-    
-    var gradient = svg.append("defs").append("linearGradient")
-        .attr("id","test")
-        .attr("x1","0%")
-        .attr("y1","0%")
-        .attr("x2","100%")
-        .attr("y2","0%")
-    
-    var y1 = 100
-    var y2 = 20
-    
-   // svg.append("text").text("priority value").attr("x",20).attr("y",30)
-    svg.append("text").text("# of counties").attr("x",0).attr("y",y1)
-    svg.append("text").text("# of cases").attr("x",0).attr("y",y1+30)
-
-
-    for(var b in formattedBreaks){
-        var bk = formattedBreaks[b]
-        gradient.append("stop")
-        .attr("offset",bk.sLength+"%")
-        .style("stop-color",bk.color)
-        
-    }
-    svg.append("rect")
-    .attr("x",0)
-    .attr("y",y1+5)
-    .attr("width", barWidth)
-    .attr("height",10)
-    .attr("fill","url(#test)")
-    .attr("stroke","#fff")
-    .attr("stroke-width","2px")
-    
-    for(var b in formattedBreaks){
-        var bk = formattedBreaks[b]
-        // svg.append("text")
- //        .text(bk.endV)
- //        .attr("x",xScale(bk.cLength)-5)
- //        .attr("y",55)
- //        .style("writing-mode","vertical-rl")
- //        .attr("text-anchor","end")
-        
-        
-        // svg.append("rect")
-      //       .attr("x",xScale(bk.sLength))
-      //       .attr("y",20)
-      //       .attr("width", xScale(bk.length))
-      //       .attr("height",10)
-      //       .attr("fill",bk.color)
-        
-        svg.append("text")
-        .text(numberWithCommas(bk.actualLength))
-        .attr("x",xScale(bk.sLength+bk.length/2)-5)
-        .attr("y",y1+10)
-        .attr("text-anchor","end")
-        .style("writing-mode","vertical-rl")
-        
-        svg.append("text")
-        .text(numberWithCommas(bk.cases))
-        .attr("x",xScale(bk.sLength+bk.length/2)-5)
-        .attr("y",y1+20)
-        .attr("text-anchor","start")
-        .style("writing-mode","vertical-rl")
-        
-        svg.append("rect")
-        .attr("width",2)
-        .attr("height",10)
-        .attr("x",xScale(bk.cLength)-2)
-        .attr("y",y1+5)
-        .attr("fill","white")
-    }
-    
-    
-    if(pub.coverage !="show_all"){
-        var cBreaks = 10
-        var cmax = 100
-        var cmin = 0
-        var formattedCBreaks = []
-    
-        var cGroup = activeData.filter(function(d){
-                var cKey = pub.strategy+"_"+pub.coverage
-                return d[cKey]==0
-            }) 
-        var cummulativeLength =Math.round(cGroup.length/totalCounties*10000)/100
-        formattedCBreaks.push({minValue:0,maxValue:0,length:cGroup.length,lengthP:Math.round(cGroup.length/totalCounties*10000)/100,start:0})
-        
-        
-        
-        for(var c = 0; c<10; c++){
-             var cBreakStart = (cmax-cmin)/cBreaks*c
-             var cBreakEnd = (cmax-cmin)/cBreaks*(c+1)
-            if(cBreakStart==0){
-                cBreakStart = 1
-            }
-            var cGroup =activeData.filter(function(d){
-                var cKey = pub.strategy+"_"+pub.coverage
-                return d[cKey]>=cBreakStart && d[cKey]<cBreakEnd
-            }) 
-            formattedCBreaks.push({minValue:cBreakStart,maxValue:cBreakEnd-1,length:cGroup.length,lengthP:Math.round(cGroup.length/totalCounties*10000)/100,start:cummulativeLength})
-            cummulativeLength+=Math.round(cGroup.length/totalCounties*10000)/100
-        }
-    
-        var oScale = d3.scaleLinear().domain([0,99.9]).range([1,0])
-        var sScale = d3.scaleLinear().domain([0,99.9]).range([2,1])
-        for(var i in formattedCBreaks){
-            var fcb = formattedCBreaks[i]
-            svg.append("rect")
-            .attr("y",y2)
-            .attr("x",xScale(fcb.start)+i*2)
-            .attr("height",10)
-            .attr("width",xScale(fcb.lengthP))
-            .attr("fill","none")
-            .attr("stroke",outlineColor)
-            .attr("opacity",oScale(fcb.minValue))
-            .attr("stroke-width",sScale(fcb.minValue))
-            break
-        }
-    
-        svg.append("text").text(numberWithCommas(formattedCBreaks[0].length)+" ("+formattedCBreaks[0].lengthP+"%)"+" counties with 0% coverage")
-        .attr("y",y2+25).attr("x",0).attr("fill","black")
-    }
-}
-
-function colorByPriority(map,layer,column){
-    var matchString = {
-    property: "Percentile_ranks_"+column,
-   // stops: [[0, 'rgba(19,182,163, 1)'],[.5,"#A2D352"],[1, 'rgba(255, 241, 0, 1)']]
-    stops: [[0,"#ddd"],[Math.pow(.01, 30), colors[0]],[50,colors[1]],[100, colors[2]]]
-    }
-    map.setPaintProperty(layer, 'fill-color', matchString)
-    
-}
-
-function zoomToBounds(mapS){
-    //https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
-    var bounds =  new mapboxgl.LngLatBounds([-155, 20], 
-        [-55, 55]);
-    map.fitBounds(bounds,{padding:500},{bearing:0})
-}
-function getMaxMin(coords){
-    var maxLat = -999
-    var minLat = 0
-    var maxLng = 0
-    var minLng = 999
-    for(var i in coords){
-        var coord = coords[i]
-        if(coord<0){
-            if(coord<minLat){
-                minLat = coord
-            }else if(coord>maxLat){
-                maxLat = coord
-            }
-        }else{
-            if(coord>maxLng){
-                maxLng = coord
-            }else if(coord<minLng){
-                minLng = coord
-            }
-        }
-    }
-    var bounds = [
-    [minLat,minLng], // Southwest coordinates
-    [maxLat, maxLng] // Northeast coordinates
-    ];
-    return bounds
-    
-   // console.log([minLat,maxLat,minLng,maxLng])
-}
-function flatDeep(arr, d = 1) {
-   return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
-                : arr.slice();
-};
-function PopulateDropDownList(features,map,combinedGeojson) {
-           //Build an array containing Customer records.
-    var sorted =features.sort(function(a,b){
-        return parseInt(a.properties.GEOID) - parseInt(b.properties["GEOID"]);
-        
-    })          
-    var ddlCustomers = document.getElementById("ddlCustomers");
- 
-  
-    //Add the Options to the DropDownList.
-    var boundsDict = {}
-    
-    for (var i = 0; i < sorted .length; i++) {
-        var option = document.createElement("OPTION");
-
-        //Set Customer Name in Text part.
-        option.innerHTML = sorted[i].properties.NAME;
-        
-        var coordinates = flatDeep(features[i].geometry.coordinates,Infinity)
-        //console.log(coordinates)
-       boundsDict[sorted[i].properties.GEOID]=getMaxMin(coordinates)
-        //Set CustomerId in Value part.
-        option.value = sorted[i].properties["GEOID"]
-        option.id = sorted[i].properties.NAME
-        //Add the Option element to DropDownList.
-        if(sorted[i].properties.NAME!="United States Virgin Islands"&& sorted[i].properties.NAME!="American Samoa"&& sorted[i].properties.NAME!="Commonwealth of the Northern Mariana Islands"&& sorted[i].properties.NAME!="Guam"){
-          ddlCustomers.options.add(option);
-      }
-    }
-    document.getElementById("ddlCustomers").value = "36";
-    
-   $('select').on("change",function(){
-      // console.log(this.value)
-       if(this.value=="C48"){
-        //   console.log("ok")
-        //   zoomToBounds(map)
-          var filter = ["!=","stateAbbr"," "]
-          map.setFilter("counties",filter)
-           // map.flyTo({
- //               zoom:3.8,
- //               center: [-94,37],
- //               speed: 0.8, // make the flying slow
- //               curve: 1
- //               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
- //           });
-         currentState="C48"
-       }else if(this.value=="02"){
-           map.flyTo({
-               zoom:4,
-               center: [-147.653,63.739]//,
-               // speed: 0.8, // make the flying slow
-     //           curve: 1
-               //essential: true // this animation is considered essential with respect to prefers-reduced-motion
-           });
-           currentState="AK"
-       }
-       else{
-           var coords = boundsDict[this.value]
-           //console.log(coords)
-           var bounds =  new mapboxgl.LngLatBounds(coords);
-           map.fitBounds(bounds,{padding:200},{bearing:0})
-           var state_tiger_dict = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY','60':'AS','66':'GU','69':'MP','72':'PR','78':'VI'}
-           currentState = state_tiger_dict[this.value]
-          var filter = ["==","stateAbbr",currentState]
-         // map.setFilter("counties",filter)
-           filteredToState = currentState
-  //    
-       }
-       
-       filteredToState =currentState
-       
-       setToState(combinedGeojson)
-    })
-}
-function setToState(combinedGeojson){
-    //le.log(filteredToState)
-    config["chapters"][1]["location"]={}
-    
-    var allLayers = map.getStyle().layers
-    for(var i in allLayers){
-        var layerId = allLayers[i].id
-        if(layerId.split("_")[0]=="most"||layerId.split("_")[0]=="least"){
-            map.removeLayer(layerId)
-            map.removeSource(layerId)
-        }
-    }
-     //  console.log(map.getStyle().layers)
-    
-    var stateData = filterDataByState(combinedGeojson)
-        var mostLeast = calculateMostLeast(stateData)
-        var mostLeastVariance = calculateVariance(stateData)    
-        var mostLeastFrequency = calculateMostLeasetFrequency(mostLeast)
-    
-    var introDescription = {
-          "Medicaid_capita":"Vulnerability is also reflected by the number of residents enrolled in Medicaid, a means-tested health insurance program with eligibility largely determined by income. The enrollment criteria share some factors with SVI*, such as income, household composition, disability, and employment status.",
-          "Unemployment_capita":"As the pandemic has rolled through the United States, unemployment has increased dramatically; this increase is a sign of the economic toll the virus has taken. For many workers in America, health care access is tied to a job. With rising unemployment, many have been left uninsured or underinsured.",
-          "SVI": "SVI* calls attention to counties with the greatest number of its highly vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type.",
-          "YPLL":"Years of Potential Life Lost (YPLL) represents community-specific health vulnerability in the United States by measuring rates of premature death. Some of the counties that have the state’s highest values for SVI* also have the highest levels of YPLL. But other counties are newly visible as vulnerable.",
-            "Covid":"The direct effects of COVID-19 have exacerbated many of the preexisting vulnerabilities in the United States. Sometimes long-term vulnerabilities and the impact of COVID-19 coincide in our maps, but sometimes they do not.",
-          "Covid_capita":"Normalizing recent COVID-19 cases by population highlights the less populous counties where large proportions of a community have acquired the virus",
-        "Covid_death_capita":"Cumulative COVID-19 deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago."
-    }
-    
-    for(var j in mostLeast){
-       // console.log(j)
-       // console.log(mostLeast[j])
-        var label = j
-        var most = mostLeast[j].most
-        var least = mostLeast[j].least
-        addMarker(least.county,"Lowest: ","least_"+label.replace("Percentile_ranks_",""))
-        addMarker(most.county,"Highest: ","most_"+label.replace("Percentile_ranks_",""))
-        var existingText = introDescription[label.replace("Percentile_ranks_","")]
-        var newText = "<br><br>In "+filteredToState+", <strong>"+pub.fipsToName[least.county]
-            +" County</strong>, population "+  numberWithCommas(pub.fipsToPopulation[least.county])+", has the lowest percentile ranking when prioritized according to "
-            +measureDisplayTextPop[label.replace("Percentile_ranks_","")]
-        +", and <strong>"+pub.fipsToName[most.county]+" County</strong>, population "+numberWithCommas(pub.fipsToPopulation[most.county])+", has the highest."
-        d3.select("#"+label.replace("Percentile_ranks_","")).select("p").html(existingText+newText)
-    }
-    
-    if(mostLeastFrequency.length>1){
-        var existingText = "Here are the counties that displayed across the most extremes in rankings of vulnerability we mapped."
-    }else{
-        var existingText = "Here is the county that displayed across the most extremes in rankings of vulnerability we mapped."
-    }
-
-    for(var f in mostLeastFrequency){
-        mostLeastFrequency[f]
-        var county = pub.fipsToName[mostLeastFrequency[f].county]
-        existingText+= "<br><br><strong>"+county + " County</strong> is "
-        
-        for(var c in mostLeastFrequency[f].content){
-            if(c ==mostLeastFrequency[f].content.length-1){
-                var formattedText = " and "+mostLeastFrequency[f].content[c].ml +" in "
-                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
-                    +"."
-            }else{
-                var formattedText = mostLeastFrequency[f].content[c].ml +" in "
-                    +measureDisplayTextPop[mostLeastFrequency[f].content[c].cat.replace("Percentile_ranks_","")]
-                    +", "
-            }
-            existingText+=formattedText
-            
-        }
-        
-        
-        d3.select("#frequency").select("p").html(existingText)
-        
-        config["chapters"][config["chapters"].length-1].description=existingText
-        
-        addMarker(mostLeastFrequency[f].county,"","most_"+f)
-        config["chapters"][0]["onChapterEnter"].push({layer:"most_"+f,opacity:0})
-        config["chapters"][config["chapters"].length-1]["onChapterEnter"].push({layer:"most_"+f,opacity:1})
-        config["chapters"][config["chapters"].length-1]["onChapterExit"].push({layer:"most_"+f,opacity:0})
-    }
- //
-        addMarker(mostLeastVariance.least.county,"Lowest variance across rankings: ","least_variance")
-        addMarker(mostLeastVariance.most.county,"Highest variance across rankings: ","most_variance")
-    
-    for(var m in measureSet){
-        
-         map.setFilter(measureSet[m],["==","stateAbbr",filteredToState])
-        colorByPriority(map,measureSet[m],measureSet[m])
-        
-    }
-    map.setFilter("variance",["==","stateAbbr",filteredToState])
-    map.setFilter("frequency",["==","stateAbbr",filteredToState])
-    map.setFilter("selectedStateBase",["==","stateAbbr",filteredToState])
-    
-    map.setFilter("place-label",["==","iso_3166_2","US-"+filteredToState])
-    map.setFilter("place-marker",["==","iso_3166_2","US-"+filteredToState])
-    
-    
-       var chapter1 = d3.select("#start")
-}
-
-function placesMenus(map){
-    PopulateDropDownList(pub.states.features,map)
-   // var places = ["Contiguous 48","Alaska","Hawaii","Puerto_Rico"]
-    // var places = ["Contiguous 48"]
- //    var coords = {
- //        "Contiguous 48":{coord:[37,-93],zoom:4},
- //        "Alaska":{coord:[63.739,-147.653],zoom:4},
- //        "Hawaii":{coord:[20.524,-157.063],zoom:7.1},
- //        "Puerto_Rico":{coord:[18.219,-66.338],zoom:8}
- //    }
- //
- //    for (var i = 0; i < places.length; i++) {
- //        var id = places[i];
- //        var link = document.createElement('a');
- //        link.href = '#';
- //        link.className = 'placesLink';
- //        link.textContent = id.split("_").join(" ");
- //        link.id =id;
- //
- //        link.onclick = function(e) {
- //            var id = d3.select(this).attr("id")
- //            var coord = coords[id].coord
- //            var zoom = coords[id].zoom
- //            map.flyTo({
- //                zoom: zoom,
- //            center: [
- //           coord[1] ,
- //            coord[0]
- //            ],
- //            speed: 0.8, // make the flying slow
- //            curve: 1
- //            //essential: true // this animation is considered essential with respect to prefers-reduced-motion
- //            });
- //        };
- //
- //        var layers = document.getElementById('placesMenu');
- //        layers.appendChild(link);
- //    }
-}
-
-function toggleLayers(map){
-    // enumerate ids of the layers
-   // var toggleableLayerIds = ['aiannh', 'prison','mapbox-satellite',"tract_svi"];
-    var toggleableLayerIds = ['mapbox-satellite'];
-
-    // set up the corresponding toggle button for each layer
-    for (var i = 0; i < toggleableLayerIds.length; i++) {
-        var id = toggleableLayerIds[i];
-
-        var link = document.createElement('a');
-        link.href = '#';
-        link.className = 'active';
-        link.textContent = "Satellite Only"
-        link.id = id;
-        
-        link.onclick = function(e) {//TODO toggle click 
-              
-              
+             if(rank[0]==1){
+                var dataText="<br>The percentile rank of "+displayKey+" for where you are is "+ mValue
+                 +", which is #"+rank[0]+" out of the "+rank[1]+" counties in "+toTitleCase(state)+".<br><br>"
+             }else{
+             var dataText="<br>The percentile rank of "+displayKey+" for where you are is "+ mValue
+             +", which is #"+rank[0]+" out of the "+rank[1]+" counties in "+toTitleCase(state)+".<br><br>"
+             +"In your state, "+topCounty.county+" county, with a population of "+numberWithCommas(topCounty.population)
+            +" has the highest vulnerability in "+displayKey+"."
+             }
+             
+             
+             var newChapter = {}
+             newChapter["id"]=label
+             newChapter["title"]=measureDisplayTextPop[label]
+             newChapter["description"]=introDescription[label]+"<br>"+dataText
+             newChapter["location"]={center:topCounty.centroid}
+             newChapter["onChapterEnter"] = [
+      //            {layer: label,opacity:1} ,
+      //            {layer: "least_"+label,opacity:1},
+      //             {layer: "most_"+label,opacity:1}
+             ]
+               newChapter["onChapterExit"] = [
+      //             {layer: label,opacity:0},
+      //             {layer: "least_"+label,opacity:0},
+      //              {layer: "most_"+label,opacity:0}
+                ]
+             config.chapters.push(newChapter)
+         }
          
-            var clickedLayer = this.id;
-            e.preventDefault();
-            e.stopPropagation();
-
-            var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
-
-            // toggle layer visibility by changing the layout object's visibility property
-            if (visibility === 'visible') {
-              map.setPaintProperty("county-centroids-dnxdon", 'text-color',"#000000")
-                map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-                d3.select(this).style("background-color","white")
-                link.textContent = "Satellite Only"
-                this.className = '';
-            } else {
-              map.setPaintProperty("county-centroids-dnxdon", 'text-color',"#ffffff")
-                this.className = 'active';
-                map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-                    d3.select(this).style("background-color","yellow")
-               link.textContent = "Hide Satellite"
-            }
-        };
-
-        var layers = document.getElementById('layersMenu');
-        layers.appendChild(link);
-    }
-}
-//for crossfilter
-function drawTable(ndx,svi){
-    var table = new dc.DataTable('#table');
-    var tDim = ndx.dimension(function(d){return d["covid_cases"]})
-    table
-        .dimension(tDim)
-        .size(svi.length)
-        .order(d3.descending)
-        .sortBy(function(d) { return d["covid_cases"]; })
-        .showSections(false)
-    .columns([
-                  {
-                      label: 'FIPS',
-                      format: function(d) {
-                          return d["FIPS"];
-                      }
-                  },
-                  {
-                      label: 'STATE',
-                      format: function(d) {
-                          return d["STATE"];
-                      }
-                  },
-                  {
-                      label: 'COUNTY',
-                      format: function(d) {
-                          return d["COUNTY"];
-                      }
-                  },
-                  {
-                      label: 'CASES',
-                      format: function(d) {
-                          return d["covid_cases"];
-                      }
-                  },
-                  {
-                      label: '/100000',
-                      format: function(d) {
-                          return d["covid_deathsPer100000"];
-                      }
-                  },
-                  {
-                      label: 'SVI',
-                      format: function(d) {
-                          return d["SPL_THEMES"];
-                      }
-                  },
-                  {
-                      label: 'SVI%',
-                      format: function(d) {
-                          return d["RPL_THEMES"];
-                      }
-                  }
-              ]);
-          d3.select('#download')
-              .attr("cursor","pointer")
-              .on('click', function() {
-                  //console.log("download")
-                  var data = tDim.top(Infinity);
-                  if(d3.select('#download-type input:checked').node().value==='table') {
-                      data = data.sort(function(a, b) {
-                          return table.order()(table.sortBy()(a), table.sortBy()(b));
-                      });
-                      data = data.map(function(d) {
-                          var row = {};
-                          table.columns().forEach(function(c) {
-                              row[table._doColumnHeaderFormat(c)] = table._doColumnValueFormat(c, d);
-                          });
-                          return row;
-                      });
-                  }
-                  var blob = new Blob([d3.csvFormat(data)], {type: "text/csv;charset=utf-8"});
-                  saveAs(blob, 'data.csv');
-              });
-}
-function scatterPlot(ndx,w,h,x,y,xRange){
-  
-     d3.select("#scatter").append("div").attr("id",x)
-    var scatter =  new dc.ScatterPlot("#"+x)
-    var dimension = ndx.dimension(function(d){
-        console.log(Object.keys(d))
-        return [d[x],d[y]]
-    })
-    var group = dimension.group()
-    scatter.width(w)
-          .useCanvas(true)
-        .height(h)
-        .group(group)
-        .dimension(dimension)
-    .x(d3.scaleLinear().domain([-.01, xRange]))
-    .y(d3.scaleLinear().domain([0, 35000]))
-    .xAxisLabel(x)
-    .yAxisLabel("Cases Per 100,000")
-    .excludedOpacity(0.5)
-    .colors(["#000000"])
-    .on("filtered",function(){
-        onFiltered(dimension.top(Infinity))
+        
+          for(var n in capitaSet){
+              // console.log(capitaSet[n])
+              // console.log(countyData)
+//               console.log(value)
+              var newChapter = {}
+              newChapter["id"]=capitaSet[n]+"_compare"
+              
+              var title = capitaSetDisplayTitle[capitaSet[n]]
+              newChapter["title"]=title
+              
+              var value = countyData[capitaSet[n]]
+              var matches = filterByValue(value,capitaSet[n])
+              var description = matches.length+" counties have similar "
+              +measureDisplayTextPop[capitaSet[n]]+" as where you are."
+              
+              for(var m in matches){
+                  description+= matches[m].county+" county, in "+matches[m].state+"<br>"
+              }
+              newChapter["description"]=description
+              newChapter["location"]={center:userCoordinates,zoom:18}
+              newChapter["onChapterEnter"] = [
+       //            {layer: label,opacity:1} ,
+       //            {layer: "least_"+label,opacity:1},
+       //             {layer: "most_"+label,opacity:1}
+              ]
+                newChapter["onChapterExit"] = [
+       //             {layer: label,opacity:0},
+       //             {layer: "least_"+label,opacity:0},
+       //              {layer: "most_"+label,opacity:0}
+                 ]
+              config.chapters.push(newChapter)
+          }
+         scrollAll()
+         setMapToUser(userCoordinates)
     })
 }
-function formatCovid(covid,svi){
-   // console.log(covid)
-    
-    var covidByCounty = {}
-    for (var i in svi){
-        var gid = "_"+svi[i].FIPS
-        covidByCounty[gid]=[]
-    }
-    var other = []
-    for(var c in covid){
-        var cases = covid[c].cases
-        var fips = "_"+covid[c].fips
-        var deaths = covid[c].deaths
-        var date = covid[c].date
-        if(fips==""||fips=="unkown"||covidByCounty[fips]==undefined){
-            if(other.indexOf(covid[c].county)==-1){
-                other.push(covid[c].county)
-            }
-        }else{
-            covidByCounty[fips][date]={date:date,fips:fips,cases:cases,deaths:deaths}
+
+function filterByValue(matchValue, column){
+    var matches = []
+    for(var j in pub.all.features){
+        var value = pub.all.features[j].properties[column]
+        if(value<matchValue*1.01 && value>matchValue*.99){
+            var county = pub.all.features[j].properties.county
+            var state = pub.all.features[j].properties.state
+            var population = pub.all.features[j].properties.totalPopulation
+            var match = {county:county, state:state, population:population}
+            matches.push(match)
         }
     }
-    
-    return covidByCounty
+    return matches
+}
+
+function mostVulnerableCounty(measure,selectedState){
+    for(var i in pub.all.features){
+        var properties = pub.all.features[i].properties
+        var state = properties.state
+        // console.log(state)
+    //     console.log(selectedState)
+        if(state==selectedState){
+            var ranking = calculateRankFromPercentile(properties[measure],state)
+            if(ranking[0]==1){
+                var county = properties.county
+                var population = properties.totalPopulation
+               // console.log(pub.all.features[i].)
+                var centroid = pub.centroids[properties.FIPS]
+                return {county:county,population:population, centroid:centroid}
+               // return 
+            }
+        }//[measure]
+    }
     
 }
+
+
 function formatCentroids(centroids){
     var formatted ={}
     for(var i in centroids){
@@ -1299,15 +478,6 @@ function formatCentroids(centroids){
         formatted[geoid]={lng:coords[0],lat:coords[1]}
     }
     return formatted
-}
-function formatDate(date){
-            var d = new Date(date)
-            var ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
-            var mo = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(d)
-            var da = ("0"+d.getUTCDate()).slice(-2)
-    
-            var formattedDate = ye+"-"+mo+"-"+da    
-            return formattedDate
 }
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -1349,152 +519,3 @@ function combineDatasets(svi,covid){
     
     return svi
 }
-function onFiltered(data){
-    var gids =[]
-    var pop = 0
-    var hu = 0
-    var area = 0
-    var deaths = 0
-    var cases = 0
-    
-    for(var d in data){
-        gids.push(data[d].FIPS)
-        pop+=parseInt(data[d].E_TOTPOP)
-        area+=parseInt(data[d].AREA_SQMI)
-        hu+=parseInt(data[d].E_HU)
-        cases+=parseInt(data[d]["covid_cases"])
-        deaths+=parseInt(data[d]["covid_deaths"])
-        
-    }
-    d3.select("#population").html("Containing "+numberWithCommas(pop)
-        +" people <br>"+numberWithCommas(hu)+" households <br> in "+numberWithCommas(area)
-        +" square miles <br>"
-        +numberWithCommas(cases)+" cases <br>"
-        +numberWithCommas(deaths)+" deaths")
-    
-    formatFilteredData(data)
-    filterMap(gids)
-}
-function formatFilteredData(data){
-    //console.log(data)
-    var formatted = ""
-    
-}
-function filterMap(gids){
-  //  console.log(gids)
-  var filter = ['in',["get",'FIPS'],["literal",gids]];
-	map.setFilter("counties",filter)
-}
-function barChart(divName, column,ndx,height,width){
-    var max = 0
-    var min = 0
-
-    var columnDimension = ndx.dimension(function (d) {
-        if(parseFloat(d[column])>max){
-            max = parseFloat(d[column])
-        } 
-        return parseFloat(d[column])
-    });
-  
-   //   console.log([max,min])
-
-    var columnGroup = columnDimension.group();
-        
-    //var divName = column.split("_")[1]
-    
-    var color = colors[divName]
-    
-    var barDiv = d3.select("#"+divName).append("div").attr("id",column).style("width",width+"px").style("height",(height+30)+"px")
-    
-    d3.select("#"+column).append("text").attr("class","reset")
-        .on("click",function(){
-            chart.filterAll();
-            dc.redrawAll();
-        })
-        .style("display","none")
-        .text("reset")
-        .attr("cursor","pointer")
-    
-    barDiv.append("span").attr("class","reset")
-    barDiv.append("span").attr("class","filter")
-
-    var chart = dc.barChart("#"+column);
-    chart.on("filtered",function(){
-        onFiltered(columnDimension.top(Infinity))
-    })
-    
-    d3.select("#"+column).append("div").attr("class","chartName").html(themesDefinitions[column]).style("color",color)
-        d3.select("#"+divName).style("color",color)
-    
-    chart.width(width)
-            .height(height)
-            .margins({top: 10, right: 20, bottom: 30, left: 40})
-            .dimension(columnDimension)
-            .group(columnGroup)
-          // .centerBar(true)
-            .gap(0)
-            .elasticY(true)
-            .xUnits(function(){return Math.abs(Math.round(max-min))*100;})
-            .x(d3.scaleLinear().domain([min,max]))
-            .xAxis()
-            .ticks(10)
-        
-        chart.yAxis()
-            .ticks(2);
-      chart.on("preRedraw", function (chart) {
-          chart.rescale();
-      });
-      chart.on("preRender", function (chart) {
-          chart.rescale();
-      });		
-}
-function rowChart(divName,column, ndx,height,width,topQ,color){
-    d3.select("#"+divName).style("width",width+"px").style("height",height+"px")
-    var chart = dc.rowChart("#"+divName);
-
-    var columnDimension = ndx.dimension(function (d) {
-        return d[column];
-    });
-    var columnGroup = columnDimension.group();
-    chart.on("filtered",function(){
-        onFiltered(columnDimension.top(Infinity))
-       // moveMap(columnDimension.top(Infinity))
-    })
-    chart.width(width)
-        .height(height)
-        .margins({top: 0, left: 250, right: 10, bottom: 20})
-        .group(columnGroup)
-        .dimension(columnDimension)
-    	.labelOffsetX(-240)
-    	.labelOffsetY(12)
-    	//.data(function(agencyGroup){return columnGroup.top(topQ)})
-    	.ordering(function(d){ return -d.value })
-        .ordinalColors([color])
-        .label(function (d) {
-            return d.key+": "+ d.value+ " counties";
-        })
-        // title sets the row text
-        .title(function (d) {
-            return d.value;
-        })
-        .gap(2)
-        .elasticX(true)
-        .xAxis().ticks(4)
-}
-function dataCount(dimension,group){
-    dc.dataCount(".dc-data-count")
-        .dimension(dimension)
-        .group(group)
-        // (optional) html, for setting different html for some records and all records.
-        // .html replaces everything in the anchor with the html given using the following function.
-        // %filter-count and %total-count are replaced with the values obtained.
-        .html({
-            some:"%filter-count selected out of <strong>%total-count</strong> counties | <a href='javascript:dc.filterAll(); dc.renderAll();''>Reset All</a>",
-            all:"All  %total-count counties selected."
-        })
-        
-}
-
-//#### Version
-//Determine the current version of dc with `dc.version`
-d3.selectAll("#version").text(dc.version);

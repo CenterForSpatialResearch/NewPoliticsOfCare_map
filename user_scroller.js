@@ -1,4 +1,5 @@
-var layerTypes = {
+function scrollAll(){
+    var layerTypes = {
     'fill': ['fill-opacity'],
     'line': ['line-opacity'],
     'circle': ['circle-opacity', 'circle-stroke-opacity'],
@@ -107,34 +108,14 @@ if (footer.innerText.length > 0) {
 
 mapboxgl.accessToken = config.accessToken;
 
-const transformRequest = (url) => {
+transformRequest = (url) => {
     const hasQuery = url.indexOf("?") !== -1;	  
     const suffix = hasQuery ? "&pluginName=journalismScrollytelling" : "?pluginName=journalismScrollytelling";	  
     return {
       url: url + suffix
     }	  
 }
-
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: config.style,
-    center:[-80,35],
-    zoom:6,
-    scrollZoom: false,
-    transformRequest: transformRequest
-});
-
-var marker = new mapboxgl.Marker();
-if (config.showMarkers) {
-    marker.setLngLat(config.chapters[0].location.center).addTo(map);
-}
-
-// instantiate the scrollama
-var scroller = scrollama();
-
-map.on("load", function() {
-    // setup the instance, pass callback functions
-    scroller
+scroller
     .setup({
         step: '.step',
         offset: 0.5,
@@ -158,7 +139,36 @@ map.on("load", function() {
             chapter.onChapterExit.forEach(setLayerOpacity);
         }
     });
-});
+// instantiate the scrollama
 
+//map.on("load", function() {
+    // setup the instance, pass callback functions
+    // scroller
+//     .setup({
+//         step: '.step',
+//         offset: 0.5,
+//         progress: true
+//     })
+//     .onStepEnter(response => {
+//         var chapter = config.chapters.find(chap => chap.id === response.element.id);
+//         response.element.classList.add('active');
+//         map.flyTo(chapter.location);
+//         if (config.showMarkers) {
+//             marker.setLngLat(chapter.location.center);
+//         }
+//         if (chapter.onChapterEnter.length > 0) {
+//             chapter.onChapterEnter.forEach(setLayerOpacity);
+//         }
+//     })
+//     .onStepExit(response => {
+//         var chapter = config.chapters.find(chap => chap.id === response.element.id);
+//         response.element.classList.remove('active');
+//         if (chapter.onChapterExit.length > 0) {
+//             chapter.onChapterExit.forEach(setLayerOpacity);
+//         }
+//     });
+//});
 // setup resize event
 window.addEventListener('resize', scroller.resize);
+
+}

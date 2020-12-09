@@ -150,6 +150,12 @@ var measureSet = [
       Covid_death_capita:"Covid Deaths / 100k Residents"
  }
  var capitaSet = ["Unemployment_capita","Medicaid_capita","Covid_capita","Covid_death_capita"]
+ var capitaSetDisplayTitle = {
+   Unemployment_capita:"Comparing unemployment per capita to other parts of the country",
+   Medicaid_capita:"Comparing Medicaid enrollment per capita across the country",
+   Covid_capita:"Comparing Covid cases per capita across the country",
+   Covid_death_capita:"Comparing Covid deaths per capita across the country"
+ }
  
 var userCoordinates = [-74.91448282148225,40.67736399374095]
  
@@ -171,9 +177,18 @@ var userCoordinates = [-74.91448282148225,40.67736399374095]
    userCoordinates = [position.coords.latitude, position.coords.longitude]
  }
  
- 
-  
-  
+ var map;
+var transformRequest
+ var scroller = scrollama();
+ var introDescription = {
+       "Medicaid_capita":"Vulnerability is also reflected by the number of residents enrolled in Medicaid, a means-tested health insurance program with eligibility largely determined by income. The enrollment criteria share some factors with SVI*, such as income, household composition, disability, and employment status.",
+       "Unemployment_capita":"As the pandemic has rolled through the United States, unemployment has increased dramatically; this increase is a sign of the economic toll the virus has taken. For many workers in America, health care access is tied to a job. With rising unemployment, many have been left uninsured or underinsured.",
+       "SVI": "SVI* calls attention to counties with the greatest number of its highly vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type.",
+       "YPLL":"Years of Potential Life Lost (YPLL) represents community-specific health vulnerability in the United States by measuring rates of premature death. Some of the counties that have the state’s highest values for SVI* also have the highest levels of YPLL. But other counties are newly visible as vulnerable.",
+         "Covid":"The direct effects of COVID-19 have exacerbated many of the preexisting vulnerabilities in the United States. Sometimes long-term vulnerabilities and the impact of COVID-19 coincide in our maps, but sometimes they do not.",
+       "Covid_capita":"Normalizing recent COVID-19 cases by population highlights the less populous counties where large proportions of a community have acquired the virus",
+     "Covid_death_capita":"Cumulative COVID-19 deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago."
+ }
 </script>
   <div id="loader"></div>
 <div id="map"></div>
@@ -186,9 +201,9 @@ var userCoordinates = [-74.91448282148225,40.67736399374095]
 <script type="text/javascript" src="js/queue.v1.min.js"></script>
 
 <script src="us-state-centroids.js"></script>
+<script src="user_build.js"></script>
 <script src="user_config.js"></script>
 <script src="user_scroller.js"></script>
-<script src="user_build.js"></script>
 
 
 </body>
