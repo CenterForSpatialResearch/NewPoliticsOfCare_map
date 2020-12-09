@@ -101,15 +101,7 @@ var states = d3.json("simplestates.geojson")
 
 var userRankings = {}
 
- var measureSet = [
-     "Medicaid_capita",
-     "Unemployment_capita",
-     "SVI",
-     "YPLL",
-       "Covid",
-     "Covid_capita",
-     "Covid_death_capita"
-]
+
 
 Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states,stateCentroids])
 .then(function(data){
@@ -153,7 +145,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
         
 }
 function setMapToUser(userCoordinates){
-    config.chapters[1].location = {center:userCoordinates,zoom:12}
+    config.chapters[1].location = {center:userCoordinates,zoom:18}
 }
 
 function getUserCounty(userCoordinates){
@@ -171,8 +163,7 @@ function getUserCounty(userCoordinates){
 function populateUserChapter(){
      var state = properties.state
     var pop = properties.totalPopulation
-   var existingText = d3.select("#user p").html()
-     var newText = existingText+"Let's start with where you are. <br><br> You are currently in "+ county+" County, "
+     var newText ="You are currently in "+ county+" County, "
      +toTitleCase(state)+", population "+numberWithCommas(pop)+"."
      +"<br><br>What does this actually mean in terms of vulnerability during covid?"
  
@@ -350,13 +341,12 @@ function drawMap(data,outline){
         var totalCountiesInState = calculateRankFromPercentile(countyData["Percentile_ranks_"+measureSet[0]],state)[1]
         
        // console.log(totalCountiesInState)
-        config.chapters[1]["description"]= "What do measures of vulnerability really mean? Let's start with where you are. "
-        +"<br><br> You are currently in "+ county+" County, containing "+numberWithCommas(pop)+" residents." 
+        config.chapters[1]["description"]= "You are currently in "+ county+" County, containing "+numberWithCommas(pop)+" residents." 
         +" 1 of "+ totalCountiesInState+" counties in "+ toTitleCase(state)+"."
-        
         
          for(var m in measureSet){
              var label = measureSet[m] 
+            // console.log(label)
              
              var mKey = "Percentile_ranks_"+measureSet[m]
              var mValue = Math.round(properties[mKey]*100)/100
@@ -381,7 +371,7 @@ function drawMap(data,outline){
              newChapter["id"]=label
              newChapter["title"]=measureDisplayTextPop[label]
              newChapter["description"]=introDescription[label]+"<br>"+dataText
-             newChapter["location"]={center:topCounty.centroid}
+             newChapter["location"]={center:topCounty.centroid,zoom:15}
              newChapter["onChapterEnter"] = [
       //            {layer: label,opacity:1} ,
       //            {layer: "least_"+label,opacity:1},

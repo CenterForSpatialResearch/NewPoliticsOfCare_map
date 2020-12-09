@@ -17,7 +17,8 @@ function configureStory(){
                 title: 'Communities can be vulnerable in many different ways',
                 image: '',
                 description: 'COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States.'
-                ,//+"<div id=\"userLocation\">Click here to start where you are.</div><br><br>",
+                +"<br><br>How can we understand measures of vulnerability?<br><br><strong>Let's start where you are</strong>",
+                //+"<div id=\"userLocation\">Click here to start where you are.</div><br><br>",
                 location: {
                     center:[-98.57868040403291,39.82847358985151],
                     zoom:4
