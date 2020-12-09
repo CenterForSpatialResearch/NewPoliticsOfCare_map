@@ -371,7 +371,7 @@ function drawMap(data,outline){
              newChapter["id"]=label
              newChapter["title"]=measureDisplayTextPop[label]
              newChapter["description"]=introDescription[label]+"<br>"+dataText
-             newChapter["location"]={center:topCounty.centroid,zoom:15}
+             newChapter["location"]={center:topCounty.centroid,zoom:15,speed: .1}
              newChapter["onChapterEnter"] = [
       //            {layer: label,opacity:1} ,
       //            {layer: "least_"+label,opacity:1},
@@ -404,7 +404,7 @@ function drawMap(data,outline){
                   description+= matches[m].county+" county, in "+matches[m].state+" "+Math.round(matches[m].value*100)/100+"<br>"
               }
               newChapter["description"]=description
-              newChapter["location"]={center:userCoordinates,zoom:18}
+              newChapter["location"]={center:userCoordinates,zoom:18,speed: 1}
               newChapter["onChapterEnter"] = [
        //            {layer: label,opacity:1} ,
        //            {layer: "least_"+label,opacity:1},
