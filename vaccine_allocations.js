@@ -17,8 +17,8 @@ var themesDefinitions ={
 var possibleStartStates = ["CA","LA","FL","NY","MT","TX"]
 var randomStartState = possibleStartStates[Math.round(Math.random()*possibleStartStates.length-1)]
 var pub = {
-    strategy:"percentage_scenario_SVI_hotspot",
-    coverage:"base_case_capacity_30",
+    // strategy:"percentage_scenario_SVI_hotspot",
+ //    coverage:"base_case_capacity_30",
     aiannh:false,
     prison:false,
     satellite:false,
@@ -32,7 +32,7 @@ var pub = {
     SVIFIPS:null,
     sviZoom:10,
     SVIcenter:null,
-    column:"Proportional_allocation_to_Covid",
+    column:"Proportional_allocation_to_Adult_pop",
     min:999,
     max:0,
     maxAllocationByPop:0,
@@ -121,44 +121,65 @@ var counties = d3.json("counties.geojson")
 var usOutline = d3.json("simple_contiguous.geojson")
 //var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
 //var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/allocation_chw/master/Output/time_stamp.csv")
-var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
-var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
+var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/time_stamp.csv")
+var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/County_level_proportional_vaccine_allocation.csv")
 
 var states = d3.json("simplestates.geojson")
 
+//County_FIPS,Proportional_allocation_to_Adult_pop,Adult_pop,Percentile_ranks_Adult_pop,
+//Proportional_allocation_to_Firstphase,Firstphase,Percentile_ranks_Firstphase,
+//Proportional_allocation_to_ADI,ADI,Percentile_ranks_ADI,
+//Proportional_allocation_to_PVI,PVI,Percentile_ranks_PVI,
+//Proportional_allocation_to_SVI,SVI,Percentile_ranks_SVI,
+//Proportional_allocation_to_SVI_no_race,SVI_no_race,Percentile_ranks_SVI_no_race
+
+
 var carto= d3.json("cartogram.geojson")
-var stateAllocations = d3.csv("state_level_allocation.csv")
+var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/State_level_vaccine_allocation.csv")
  var measureSet = [
-     "Proportional_allocation_to_Medicaid_demand",
-     "Proportional_allocation_to_Unemployment",
+     "Proportional_allocation_to_Adult_pop",
+     "Proportional_allocation_to_Firstphase",
+     "Proportional_allocation_to_ADI",
+     "Proportional_allocation_to_PVI",
      "Proportional_allocation_to_SVI",
-     "Proportional_allocation_to_YPLL",
-       "Proportional_allocation_to_Covid",
-     "Proportional_allocation_to_Covid_capita",
-     "Proportional_allocation_to_Covid_death_capita"
+       "Proportional_allocation_to_SVI_no_race"
 ]
 
 
  var measureDisplayText = {
-      Proportional_allocation_to_Medicaid_demand:"MEDICAID ENROLLEES",
-      Proportional_allocation_to_SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
-      Proportional_allocation_to_YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
-      Proportional_allocation_to_Unemployment:"UNEMPLOYMENT",
-       Proportional_allocation_to_Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
-      Proportional_allocation_to_Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
-      Proportional_allocation_to_Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"
+     Proportional_allocation_to_Adult_pop:"Adult Population",
+     Proportional_allocation_to_Firstphase:"First Phase",
+     Proportional_allocation_to_ADI:"ADI",
+     Proportional_allocation_to_PVI:"PVI",
+     Proportional_allocation_to_SVI:"SVI",
+     Proportional_allocation_to_SVI_no_race:"SVI no race"
+     
+      // Proportional_allocation_to_Medicaid_demand:"MEDICAID ENROLLEES",
+ //      Proportional_allocation_to_SVI:"SOCIAL VULNERALBILITY INDEX <span class=\"sviAster\">*</span>",
+ //      Proportional_allocation_to_YPLL:"YEARS OF POTENTIAL LIFE LOST RATE",
+ //      Proportional_allocation_to_Unemployment:"UNEMPLOYMENT",
+ //       Proportional_allocation_to_Covid:"<span class=\"covidMenu\">COVID CASES (14 DAYS)</span>",
+ //      Proportional_allocation_to_Covid_capita:"<span class=\"covidMenu\">COVID CASES / 100K</span>",
+ //      Proportional_allocation_to_Covid_death_capita:"<span class=\"covidMenu\">COVID DEATHS / 100K</span>"
 
  }
 
 
 var measureDisplayTextPop={
-     Proportional_allocation_to_Medicaid_demand:"Medicaid Enrollees",
-     Proportional_allocation_to_SVI:"Social Vulneralbility Index",
-     Proportional_allocation_to_YPLL:"Years of Potential Life Lost",
-     Proportional_allocation_to_Unemployment:"Unemployment",
-     Proportional_allocation_to_Covid:"Total Covid Cases",
-     Proportional_allocation_to_Covid_capita:"Covid Cases per 100,000 Residents",
-     Proportional_allocation_to_Covid_death_capita:"Covid Deaths per 100,000 Residents"
+     Proportional_allocation_to_Adult_pop:"Adult Population",
+     Proportional_allocation_to_Firstphase:"First Phase",
+     Proportional_allocation_to_ADI:"ADI",
+     Proportional_allocation_to_PVI:"PVI",
+     Proportional_allocation_to_SVI:"SVI",
+     Proportional_allocation_to_SVI_no_race:"SVI no race"
+    
+     // Proportional_allocation_to_Medicaid_demand:"Medicaid Enrollees",
+   //   Proportional_allocation_to_SVI:"Social Vulneralbility Index",
+   //   Proportional_allocation_to_YPLL:"Years of Potential Life Lost",
+   //   Proportional_allocation_to_Unemployment:"Unemployment",
+   //   Proportional_allocation_to_Covid:"Total Covid Cases",
+   //   Proportional_allocation_to_Covid_capita:"Covid Cases per 100,000 Residents",
+   //   Proportional_allocation_to_Covid_death_capita:"Covid Deaths per 100,000 Residents"
 }
 
 Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states,carto,stateAllocations])
@@ -175,7 +196,7 @@ var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states,carto,stateAllocations){
     makeMinMaxDictionary()
-    console.log(modelData)
+
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
     })
@@ -191,6 +212,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     var combinedGeojson = combineGeojson(dataByFIPS,counties,stateAllocations)
     pub.all = combinedGeojson
     
+    console.log(combinedGeojson)
     //    console.log(combinedGeojson)
     
        var map = drawMap(combinedGeojson,outline)
@@ -264,18 +286,27 @@ function turnToDictFIPS(data,keyColumn,stateAllocations){
         var stateAbbr = state_tiger_dict[stateCode]
         
         if(stateAbbr!=undefined){
-            var stateName = stateNameDictionary[stateAbbr].toUpperCase()
+            var stateName = stateNameDictionary[stateAbbr]//.toUpperCase()
             var stateTotal = stateAllocationDictionary[stateName]
+            //console.log([stateTotal,stateName])
             //console.log(stateTotal)
             var values = data[i]
        
+                //console.log(data[i]["Proportional_allocation_to_ADI"])
+            
+            // if(Math.round(data[i]["Proportional_allocation_to_SVI"])!=Math.round(data[i]["Proportional_allocation_to_SVI_no_race"])){
+    //             console.log([data[i]["Proportional_allocation_to_SVI"],data[i]["Proportional_allocation_to_SVI_no_race"]])
+    //         }
+       
+            
             for(var j in measureSet){
                 var measureKey = measureSet[j]
                 var priorityKey = "Normalized_"+measureKey
                 var priority = parseFloat(data[i][priorityKey])
                 var allocated =Math.floor(parseFloat(data[i][measureKey]))
-                var percentAllocated = Math.round(allocated/stateTotal*10000)/100                
+                var percentAllocated = Math.round(allocated/stateTotal*10000000000)/100000000   
                 
+           
                 values["percentAllocated_"+measureKey]=percentAllocated
                 
                 if(minMaxDictionary[stateAbbr][measureKey]["min"]>percentAllocated){
@@ -516,7 +547,7 @@ function drawMap(data,outline){
         
     })
     map.on("mousemove","ST-OUTLINE",function(c){
-        console.log(c.features)
+       // console.log(c.features)
     })
      map.on('mousemove', 'counties', function(e) {
          var feature = e.features[0]
@@ -554,6 +585,7 @@ function drawMap(data,outline){
               .style("left",x+"px")
               .style("top",y+"px") 
              
+            // console.log(feature["properties"])
              var countyName = feature["properties"]["county"]+" County, "+feature["properties"]["stateAbbr"]
              var population = feature["properties"]["totalPopulation"]
              var geometry = feature["geometry"]
@@ -574,10 +606,10 @@ function drawMap(data,outline){
              
              var displayString = "<span class=\"popupTitle\">"+countyName+"</span><br>"
                      +"Population: "+numberWithCommas(population)+"<br>"+"<br>"
-                     +"Number of workers allocated using "+measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
+                     +"Number of doses allocated using "+measureDisplayTextPop[pub.column]+":<br><span class=\"popupTitle\">"
                      +numberWithCommas(Math.floor(feature.properties[pub.column]))+"</span>"
                      +"<br>"
-                 +"Constitutes <span class=\"popupTitle\">"+feature.properties["percentAllocated_"+pub.column]+"%</span> of the total workers statewide"
+                 +"Constitutes <span class=\"popupTitle\">"+feature.properties["percentAllocated_"+pub.column]+"%</span> of the total doses statewide"
                  
              var needsMetString = currentSelectionCoverage+"% of needs met</strong>"
              
@@ -945,6 +977,7 @@ function strategyMenu(map,data){
 
                 
 function colorByPriority(map){
+    
     map.setPaintProperty("counties", 'fill-opacity',1)
    // var maxMin =  stateAllocationPercentMaxMin[pub.currentState]
     var maxMin = minMaxDictionary[pub.currentState][pub.column]
@@ -952,18 +985,19 @@ function colorByPriority(map){
     var max = parseFloat(maxMin.max)
     var min = parseFloat(maxMin.min)
     var midPoint = min+(max-min)/2
+  //  console.log([min,midPoint,max])
     // var matchString = ["match",
  //                ["get","group_"+pub.column]].concat(newColors)
     var matchString = {
     property: "percentAllocated_"+pub.column,
 //    stops: [[0, colors[0]],[allocationMaxs[pub.column]/2,colors[1]],[allocationMaxs[pub.column], colors[2]]]
-    stops: [[0,"#ddd"],[0.001, colors[0]],[midPoint,colors[1]],[max, colors[2]]]
+    stops: [[0,"#ddd"],[0.00001, colors[0]],[midPoint,colors[1]],[max, colors[2]]]
     }
     map.setPaintProperty("counties", 'fill-color', matchString)
     drawGridWithoutCoverage(map)
     d3.select("#coverage").style("display","block")
     
-    d3.select("#keyRangeMax").html(max+"%")
+    d3.select("#keyRangeMax").html(Math.round(max)+"%")
     
     
 }

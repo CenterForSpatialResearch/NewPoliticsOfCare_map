@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapping the New Politics of Care</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
+ <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Coda+Caption:wght@800&family=Hammersmith+One&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <style>
+        body {
+            margin:0; 
+            padding:0; 
+          	font-family:sans-serif;
+            background-color:rgb(16, 182, 163);
+            color:#000;
+        }
+       
+        #map {
+            top:0; 
+            height: 100vh;
+            width:100vw;
+            position: fixed;
+            z-index: -5;
+        }
+        h3{
+          font-size:16px;
+          font-weight:800;
+        }
+
+        #header {
+            margin: 3vh auto;
+            width: 90vw;
+            padding: 2vh;
+            text-align: center;
+        }
+        #footer {
+            width: 100%;
+            min-height: 5vh;
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+            text-align: center;
+            line-height: 25px;
+            font-size: 14px;
+        }
+        #head{
+          padding:20px;
+          letter-spacing:1px;
+          position:fixed;
+          left:0px;
+          top:0px;
+          background-color:rgba(255,255,255,1);
+          border-bottom:1px solid #000000;
+          height:20px;
+          width:100%;
+          overflow:hidden;
+          z-index:9;
+        }
+        #brand{
+            font-size:26px;
+            font-weight:bold;
+            color:#000;
+        font-family: 'Hammersmith One', sans-serif;
+      }
+      #mainMenu{
+        position:absolute;
+        top:30%;
+        display:inline-block;
+        width:30%;
+        left:20%;
+        line-height:150%;
+        font-size:16px;
+      }
+      .button{
+        border:2px solid #000;
+        border-radius:30px;
+        display:inline-block;
+        padding:20px;
+        font-size:16px;
+        margin:10px;
+        cursor:pointer;
+        font-weight:bold;
+      }
+      a{
+        text-decoration:none;
+        color:#000;
+      }
+        </style>
+</head>
+<body>
+<div id="head">
+  <span id="brand">MAPPING THE NEW POLITICS OF CARE</span><br>
+</div>
+<div id="mainMenu">
+  COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States. Unless we address the long-standing inequalities embedded in the social and political landscape of the country along with the immediate needs produced by the pandemic, we will come out of the current crisis just as vulnerable as when this all began.<br><br>
+  <div id="vaccine" class="button"><a href="vaccine_allocations.html">Vaccinations</a></div>
+  <div id="chw" class="button"><a href="map.html">Community Healthcare Workers</a></div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>
