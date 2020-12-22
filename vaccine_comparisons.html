@@ -45,33 +45,36 @@ type="text/css"
       #mapPopup{
         overflow:hidden;
       }
+      .vac{
+      }
     </style>
 
 </head>
 
 <body>
 <div id="head">
-  <span id="brand">MAPPING THE NEW POLITICS OF CARE | Vaccinations</span><br>
+  <span id="brand">MAPPING THE NEW POLITICS OF CARE <span class="vac">| Vaccinations</span></span><br>
  <!-- <span id="title">Allocating Community Health Workers for COVID-19 in the Context of Scarcity and Social Vulnerability</span> -->
 </div>
 <div id="date"></div>
 
 <div id="mainMenu">
-  <a href="allocations.html" class="mapMenu">Allocations</a>
-  <a href="comparisons.html" class="mapMenu"  style="font-weight:bold; background-color:gold">Comparisons</a>
+  <a href="vaccine_allocations.html" class="mapMenu">Allocations</a>
+  <a href="vaccine_comparisons.html" class="mapMenu"  style="font-weight:bold; background-color:gold">Comparisons</a>
   
 </div>
 <div id="byState"></div>
 <div id="nav">
   <div id="allocationTitle" class="menu">
-We are allocating a million community health workers proportional to state Medicaid enrollees state by state.  </div>
+    Vaccinations are first allocated to each state based on the state's adult population.
+  </div>
  <div id="cartogram"></div>     
   <!-- <nav id="update" class="menu"><i>Model Last Updated on ##/##/##</i></nav>  -->
     <div id="placesMenu" >Go To: <select id="ddlCustomers"></select>
    </div> 
   <div id = "strategies">
   <div id="strategiesQuestion" class="menu">
-What you choose to prioritize greatly influences where community health workers  are sent within each state. Click a square below to compare between priorities: 
+What you choose to prioritize greatly influences where vaccines are sent within each state. Click a square below to compare between priorities: 
 </div>
        <!-- <nav id="strategiesQuestion" class="menu">How do you want to measure the need for Community Health Workers?</nav> -->
       <nav id="comparisonGrid"></nav>

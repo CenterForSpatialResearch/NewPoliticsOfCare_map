@@ -101,9 +101,9 @@ var keyColors = {
 
 var measureDisplayText = {
      Proportional_allocation_to_Adult_pop:"Adult Population",
-     Proportional_allocation_to_Firstphase:"First Phase",
-     Proportional_allocation_to_ADI:"ADI",
-     Proportional_allocation_to_PVI:"PVI",
+     Proportional_allocation_to_Firstphase:"Healthcare & Long-term Care",
+     Proportional_allocation_to_ADI:"Area Deprivation Index",
+     Proportional_allocation_to_PVI:"Pandemic Vulnerability Index",
      Proportional_allocation_to_SVI:"SVI",
      Proportional_allocation_to_SVI_no_race:"SVI no race"
 }
@@ -145,7 +145,7 @@ var coverageDisplayText = {show_all:"Hide Coverage Info"}
 for(var c = 1; c<=8; c++){
     var setTerm = "base_case_capacity_"+c*10
      coverageSet.push(setTerm)
-    coverageDisplayText[setTerm] = c*10+' CHW per 100,000 residents'
+    coverageDisplayText[setTerm] = c*10+' doses per 100,000 residents'
  }
 
 Promise.all([counties,countyCentroids,allData,timeStamp,states,carto,stateAllocations])
@@ -309,11 +309,11 @@ function combineGeojson(all,counties){
 
 function drawGrid(map,comparisonsSet){
     var drawn = []
-    var svg = d3.select("#comparisonGrid").append("svg").attr("width",290).attr("height",220)
+    var svg = d3.select("#comparisonGrid").append("svg").attr("width",300).attr("height",245)
     var gridSize = 15
     for(var i in measureSet){
-            var x = i*gridSize+140
-            var y = 115
+            var x = i*gridSize+180
+            var y = 155
                 svg.append("text")
                 .text(measureDisplayText["Proportional_allocation_to_"+measureSet[i]])
                 .attr("x",x)
@@ -327,7 +327,7 @@ function drawGrid(map,comparisonsSet){
                 .text(measureDisplayText["Proportional_allocation_to_"+measureSet[j]])
                 .attr("x",i)
                 .attr("y",j*gridSize+gridSize/2)
-                .attr("transform","translate(125,120)")
+                .attr("transform","translate(165,160)")
                 .attr("text-anchor","end")
                 .attr("fill",keyColors[measureSet[j]])
             }
@@ -348,7 +348,7 @@ function drawGrid(map,comparisonsSet){
                         .attr("y",gridSize*i)
                         .attr("id",key.replace("compare_",""))
                         .attr("class","grid")
-                        .attr("transform","translate(130,120)")
+                        .attr("transform","translate(160,160)")
                         .attr("cursor","pointer")
                         .on("click",function(){
                           //  console.log("grid click")
@@ -379,7 +379,7 @@ function drawGrid(map,comparisonsSet){
                         .attr("height",gridSize-6)
                         .attr("x",gridSize*j)
                         .attr("y",gridSize*i)
-                        .attr("transform","translate(132,120)")
+                        .attr("transform","translate(162,160)")
                         .attr("fill","none")
                         .attr("stroke","#ddd")
                         .attr("stroke-width",.5)
@@ -390,7 +390,7 @@ function drawGrid(map,comparisonsSet){
                         .attr("height",gridSize-6)
                         .attr("x",gridSize*j)
                         .attr("y",gridSize*i)
-                        .attr("transform","translate(132,120)")
+                        .attr("transform","translate(162,160)")
                         .attr("fill","none")
 
                         .attr("stroke","#ddd")
@@ -442,7 +442,7 @@ function drawKey(key){
        .attr("stop-color", keyColors[k2])
        .attr("stop-opacity", 1);
        
-    svg.append("text").text("More workers allocated with".toUpperCase()).attr("y",10).attr("x",5)
+    svg.append("text").text("More doses allocated with".toUpperCase()).attr("y",10).attr("x",5)
        .attr("fill","#000").style("font-size","11px")//.style("font-weight","bold")
     //
     // svg.append("text").text("More workers by".toUpperCase()).attr("y",1).attr("x",width)
@@ -732,8 +732,8 @@ function drawMap(data,comparisonsKeys){
                      +"<strong>"+countyName
                      +"</span>"
                      +"</strong><br><strong>Population:</strong> "+population+"<br>"+"<br><strong>"
-                     +"Allocating by "+ measureDisplayText[feature.properties.maxKey]+" results in the most workers: "+ feature.properties.max
-                     +"<br><br>Allocating by "+  measureDisplayText[feature.properties.minKey]+" results in the least workers: "+feature.properties.min
+                     +"Allocating by "+ measureDisplayText[feature.properties.maxKey]+" results in the most doses: "+ feature.properties.max
+                     +"<br><br>Allocating by "+  measureDisplayText[feature.properties.minKey]+" results in the least doses: "+feature.properties.min
                      +"<br><br>Difference: "+feature.properties.range
                      
                      var max = 0
@@ -752,18 +752,18 @@ function drawMap(data,comparisonsKeys){
                 
                      
                      if(value1>value2){
-                         comparisonString = dif+" more CHWs by "+measureDisplayText[key1]+ " than by "+ measureDisplayText[key2]
+                         comparisonString = dif+" more doses by "+measureDisplayText[key1]+ " than by "+ measureDisplayText[key2]
                          
                      
                      }else if(value1<value2){
-                         comparisonString = dif+" more CHWs by "+measureDisplayText[key2]+ " than by "+ measureDisplayText[key1]
+                         comparisonString = dif+" more doses by "+measureDisplayText[key2]+ " than by "+ measureDisplayText[key1]
                         
                      
                      }else{
                          comparisonString = "Prioritizing by "
                          +measureDisplayText[key1]
                          +" and "+measureDisplayText[key2]
-                          +" allocates the same amount of workers to this county."
+                          +" allocates the same amount of vaccines to this county."
                      }
              
                      var displayString = 
@@ -828,9 +828,9 @@ function drawChart(data){
 
     d3.select("#mapPopupCompare")
     .html(label
-        +"<br>  Prioritizing by <strong>"+maxKey+"</strong> would allocate <strong>"+max+" CHWs</strong>, the most number of workers to the county"
-        +"<br> Prioritizing by <strong>"+minKey+"</strong> would allocate <strong>"+min+" CHWs</strong>, the least."
-        +"<br> <strong>There is a "+range+" worker difference.</strong>")
+        +"<br>  Prioritizing by <strong>"+maxKey+"</strong> would allocate <strong>"+max+" doses</strong>, the most number of doses to the county"
+        +"<br> Prioritizing by <strong>"+minKey+"</strong> would allocate <strong>"+min+" doses</strong>, the least."
+        +"<br> <strong>There is a "+range+" vaccine difference.</strong>")
        
        
        
@@ -1045,12 +1045,12 @@ function newScatterPlot(state){
     }
     var tooltip = d3.select("#comparisonPlot").append("div").attr("class", "toolTip");
     
-    svg.append("text").text("CHWs assigned by "+measureDisplayText[xLabel]).attr("x",p*2).attr("y",h+p*3-3)
+    svg.append("text").text("Doses assigned by "+measureDisplayText[xLabel]).attr("x",p*2).attr("y",h+p*3-3)
     .attr("text-anchor","start")
     
     var yLabelX = p/2
     var yLabelY=(h+p*3)/2
-    svg.append("text").text("CHWs assigned by "+measureDisplayText[yLabel]).attr("x",yLabelX).attr("y",yLabelY)
+    svg.append("text").text("Doses assigned by "+measureDisplayText[yLabel]).attr("x",yLabelX).attr("y",yLabelY)
     .attr("transform","rotate(-90,"+yLabelX+","+yLabelY+")").attr("text-anchor","middle")
     
     svg.append("text").text("less").attr("x",p*1.8).attr("y",h+p*1.8).attr("text-anchor","start").style("font-style","italic").style("font-weight","bold")
