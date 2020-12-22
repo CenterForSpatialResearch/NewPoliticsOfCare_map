@@ -148,9 +148,9 @@ var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatia
 
  var measureDisplayText = {
      Proportional_allocation_to_Adult_pop:"Adult Population",
-     Proportional_allocation_to_Firstphase:"First Phase",
-     Proportional_allocation_to_ADI:"ADI",
-     Proportional_allocation_to_PVI:"PVI",
+     Proportional_allocation_to_Firstphase:"Healthcare & Long-term Care",
+     Proportional_allocation_to_ADI:"Area Deprivation Index",
+     Proportional_allocation_to_PVI:"Pandemic Vulnerability Index",
      Proportional_allocation_to_SVI:"SVI",
      Proportional_allocation_to_SVI_no_race:"SVI no race"
      
@@ -167,9 +167,9 @@ var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatia
 
 var measureDisplayTextPop={
      Proportional_allocation_to_Adult_pop:"Adult Population",
-     Proportional_allocation_to_Firstphase:"First Phase",
-     Proportional_allocation_to_ADI:"ADI",
-     Proportional_allocation_to_PVI:"PVI",
+     Proportional_allocation_to_Firstphase:"Healthcare & Long-term Care",
+     Proportional_allocation_to_ADI:"Area Deprivation Index",
+     Proportional_allocation_to_PVI:"Pandemic Vulnerability Index",
      Proportional_allocation_to_SVI:"SVI",
      Proportional_allocation_to_SVI_no_race:"SVI no race"
     
