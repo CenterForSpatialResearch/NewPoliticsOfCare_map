@@ -139,6 +139,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
                     updateColumns()
                     //d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
                     d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
+                    colorByPriority(map1,pub.column1)
                 }
             })
             
@@ -157,6 +158,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
                     updateColumns()
                     d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
                     d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
+                    colorByPriority(map2,pub.column2)
                 }
             })
     }
