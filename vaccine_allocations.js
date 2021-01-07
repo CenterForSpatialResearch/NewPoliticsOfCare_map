@@ -126,24 +126,45 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
         console.log(measureSet[m])
         d3.select("#columns1")
             .append("div")
+            .attr("class","measures1")
             .html(measureDisplayText[measureSet[m]])
             .attr("id",measureSet[m])
             .attr("cursor","pointer")
             .on("click",function(){
-                pub.column1 = d3.select(this).attr("id")
-                updateColumns()
+                if(d3.select(this).attr("id")!=pub.column1 && d3.select(this).attr("id")!=pub.column2){
+                    d3.selectAll(".measures1").style("background-color","#fff").style("color","#000").style("border","1px solid #000")
+                    d3.selectAll(".measures2").style("color","#000").style("border","1px solid #000")
+                    d3.select(this).style("background-color","gold").style("color","#000").style("border","1px solid #000")
+                    pub.column1 = d3.select(this).attr("id")
+                    updateColumns()
+                    //d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
+                    d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
+                }
             })
             
         d3.select("#columns2")
             .append("div")
+            .attr("class","measures2")
             .html(measureDisplayText[measureSet[m]])
             .attr("id",measureSet[m])
-            .attr("cursor","pointer")
+            .style("cursor","pointer")
             .on("click",function(){
-                pub.column2 = d3.select(this).attr("id")
-                updateColumns()
+                if( d3.select(this).attr("id")!=pub.column2 && d3.select(this).attr("id")!=pub.column1){
+                    d3.selectAll(".measures2").style("background-color","#fff")
+                    d3.selectAll(".measures1").style("color","#000").style("border","1px solid #000")
+                    d3.select(this).style("background-color","gold").style("color","#000").style("border","1px solid #000")
+                    pub.column2 = d3.select(this).attr("id")
+                    updateColumns()
+                    d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
+                    d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
+                }
             })
     }
+        d3.select("#columns1").select("#"+pub.column1).style("background-color","gold")
+        d3.select("#columns2").select("#"+pub.column2).style("background-color","gold")
+    
+        d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
+        d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
   
 }
 function drawNewLists(){
@@ -257,9 +278,9 @@ function drawLines(combined,svg){
                 .attr("id",function(d){return d[0].county.replace(".","_").split(" ").join("_")+"_connector"})
                 .attr("class","connector")
                 .attr("opacity",function(d){
-                   return(opacityScale(Math.abs(d[0].order-d[1].order)))
+                   return .3
                 })
-                .attr("stroke-width",2)
+                .attr("stroke-width",4)
                 .attr("stroke-linecap","round")
                 .attr("transform","translate(0,15)")
                 .on("mouseover",function(d){
@@ -290,7 +311,7 @@ function combinedList(list,combined,column){
 
 function sortList(list,column){
     return list.sort(function(a,b){
-            return parseFloat(b["Percentile_ranks_"+column])-parseFloat(a["Percentile_ranks_"+column])
+            return parseFloat(b["Proportional_allocation_to_"+column])-parseFloat(a["Proportional_allocation_to_"+column])
         })
 }
 
