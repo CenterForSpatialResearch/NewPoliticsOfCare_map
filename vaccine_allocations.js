@@ -129,7 +129,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
             .attr("class","measures1")
             .html(measureDisplayText[measureSet[m]])
             .attr("id",measureSet[m])
-            .attr("cursor","pointer")
+            .style("cursor","pointer")
             .on("click",function(){
                 if(d3.select(this).attr("id")!=pub.column1 && d3.select(this).attr("id")!=pub.column2){
                     d3.selectAll(".measures1").style("background-color","#fff").style("color","#000").style("border","1px solid #000")
