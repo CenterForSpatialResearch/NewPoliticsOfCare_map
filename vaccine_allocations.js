@@ -432,11 +432,10 @@ function drawMap(data,div,column,outline){
     var map = new mapboxgl.Map({
         container: div,
         style:"mapbox://styles/c4sr-gsapp/ckjiy8jxw03vp19ro3f0h6osn",
-        maxZoom:10,
         zoom: 7,
         //preserveDrawingBuffer: true,
         minZoom:3.5,
-        center:[42.91745518794737, -75.71912589189347]
+        center:[-75.71912589189347,42.91745518794737]
         //,
     //    maxBounds: maxBounds    
      });
@@ -445,6 +444,8 @@ function drawMap(data,div,column,outline){
      map.addControl(new mapboxgl.NavigationControl(),'bottom-right');
      
     map.on("load",function(){
+       //  zoomToBounds(map)
+        
         map.addSource("counties",{
              "type":"geojson",
              "data":data
@@ -462,7 +463,6 @@ function drawMap(data,div,column,outline){
          });
          
 
-         zoomToBounds(map)
              
            
      })
