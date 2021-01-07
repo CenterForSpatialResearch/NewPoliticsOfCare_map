@@ -428,15 +428,15 @@ function drawMap(data,div,column,outline){
     // d3.select("#"+div).style("width",window.innerWidth+"px").style("height",window.innerHeight+"px")
 //
     mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"//new account
-    var maxBounds = [[-190,8],[-20, 74]];
+   // var maxBounds = [[-190,8],[-20, 74]];
     var map = new mapboxgl.Map({
         container: div,
         style:"mapbox://styles/c4sr-gsapp/ckjiy8jxw03vp19ro3f0h6osn",
         maxZoom:10,
-        zoom: 3.8,
-        preserveDrawingBuffer: true,
+        zoom: 7,
+        //preserveDrawingBuffer: true,
         minZoom:3.5,
-        center:[-30,80]
+        center:[42.91745518794737, -75.71912589189347]
         //,
     //    maxBounds: maxBounds    
      });
