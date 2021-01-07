@@ -290,9 +290,9 @@ font-family: 'Hammersmith One', sans-serif;}
      width:270px;
  }
  #placesMenu{
-     font-size:10px;
+     font-size:18px;
      padding:5px;
-     padding-left:20px;
+     padding-left:0px;
      margin:0px;
      width:600px;
  }
@@ -312,7 +312,7 @@ select{
        appearance: none;
        padding: 5px;
        font-family:'Open Sans', sans-serif;
-       font-size:10px;
+       font-size:18px;
        font-weight:200;
        width:200px;
  }

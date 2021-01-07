@@ -342,6 +342,9 @@ function drawList(list,x,anchor,className,svg,column){
         return i*s
     })
     .attr("transform","translate(0,130)")
+    .on("mouseover",function(d){
+        
+    })
 }
 
 function makeStateDictionary(data){
@@ -471,11 +474,29 @@ function drawMap(data,div,column,outline){
          map.getCanvas().style.cursor = 'pointer'; 
          var feature = e.features[0]
          if(feature["properties"].FIPS!=undefined){
-            console.log(feature)
+            //console.log(feature)
+             
+             var county = feature.properties.county
+             var pop = feature.properties.totalPopulation
+             var column1Text = measureDisplayText[pub.column1]
+             var column2Text = measureDisplayText[pub.column2]
+             var column1Value = feature.properties["Proportional_allocation_to_"+pub.column1]
+             var column2Value = feature.properties["Proportional_allocation_to_"+pub.column2]
+             
+             d3.select("#mapPop")
+             .html("<strong>"+county+" county</strong>"
+             +"<br>Population: "+pop
+             +"<br><br>Doses allocated by <br>"+column1Text+": "+Math.ceil(column1Value)
+             +"<br>"+column2Text+": "+Math.ceil(column2Value)
+             )
+             //console.log(window.event.clientY,window.event.clientX)
+             d3.select("#mapPop").style("visibility","visible")
+             .style("left",window.event.clientX+30+"px")
+             .style("top",window.event.clientY+"px")
          }       
          
          map.on("mouseleave",'counties',function(){
-             d3.select("#mapPopup").style("visibility","hidden")
+             d3.select("#mapPop").style("visibility","hidden")
          })  
     });
     

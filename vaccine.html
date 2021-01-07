@@ -81,6 +81,15 @@
         width:80px;
         background-color:#fff;
       }
+      #mapPop{
+        position:absolute;
+        top:200px;
+        left:200px;
+        z-index:9999;
+        background-color:rgba(255,255,255,.8);
+        padding:5px;
+        filter: drop-shadow(1px 1px 10px rgba(0,0,0,.2));
+      }
     </style>
 
 </head>
@@ -98,7 +107,8 @@
   <div id="columns1"></div>
   <div id="columns2"></div>
   
-<div id="mapPopup"></div>
+<div id="listPop">list popup</div>
+<div id="mapPop">map popup</div>
 
 <script type="text/javascript" src="js/d3.js"></script>
 <script type="text/javascript" src="js/crossfilter.js"></script>
