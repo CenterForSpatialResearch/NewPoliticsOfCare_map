@@ -150,10 +150,17 @@
 <script type="text/javascript" src="nodata.js"></script>
 <!--<script type="text/javascript" src="vaccine_cartogram.js"></script> -->
 <script>
-  d3.select("#map").style("width",function(){console.log(window.innerWidth); return (window.innerWidth-400)/2+"px"})
-  d3.select("#map2").style("width",function(){console.log(window.innerWidth); return (window.innerWidth-400)/2+"px"})
-  d3.select("#list")
-  </script>
+  
+  function resizeMaps(){
+  d3.select("#map").style("width",function(){return (window.innerWidth-400)/2+"px"})
+  d3.select("#map2").style("width",function(){return (window.innerWidth-400)/2+"px"})
+  }
+  resizeMaps()
+  window.addEventListener('resize',   resizeMaps);
+  
+  
+  
+    </script>
 
 <script type="text/javascript" src="vaccine_allocations.js"></script>
 
