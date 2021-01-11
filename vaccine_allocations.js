@@ -77,7 +77,8 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     
     map1 = drawMap(combined,"map",pub.column1,outline)
     map2 = drawMap(combined,"map2",pub.column2,outline)
-   
+    d3.select("#title1").html("Map of allocation by "+measureDisplayText[pub.column1])
+    d3.select("#title2").html("Map of allocation by "+measureDisplayText[pub.column2])
    
     $("#map").mouseenter(function(){
        pub.activeMap = "map1"
@@ -219,6 +220,9 @@ function updateListColumn(list,className,column){
     // console.log(list)
     // console.log(column)
     d3.select("#"+className+"_title").text(measureDisplayText[column])
+
+    d3.select("#title1").html("Map of allocation by "+measureDisplayText[pub.column1])
+    d3.select("#title2").html("Map of allocation by "+measureDisplayText[pub.column2])
     
     d3.selectAll("."+className)
     .data(list)

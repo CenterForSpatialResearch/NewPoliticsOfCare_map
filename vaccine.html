@@ -57,7 +57,7 @@
         position:absolute;
         top:110px;
         z-index:999;
-        width:100px;
+        width:30hw;
         left:10px;
       }
       #columns2{
@@ -65,21 +65,22 @@
         top:110px;
         right:10px;
         z-index:999;
-        width:100px;
+        width:30hw;
       }
       .measures1{
         padding:5px;
         margin:2px;
         border:1px solid black;
-        width:80px;
         background-color:#fff;
+        display:inline-block;
+        
       }
       .measures2{
         padding:5px;
         margin:2px;
         border:1px solid black;
-        width:80px;
         background-color:#fff;
+        display:inline-block;
       }
       #mapPop{
         position:absolute;
@@ -90,6 +91,20 @@
         padding:5px;
         filter: drop-shadow(1px 1px 10px rgba(0,0,0,.2));
         visibility:hidden;
+      }
+      #title1{
+        position:fixed;
+        left:20px;
+        z-index:9999;
+        top:150px;
+        font-size:20px;
+      }
+      #title2{
+        position:fixed;
+        right:20px;
+        z-index:9999;
+        top:150px;
+        font-size:20px;
       }
     </style>
 
@@ -107,6 +122,9 @@
   <div id="list">LIST</div>
   <div id="columns1"></div>
   <div id="columns2"></div>
+
+  <div id="title1"></div>
+  <div id="title2"></div>
   
 <div id="listPop">list popup</div>
 <div id="mapPop">map popup</div>
