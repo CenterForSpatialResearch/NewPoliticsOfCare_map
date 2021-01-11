@@ -233,6 +233,7 @@ function updateListColumn(list,className,column){
         .duration(1000)
         .attr("y",parseInt(i)*12)
         .text(d.county+" "+Math.ceil(d["Proportional_allocation_to_"+column]))
+        //.attr("id",className+"_"+d.FIPS)
     })
 }
 
@@ -291,29 +292,29 @@ function drawLines(combined,svg){
 //             .attr("opacity",.5)
 //             .attr("transform","translate(0,130)")
             
-        svg.append("text")
-            .attr("class","difText")
-            .attr("id",function(){return "text_"+lineData[0].fips})
-            .attr("x",200)
-            .attr("y",function(){
-                var difD = lineData[0].doses-lineData[1].doses
-                var difO = Math.abs(lineData[0].order-lineData[1].order)
-                if(lineData[1].order<lineData[0].order){
-                    return lineData[1].order*12-4+(difO*6)
-                }
-                return lineData[0].order*12-4+(difO*6)
-            })
-            .text(
-                function(){
-                    if(lineData[1].doses<lineData[0].doses){
-                        return "-"+Math.round(lineData[0].doses-lineData[1].doses)
-                    }
-                    return "+"+Math.round(lineData[0].doses-lineData[1].doses)
-                }
-            )
-            .attr("r",10)
-            .attr("opacity",0)
-            .attr("transform","translate(0,130)")
+        // svg.append("text")
+  //           .attr("class","difText")
+  //           .attr("id",function(){return "text_"+lineData[0].fips})
+  //           .attr("x",200)
+  //           .attr("y",function(){
+  //               var difD = lineData[0].doses-lineData[1].doses
+  //               var difO = Math.abs(lineData[0].order-lineData[1].order)
+  //               if(lineData[1].order<lineData[0].order){
+  //                   return lineData[1].order*12-4+(difO*6)
+  //               }
+  //               return lineData[0].order*12-4+(difO*6)
+  //           })
+  //           .text(
+  //               function(){
+  //                   if(lineData[1].doses<lineData[0].doses){
+  //                       return "-"+Math.round(lineData[0].doses-lineData[1].doses)
+  //                   }
+  //                   return "+"+Math.round(lineData[0].doses-lineData[1].doses)
+  //               }
+  //           )
+  //           .attr("r",10)
+  //           .attr("opacity",0)
+  //           .attr("transform","translate(0,130)")
         
         svg.append("path")
                 .data([lineData])
@@ -544,7 +545,7 @@ function drawMap(data,div,column,outline){
                  'fill-opacity':1
              },
              'filter': ['==', '$type', 'Polygon']
-         });
+         },"state-abbr");
          
          map.addLayer({
              'id': 'county_outline',
