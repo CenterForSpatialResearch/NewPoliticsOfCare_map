@@ -1,7 +1,7 @@
 var pub = {
     currentState:"NY",
-    column1:"Adult_pop",
-    column2:"SVI",
+    column1:"SVI",
+    column2:"SVI_no_race",
     activeMap:"map1",
     map1Move:true,
     map2Move:false,
