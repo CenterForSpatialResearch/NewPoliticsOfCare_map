@@ -410,12 +410,12 @@ function drawList(list,x,anchor,className,svg,column){
         d3.selectAll(".list1").attr("opacity",.3)
         d3.selectAll(".list2").attr("opacity",.3)
         d3.selectAll(".connector").attr("opacity",.3)
-        d3.select(this).attr("opacity",1)
+        var countyId = d3.select(this).attr("id").replace(className+"_","")
 
-         d3.select("#list1_"+d.FIPS).attr("opacity",1)
-         d3.select("#list2_"+d.FIPS).attr("opacity",1)
-         d3.select("#connector_"+d.FIPS).attr("opacity",1)
-         d3.select("#text_"+d.FIPS).attr("opacity",1)
+         d3.select("#list1_"+countyId).attr("opacity",1)
+         d3.select("#list2_"+countyId).attr("opacity",1)
+         d3.select("#connector_"+countyId).attr("opacity",1)
+         d3.select("#text_"+countyId).attr("opacity",1)
         
     })
     .on("mouseout",function(d){
