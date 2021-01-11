@@ -377,7 +377,9 @@ function sortList(list,column){
             return parseFloat(b["Proportional_allocation_to_"+column])-parseFloat(a["Proportional_allocation_to_"+column])
         })
 }
-
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 function drawList(list,x,anchor,className,svg,column){
     
     svg.append("text").text(measureDisplayText[column])
@@ -385,9 +387,19 @@ function drawList(list,x,anchor,className,svg,column){
     .attr("x",x)
     .attr("y",0)
     .attr("text-anchor","middle")
-    .attr("transform","translate(0,110)")
+    .attr("transform","translate(0,100)")
     .attr("font-size","12px")
     .attr("font-weight","bold")
+    
+    svg.append("text").text("COUNTY | DOSES")
+    .attr("id",className+"_title")
+    .attr("x",x)
+    .attr("y",0)
+    .attr("text-anchor",anchor)
+    .attr("transform","translate(0,115)")
+    .attr("font-size","11px")
+    .attr("font-weight","bold")
+    
     
    var s = 12
     svg.selectAll("."+className)
@@ -396,7 +408,7 @@ function drawList(list,x,anchor,className,svg,column){
     .append("text")
     .attr("class",className)
     .attr("id",function(d){return className+"_"+d.FIPS})
-    .text(function(d){return d.county+" "+Math.ceil(d["Proportional_allocation_to_"+column])})
+    .text(function(d){return d.county+" "+numberWithCommas(Math.ceil(d["Proportional_allocation_to_"+column]))})
     .attr("x",x)
     .attr("text-anchor",anchor)
     .attr("y",function(d,i){
