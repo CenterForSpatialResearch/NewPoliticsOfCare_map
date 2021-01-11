@@ -236,8 +236,8 @@ font-family: 'Hammersmith One', sans-serif;}
      position:fixed;
      top:0;
      left:0;
-     width:50%;
-     min-height:100%;
+     width:40%;
+     height:100%;
      z-index:-1;
      margin-left:0px;
      margin-top:100px;
@@ -248,8 +248,8 @@ font-family: 'Hammersmith One', sans-serif;}
      position:fixed;
      top:0;
      right:0;
-     width:50%;
-     min-height:100%;
+     width:40%;
+     height:100%;
      z-index:-1;
      margin-left:0px;
      margin-top:100px;
@@ -260,12 +260,13 @@ font-family: 'Hammersmith One', sans-serif;}
      width:400px;
      position:fixed;
      left:50%;
-     border:1px solid black;
-     height:100vh;
+    /* border:1px solid black;
+*/ height:100vh;
      overflow:auto;
-     background-color:rgba(255,255,255,.8);
+     background-color:rgba(255,255,255,1);
      margin:-200px;
      top:200px;
+     filter: drop-shadow(1px 1px 5px rgba(0,0,0,.4));
  }
  
  #nav2{

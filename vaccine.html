@@ -111,6 +111,7 @@
 <div id="listPop">list popup</div>
 <div id="mapPop">map popup</div>
 
+
 <script type="text/javascript" src="js/d3.js"></script>
 <script type="text/javascript" src="js/crossfilter.js"></script>
 <script type="text/javascript" src="js/dc.js"></script>
@@ -118,6 +119,11 @@
 <script type="text/javascript" src="state_names.js"></script>
 <script type="text/javascript" src="nodata.js"></script>
 <!--<script type="text/javascript" src="vaccine_cartogram.js"></script> -->
+<script>
+  d3.select("#map").style("width",function(){console.log(window.innerWidth); return (window.innerWidth-400)/2+"px"})
+  d3.select("#map2").style("width",function(){console.log(window.innerWidth); return (window.innerWidth-400)/2+"px"})
+  d3.select("#list")
+  </script>
 
 <script type="text/javascript" src="vaccine_allocations.js"></script>
 

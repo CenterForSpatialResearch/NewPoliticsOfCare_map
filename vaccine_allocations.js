@@ -27,6 +27,7 @@ var states = d3.json("simplestates.geojson")
 var carto= d3.json("cartogram.geojson")
 var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/State_level_vaccine_allocation.csv")
 
+var colors = ["rgb(236, 235, 16)","rgb(133, 205, 98)","rgb(16, 182, 163)"]
 
 var measureSet = [
      "Adult_pop",
@@ -123,7 +124,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     drawLines(combined2,svgList)
     
     for(var m in measureSet){
-        console.log(measureSet[m])
+        //console.log(measureSet[m])
         d3.select("#columns1")
             .append("div")
             .attr("class","measures1")
@@ -243,10 +244,10 @@ function updateLines(combined,svg){
     var opacityScale = d3.scaleLinear().domain([0,40]).range([.1,1])
         for(var i in combined){
             var lineData = combined[i]            
-            d3.select("#"+lineData[0].county.replace(".","_").split(" ").join("_")+"_connector")
+            d3.select("#connector_"+lineData[0].fips)
                 .data([lineData])
                 .each(function(d,i){
-                    d3.select("#"+lineData[0].county.replace(".","_").split(" ").join("_")+"_connector")
+                    d3.select("#connector_"+lineData[0].fips)
                             .transition()
                             .duration(1000)
                             .delay(i*100)
@@ -270,6 +271,46 @@ function drawLines(combined,svg){
         
     for(var i in combined){
         var lineData = combined[i]
+        
+        // svg.append("circle")
+//             .attr("id",function(){return "circle_"+lineData[0].fips})
+//             .attr("cx",200)
+//             .attr("cy",function(){
+//                 var difD = lineData[0].doses-lineData[1].doses
+//                 var difO = Math.abs(lineData[0].order-lineData[1].order)
+//                 if(lineData[1].order<lineData[0].order){
+//                     return lineData[1].order*12-4+(difO*6)
+//                 }
+//                 return lineData[0].order*12-4+(difO*6)
+//             })
+//             .attr("r",10)
+//             .attr("opacity",.5)
+//             .attr("transform","translate(0,130)")
+            
+        svg.append("text")
+            .attr("class","difText")
+            .attr("id",function(){return "text_"+lineData[0].fips})
+            .attr("x",200)
+            .attr("y",function(){
+                var difD = lineData[0].doses-lineData[1].doses
+                var difO = Math.abs(lineData[0].order-lineData[1].order)
+                if(lineData[1].order<lineData[0].order){
+                    return lineData[1].order*12-4+(difO*6)
+                }
+                return lineData[0].order*12-4+(difO*6)
+            })
+            .text(
+                function(){
+                    if(lineData[1].doses<lineData[0].doses){
+                        return "-"+Math.round(lineData[0].doses-lineData[1].doses)
+                    }
+                    return "+"+Math.round(lineData[0].doses-lineData[1].doses)
+                }
+            )
+            .attr("r",10)
+            .attr("opacity",0)
+            .attr("transform","translate(0,130)")
+        
         svg.append("path")
                 .data([lineData])
                 .attr("d",line)
@@ -277,16 +318,31 @@ function drawLines(combined,svg){
                 .attr("stroke",function(d){
                     return "black"
                 })
-                .attr("id",function(d){return d[0].county.replace(".","_").split(" ").join("_")+"_connector"})
+                .attr("id",function(d){return "connector_"+lineData[0].fips})
                 .attr("class","connector")
                 .attr("opacity",function(d){
-                   return .3
+                   return 1
                 })
-                .attr("stroke-width",4)
+                .attr("stroke-width",1)
                 .attr("stroke-linecap","round")
-                .attr("transform","translate(0,15)")
                 .on("mouseover",function(d){
-                    console.log(d)
+                    map1.setFilter("county_outline",["==","FIPS",d[0].fips])
+                    map2.setFilter("county_outline",["==","FIPS",d[0].fips])
+                    d3.selectAll(".list1").attr("opacity",.3)
+                    d3.selectAll(".list2").attr("opacity",.3)
+                    d3.selectAll(".connector").attr("opacity",.3)
+                    d3.select(this).attr("opacity",1)
+                     d3.select("#text_"+d[0].fips).attr("opacity",1)
+                     d3.select("#list1_"+d[0].fips).attr("opacity",1)
+                     d3.select("#list2_"+d[0].fips).attr("opacity",1)
+                })
+                .on("mouseout",function(d){
+                    map1.setFilter("county_outline",["==","FIPS",""])
+                    map2.setFilter("county_outline",["==","FIPS",""])
+                    d3.selectAll(".list1").attr("opacity",1)
+                    d3.selectAll(".list2").attr("opacity",1)
+                    d3.selectAll(".connector").attr("opacity",1)
+                    d3.selectAll(".difText").attr("opacity",0)
                 })
                 .attr("transform","translate(0,130)")  
             
@@ -341,8 +397,29 @@ function drawList(list,x,anchor,className,svg,column){
     .attr("y",function(d,i){
         return i*s
     })
+    .style("cursor","pointer")
     .attr("transform","translate(0,130)")
     .on("mouseover",function(d){
+        map1.setFilter("county_outline",["==","FIPS",d.FIPS])
+        map2.setFilter("county_outline",["==","FIPS",d.FIPS])
+        d3.selectAll(".list1").attr("opacity",.3)
+        d3.selectAll(".list2").attr("opacity",.3)
+        d3.selectAll(".connector").attr("opacity",.3)
+        d3.select(this).attr("opacity",1)
+
+         d3.select("#list1_"+d.FIPS).attr("opacity",1)
+         d3.select("#list2_"+d.FIPS).attr("opacity",1)
+         d3.select("#connector_"+d.FIPS).attr("opacity",1)
+         d3.select("#text_"+d.FIPS).attr("opacity",1)
+        
+    })
+    .on("mouseout",function(d){
+        map1.setFilter("county_outline",["==","FIPS",""])
+        map2.setFilter("county_outline",["==","FIPS",""])
+        d3.selectAll(".list1").attr("opacity",1)
+        d3.selectAll(".list2").attr("opacity",1)
+        d3.selectAll(".connector").attr("opacity",1)
+         d3.selectAll(".difText").attr("opacity",0)
         
     })
 }
@@ -465,9 +542,18 @@ function drawMap(data,div,column,outline){
              'filter': ['==', '$type', 'Polygon']
          });
          
-
-             
-           
+         map.addLayer({
+             'id': 'county_outline',
+             'type': 'line',
+             'source': 'counties',
+             'paint': {
+                 'line-color':"#000000",
+                 'line-width':2
+             }             
+         });
+             //console.log(map.getStyle().layers)
+        map.setFilter("county_outline",["==","FIPS",""])
+            
      })
    
      map.on('mousemove', 'counties', function(e) {
@@ -493,10 +579,31 @@ function drawMap(data,div,column,outline){
              d3.select("#mapPop").style("visibility","visible")
              .style("left",window.event.clientX+30+"px")
              .style("top",window.event.clientY+"px")
+             
+             
+             d3.selectAll(".list1").attr("opacity",.3)
+             d3.selectAll(".list2").attr("opacity",.3)
+              d3.selectAll(".connector").attr("opacity",.3)
+             
+             var fips = feature.properties.FIPS
+             d3.select("#list1_"+fips).attr("opacity",1)
+             d3.select("#list2_"+fips).attr("opacity",1)
+              d3.select("#connector_"+fips).attr("opacity",1)
+             
+             map1.setFilter("county_outline",["==","FIPS",fips])
+             map2.setFilter("county_outline",["==","FIPS",fips])
+             
          }       
          
          map.on("mouseleave",'counties',function(){
              d3.select("#mapPop").style("visibility","hidden")
+             
+            d3.selectAll(".connector").attr("opacity",1)
+             d3.selectAll(".list1").attr("opacity",1)
+             d3.selectAll(".list2").attr("opacity",1)
+                 
+             map1.setFilter("county_outline",["==","FIPS",""])
+             map2.setFilter("county_outline",["==","FIPS",""])
          })  
     });
     
@@ -513,11 +620,10 @@ function drawMap(data,div,column,outline){
 }
 
 function colorByPriority(map,column){
-    map.setPaintProperty("counties", 'fill-opacity',1)
-  
+    map.setPaintProperty("counties", 'fill-opacity',1)  
     var matchString = {
         property: "Percentile_ranks_"+column,
-        stops: [[0,"#ddd"],[0.00001, "red"],[50,"gold"],[100, "green"]]
+        stops: [[0,colors[0]],[0.00001, colors[1]],[50,"gold"],[100, colors[2]]]
     }
     map.setPaintProperty("counties", 'fill-color', matchString)
 }
@@ -526,8 +632,8 @@ function zoomToBounds(map){
     //https://docs.mapbox.com/mapbox-gl-js/example/zoomto-linestring/
     var bounds =  new mapboxgl.LngLatBounds([-155, 20], 
         [-55, 55]);
-    map1.fitBounds(bounds,{padding:40},{bearing:0})
-    map2.fitBounds(bounds,{padding:40},{bearing:0})
+    map1.fitBounds(bounds,{padding:10},{bearing:0})
+    map2.fitBounds(bounds,{padding:10},{bearing:0})
 }
 function flatDeep(arr, d = 1) {
    return d > 0 ? arr.reduce((acc, val) => acc.concat(Array.isArray(val) ? flatDeep(val, d - 1) : val), [])
