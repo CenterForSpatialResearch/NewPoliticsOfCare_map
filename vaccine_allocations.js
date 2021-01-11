@@ -735,7 +735,7 @@ function PopulateDropDownList(features) {
        map1.setFilter("counties",["==","stateAbbr",pub.currentState])
        map2.setFilter("counties",["==","stateAbbr",pub.currentState])
        drawNewLists()
-       console.log(pub.currentState)
+       //console.log(pub.currentState)
        
        
     })

@@ -106,6 +106,18 @@
         top:150px;
         font-size:20px;
       }
+      .arrow {
+        border: solid black;
+        border-width: 0 1px 1px 0;
+        display: inline-block;
+        padding: 5px;
+        margin-left:-25px;
+        margin-bottom:2px;
+      }
+      .down {
+        transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+      }
     </style>
 
 </head>
@@ -114,7 +126,7 @@
 
 <div id="head">
   <span id="brand">MAPPING THE NEW POLITICS OF CARE <span class="vac">| Vaccinations</span></span><br>
-  <nav id="placesMenu" >Go To State: <select id="ddlCustomers"></select></nav>
+  <nav id="placesMenu" >Go To State: <select id="ddlCustomers"></select><i class="arrow down"></i></nav>
 </div>
 
   <div id="map"></div>
