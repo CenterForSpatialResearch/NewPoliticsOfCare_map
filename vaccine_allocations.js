@@ -37,7 +37,7 @@ var measureSet = [
 ]
 var measureDisplayText = {
      Adult_pop:"Adult Population",
-     Firstphase:"Healthcare & Long-term Care",
+     Firstphase:"Healthcare/Long-term",
      SVI:"SVI",
      SVI_no_race:"SVI no race"
 }
@@ -77,8 +77,8 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     
     map1 = drawMap(combined,"map",pub.column1,outline)
     map2 = drawMap(combined,"map2",pub.column2,outline)
-    d3.select("#title1").html("Map of allocation by "+measureDisplayText[pub.column1])
-    d3.select("#title2").html("Map of allocation by "+measureDisplayText[pub.column2])
+    d3.select("#title1").html("Map of vaccine allocation by "+measureDisplayText[pub.column1]+" in "+stateNameDictionary[pub.currentState])
+    d3.select("#title2").html("Map of vaccine allocation by "+measureDisplayText[pub.column2]+" in "+stateNameDictionary[pub.currentState])
    
     $("#map").mouseenter(function(){
        pub.activeMap = "map1"
@@ -221,8 +221,8 @@ function updateListColumn(list,className,column){
     // console.log(column)
     d3.select("#"+className+"_title").text(measureDisplayText[column])
 
-    d3.select("#title1").html("Map of allocation by "+measureDisplayText[pub.column1])
-    d3.select("#title2").html("Map of allocation by "+measureDisplayText[pub.column2])
+    d3.select("#title1").html("Map of vaccine allocation by "+measureDisplayText[pub.column1]+" in "+stateNameDictionary[pub.currentState])
+    d3.select("#title2").html("Map of vaccine allocation by "+measureDisplayText[pub.column2]+" in "+stateNameDictionary[pub.currentState])
     
     d3.selectAll("."+className)
     .data(list)
@@ -349,7 +349,7 @@ function drawLines(combined,svg){
                     d3.selectAll(".connector").attr("opacity",1)
                     d3.selectAll(".difText").attr("opacity",0)
                 })
-                .attr("transform","translate(0,130)")  
+                .attr("transform","translate(0,160)")  
             
         }
 }
@@ -384,11 +384,17 @@ function drawList(list,x,anchor,className,svg,column){
     
     svg.append("text").text(measureDisplayText[column])
     .attr("id",className+"_title")
-    .attr("x",x)
+    .attr("x",function(){
+        if(anchor=="start"){return 390}
+        else{return 10}
+    })
     .attr("y",0)
-    .attr("text-anchor","middle")
-    .attr("transform","translate(0,100)")
-    .attr("font-size","12px")
+    .attr("text-anchor",function(){
+        if(anchor=="start"){return "end"}
+        else{return "start"}
+    })
+    .attr("transform","translate(0,125)")
+    .attr("font-size","16px")
     .attr("font-weight","bold")
     
     svg.append("text").text("COUNTY | DOSES")
@@ -396,7 +402,7 @@ function drawList(list,x,anchor,className,svg,column){
     .attr("x",x)
     .attr("y",0)
     .attr("text-anchor",anchor)
-    .attr("transform","translate(0,115)")
+    .attr("transform","translate(0,140)")
     .attr("font-size","11px")
     .attr("font-weight","bold")
     
@@ -415,7 +421,7 @@ function drawList(list,x,anchor,className,svg,column){
         return i*s
     })
     .style("cursor","pointer")
-    .attr("transform","translate(0,130)")
+    .attr("transform","translate(0,160)")
     .on("mouseover",function(d){
         map1.setFilter("county_outline",["==","FIPS",d.FIPS])
         map2.setFilter("county_outline",["==","FIPS",d.FIPS])

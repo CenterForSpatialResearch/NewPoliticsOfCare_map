@@ -55,14 +55,14 @@
 */      }
       #columns1{
         position:absolute;
-        top:110px;
+        top:125px;
         z-index:999;
         width:30hw;
         left:10px;
       }
       #columns2{
         position:absolute;
-        top:110px;
+        top:125px;
         right:10px;
         z-index:999;
         width:30hw;
@@ -94,19 +94,19 @@
       }
       #title1{
         position:fixed;
-        left:20px;
+        left:10px;
         z-index:9999;
-        top:150px;
-        font-size:20px;
-        width:20%;
+        top:165px;
+        font-size:18px;
+        width:30%;
       }
       #title2{
         position:fixed;
-        right:20px;
+        right:10px;
         z-index:9999;
-        top:150px;
-        font-size:20px;
-        width:20%;
+        top:165px;
+        font-size:18px;
+        width:30%;
         text-align:right;
       }
       .arrow {
@@ -121,6 +121,23 @@
         transform: rotate(45deg);
         -webkit-transform: rotate(45deg);
       }
+      .mapboxgl-ctrl-bottom-right {
+        bottom:60px;
+      }
+      #about{
+        position:fixed;
+        top:10px;
+        right:10px;
+        color:#fff;
+        z-index:9999;
+        font-size:40px;
+      }
+      a{
+        color:#fff;
+      }
+      a:hover{
+        color:#fff;
+      }
     </style>
 
 </head>
@@ -128,15 +145,16 @@
 <body>
 
 <div id="head">
-  <span id="brand">MAPPING THE NEW POLITICS OF CARE <span class="vac">| Vaccinations</span></span><br>
+  <span id="brand">MAPPING THE NEW POLITICS OF CARE <span class="vac">| Vaccine Allocation</span></span><br>
+  <div id="subtitle">The maps you are looking at compare COVID-19 vaccine distribution strategies that account for vulnerability and risk in different ways.</div>. 
   <nav id="placesMenu" >Go To State: <select id="ddlCustomers"></select><i class="arrow down"></i></nav>
 </div>
-
+  <div id ="about"><a href="vaccine_about.html" target="blank">&#9432</a></div>
   <div id="map"></div>
   <div id="map2"></div>
   <div id="list">LIST</div>
-  <div id="columns1"></div>
-  <div id="columns2"></div>
+  <div id="columns1"><strong>Allocate by: </strong></div>
+  <div id="columns2"><strong>Allocate by: </strong></div>
 
   <div id="title1"></div>
   <div id="title2"></div>
