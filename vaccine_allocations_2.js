@@ -5,7 +5,9 @@ var pub = {
     activeMap:"map1",
     map1Move:true,
     map2Move:false,
-    dataByState:null
+    dataByState:null,
+    maxDoses:0,
+    modelDictionary:null
 }
 var map1
 var map2
@@ -72,13 +74,12 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     PopulateDropDownList(states.features)
     
     var combined = combineData(modelData,counties)
-
     pub.dataByState = makeStateDictionary(combined)
     
     map1 = drawMap(combined,"map",pub.column1,outline)
     map2 = drawMap(combined,"map2",pub.column2,outline)
-    d3.select("#title1").html("Estimated vaccines by county if allocated by "+measureDisplayText[pub.column1])
-    d3.select("#title2").html("Estimated vaccines by county if allocated by "+measureDisplayText[pub.column2])
+    d3.select("#title1").html("Estimated vaccines by county if allocated by: ")//+measureDisplayText[pub.column1])
+    d3.select("#title2").html("Estimated vaccines by county if allocated by: ")//+measureDisplayText[pub.column2])
    
     $("#map").mouseenter(function(){
        pub.activeMap = "map1"
@@ -96,34 +97,39 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     });
     
     
-    //set initial state
-    
-    //populate dropdown 1 and 2
-    //set initial data for map 1 and map 2
-    //add counties layer to map 1 and map 2
-    //filter each map to state
-    //color each map with selected column
-    //figure out other interactions
-    
-    
     var s = 12
     var svgList = d3.select("#list")
             .append("svg")
             .attr("width",400)
-            .attr("height",pub.dataByState[pub.currentState].length*s+200)
+            .attr("height",pub.dataByState[pub.currentState].length*s+180)
+    
+    pub.stateTotals = makeStateTotalsDictionary(stateAllocations)
+      var currentStateTotal =  pub.stateTotals[stateNameDictionary[pub.currentState].split(" ").join("_").split(".").join("_")]
+        
+        
+    svgList.append("text")
+    .text(stateNameDictionary[pub.currentState]+" is allocated  "
+        +numberWithCommas(currentStateTotal)
+    +" total doses")
+    .attr("id","stateTotals")
+    .attr("x",10)
+    .attr("y",135)
+    .attr("font-size","16px")
+    .attr("font-weight","bold")
     
     var combined = {}
     
+    pub.maxDoses = 0 
     var list1 = sortList(pub.dataByState[pub.currentState],pub.column1)
-    drawList(list1,100,"end","list1",svgList,pub.column1)   
+   // drawList(list1,100,"end","list1",svgList,pub.column1)   
     combined1 = combinedList(list1,combined,pub.column1)
     
     var list2 = sortList(pub.dataByState[pub.currentState],pub.column2)
-    drawList(list2,300,"start","list2",svgList,pub.column2)
+   // drawList(list2,300,"start","list2",svgList,pub.column2)
     combined2 = combinedList(list2,combined1,pub.column2)
         
-    drawLines(combined2,svgList)
-   // drawBars(combined2,svgList)
+   // drawLines(combined2,svgList)
+    drawBars(combined2,svgList)
     
     for(var m in measureSet){
         //console.log(measureSet[m])
@@ -172,6 +178,21 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
         d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
   
 }
+
+function makeStateTotalsDictionary(data){
+    var dict = {}
+    console.log(data)
+    for(var i in data){
+        if(data[i].State!=undefined){
+            var state = data[i].State.split(" ").join("_").split(".").join("_")
+            var doses = data[i]["Vaccine_allocation"]
+            var stateLabel = data[i].State
+            dict[state]=doses
+        }
+    }
+
+    return dict
+}
 function drawNewLists(){
     var s = 12
     
@@ -182,58 +203,128 @@ function drawNewLists(){
             .attr("height",pub.dataByState[pub.currentState].length*s+200)
     
     var state = pub.currentState
+    var currentStateTotal =  pub.stateTotals[stateNameDictionary[pub.currentState].split(" ").join("_").split(".").join("_")]
+    svgList.append("text")
+    .text(stateNameDictionary[pub.currentState]+" is allocated  "
+        +numberWithCommas(currentStateTotal)
+    +" total doses")
+    .attr("id","stateTotals")
+    .attr("x",10)
+    .attr("y",135)
+    .attr("font-size","16px")
+    .attr("font-weight","bold")
+    
+    
+    
     var c1 = pub.column1
     var c2 = pub.column2
     
     var combined = {}
-    
+    pub.maxDoses = 0 
     //do lists
     var list1 = sortList(pub.dataByState[pub.currentState],pub.column1)
-    drawList(list1,100,"end","list1",svgList,pub.column1)   
+   // drawList(list1,100,"end","list1",svgList,pub.column1)   
     combined1 = combinedList(list1,combined,pub.column1)
     
     var list2 = sortList(pub.dataByState[pub.currentState],pub.column2)
-    drawList(list2,300,"start","list2",svgList,pub.column2)
+   // drawList(list2,300,"start","list2",svgList,pub.column2)
     combined2 = combinedList(list2,combined1,pub.column2)
     
-    drawLines(combined2,svgList)
+    //drawLines(combined2,svgList)
+    drawBars(combined2,svgList)
 }
 
 function updateColumns(){
     //console.log("update")
+    pub.maxDoses = 0 
     
     var combined = {}
     var list1 = sortList(pub.dataByState[pub.currentState],pub.column1)
-    updateListColumn(list1,"list1",pub.column1)
+    
+    //updateListColumn(list1,"list1",pub.column1)
+    
     combined1 = combinedList(list1,combined,pub.column1)
     
     var list2 = sortList(pub.dataByState[pub.currentState],pub.column2)
-    updateListColumn(list2,"list2",pub.column2)
-    combined2 = combinedList(list2,combined1,pub.column2)
-     
-    updateLines(combined2)
-       
-    //drawLines(combined2,svgList)
     
+  //  updateListColumn(list2,pub.column2)
+    
+    combined2 = combinedList(list2,combined1,pub.column2)
+    updateBars(combined2)
+       
+    
+}
+function updateBars(data){
+    //console.log(data)
+        var wScale = d3.scaleLinear().domain([0,pub.maxDoses]).range([3,100])
+    
+    d3.select("#title1").text(measureDisplayText[pub.column1])
+    d3.select("#title2").text(measureDisplayText[pub.column2])
+    
+    d3.selectAll(".countyNameText")
+    .data(Object.keys(data))
+    .each(function(d,i){
+        var fips = d        
+        d3.select("#label_"+fips)
+            .transition()
+            .duration(1000)
+            .attr("y",parseInt(data[d][0].order)*12)
+        
+        
+        
+        d3.select("#bar1_"+fips)
+            .transition()
+            .duration(1000)
+            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("width",function(){
+                return wScale(data[d][0].doses)
+            })
+            .attr("x",function(){
+                return 230 - wScale(data[d][0].doses)
+            })
+        
+        
+        d3.select("#bar2_"+fips)
+            .transition()
+            .duration(1000)
+            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("width",function(){
+                return wScale(data[d][1].doses)
+            })
+            
+        d3.select("#num1_"+fips)
+            .transition()
+            .duration(1000)
+            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("x",function(){
+                return 230 - wScale(data[d][0].doses)
+            })
+            .text(Math.round(data[d][0].doses))
+            
+        d3.select("#num2_"+fips)
+            .transition()
+            .duration(1000)
+            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("x",function(){
+                return 230+wScale(data[d][1].doses)
+            })
+            .text(Math.round(data[d][1].doses))
+    })
 }
 
 function updateListColumn(list,className,column){
     // console.log(list)
     // console.log(column)
-    d3.select("#"+className+"_title").text(measureDisplayText[column])
-
-    d3.select("#title1").html("Map of vaccine allocation by "+measureDisplayText[pub.column1]+" in "+stateNameDictionary[pub.currentState])
-    d3.select("#title2").html("Map of vaccine allocation by "+measureDisplayText[pub.column2]+" in "+stateNameDictionary[pub.currentState])
-    
-    d3.selectAll("."+className)
+   
+    d3.selectAll(".countyNameText")
     .data(list)
     .each(function(d,i){
-        //console.log(d)
+        console.log(d)
         d3.select("#"+className+"_"+d.FIPS)
         .transition()
         .duration(1000)
         .attr("y",parseInt(i)*12)
-        .text(d.county+" "+Math.ceil(d["Proportional_allocation_to_"+column]))
+        .text(d.county+" "+Math.round(d["Proportional_allocation_to_"+column]))
         //.attr("id",className+"_"+d.FIPS)
     })
 }
@@ -262,80 +353,251 @@ function updateLines(combined,svg){
         }
     
 }
+
+function mouseout(){
+             d3.select("#mapPop").style("visibility","hidden")
+            d3.selectAll(".compare1").attr("opacity",1)
+            d3.selectAll(".compare2").attr("opacity",1)
+            d3.selectAll(".compare2Text").attr("opacity",1)
+            d3.selectAll(".compare1Text").attr("opacity",1)
+            d3.selectAll(".countyNameText").attr("opacity",1)                 
+             map1.setFilter("county_outline",["==","FIPS",""])
+             map2.setFilter("county_outline",["==","FIPS",""])
+}    
+function mouseoverText(county,fips,doses1,doses2){
+    
+    if(doses1>doses2){
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"
+        +Math.round(doses1-doses2)
+        +" more</strong> individual doses <br>or <strong>"
+        + Math.round((doses1-doses2)/doses1*100)
+        +"% more</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
+    }else{
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+Math.round(doses2-doses1)
+        +" less</strong> individual doses <br>or <strong>"
+        + Math.round((doses2-doses1)/doses1*100)
+        +"% less</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
+    }
+    d3.select("#mapPop")
+    .html("<strong>"+county+" County</strong>"
+    //+"<br>Population: "+pop
+    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": "+Math.round(doses1)
+    +"<br>"+measureDisplayText[pub.column2]+": "+Math.round(doses2)
+    +"<br><br> Difference: "+ difference
+    )
+    //console.log(window.event.clientY,window.event.clientX)
+    d3.select("#mapPop").style("visibility","visible")
+    .style("left",window.event.clientX+30+"px")
+    .style("top",window.event.clientY+20+"px")
+
+    d3.selectAll(".countyNameText").attr("opacity",.3)
+    d3.select("#label_"+fips).attr("opacity",1)
+
+    d3.selectAll(".compare1Text").attr("opacity",.3)
+    d3.select("#num1_"+fips).attr("opacity",1)
+
+    d3.selectAll(".compare2Text").attr("opacity",.3)
+    d3.select("#num2_"+fips).attr("opacity",1)
+
+    d3.selectAll(".compare2").attr("opacity",.3)
+    d3.select("#bar2_"+fips).attr("opacity",1)
+
+    d3.selectAll(".compare1").attr("opacity",.3)
+    d3.select("#bar1_"+fips).attr("opacity",1)
+
+     map1.setFilter("county_outline",["==","FIPS",fips])
+     map2.setFilter("county_outline",["==","FIPS",fips])
+}
+
 function drawBars(combined,svg){
-    console.log("bars")
-    console.log(combined)
+    // console.log("bars")
+ //    console.log(combined)
+    var c = 230
+    var g = 1
+    var topMargin =160
+    
+    svg.append("text").text("County")
+    .attr("x",10)
+    .attr("y",0)
+    .attr("text-anchor","start")
+    .attr("transform","translate(0,"+topMargin+")")
+    .attr("font-size","13px")
+    .attr("font-weight","bold")
+    
+    svg.append("text").text(measureDisplayText[pub.column1])
+    .attr("id","title1")
+    .attr("x",c-10)
+    .attr("y",0)
+    .attr("text-anchor","end")
+    .attr("transform","translate(0,"+topMargin+")")
+    .attr("font-size","13px")
+    .attr("font-weight","bold")
+    .style('text-decoration',"underline")
+    
+    
+    svg.append("text").text(measureDisplayText[pub.column2])
+    .attr("id","title2")
+    .attr("x",c+g*10)
+    .attr("y",0)
+    .attr("text-anchor","start")
+    .attr("transform","translate(0,"+topMargin+")")
+    .attr("font-size","13px")
+    .attr("font-weight","bold")
+    
+    
+ svg.selectAll(".countyNameText")
+    .data(Object.keys(combined))
+    .enter()
+    .append("text")
+    .attr("class","countyNameText")
+    .attr("id",function(d){return "label_"+d})
+    .attr("opacity",function(d){
+       return 1
+    })
+    .text(function(d,i){
+        return combined[d][0].county
+    })
+    .attr("y",function(d,i){return combined[d][0].order*12})
+    .attr("x",function(d,i){
+        return 10
+    })
+    .attr("transform","translate(0,"+(topMargin+15)+")")  
+    .on("mouseover",function(d){
+        mouseoverText(combined[d][0].county,d,combined[d][0].doses,combined[d][1].doses)
+    })
+    .on("mouseout",function(d){
+         mouseout()
+        
+    })
+    
+    
     var opacityScale = d3.scaleLinear().domain([0,40]).range([.1,1])
-    var wScale = d3.scaleLinear().domain([0,100000]).range([3,100])
+    var wScale = d3.scaleLinear().domain([0,pub.maxDoses]).range([3,100])
  
-    var colorScale = d3.scaleLinear().domain([0,Object.keys(combined).length/2,Object.keys(combined).length]).range([colors[0],colors[1],colors[2]])
+   // var colorScale = d3.scaleLinear().domain([Object.keys(combined).length,Object.keys(combined).length/2,0])
+     var colorScale = d3.scaleLinear().domain([0,50,100])
+    .range([colors[0],colors[1],colors[2]])
+   
+    
+ svg.selectAll(".compare1Text")
+    .data(Object.keys(combined))
+    .enter()
+    .append("text")
+    .attr("class","compare1Text")
+    .attr("opacity",function(d){
+       return 1
+    })
+    .attr("id",function(d){return "num1_"+d})
+    .text(function(d,i){
+        return numberWithCommas(Math.round(combined[d][0].doses))
+    })
+    .attr("y",function(d,i){return combined[d][0].order*12})
+    .attr("text-anchor","end")
+    .attr("x",function(d,i){
+        return c-g*3-wScale(combined[d][0].doses)
+    })
+    .attr("transform","translate(0,"+(topMargin+15)+")")  
+    .on("mouseover",function(d){
+        mouseoverText(combined[d][0].county,d,pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column1],pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column2])
+       
+    })
+    .on("mouseout",function(d){
+        mouseout()
+        
+    })
     svg.selectAll(".compare2")
         .data(Object.keys(combined))
         .enter()
         .append("rect")
         .attr("class","compare2")
-        //.attr("id",function(d){return "connector_"+lineData[0].fips})
-        .attr("class","connector")
+        .attr("id",function(d){return "bar2_"+d})
         .attr("opacity",function(d){
-           return 1
-        })
-        .attr("y",function(d,i){return combined[d][1].order*12})
+               return 1
+            })
+        .attr("y",function(d,i){return combined[d][0].order*12})
         .attr("x",function(d,i){
-            return 199-wScale(combined[d][1].doses)
+            return c+g
         })
         .attr("width",function(d,i){
-          //  console.log(combined[d][1].doses)
             return wScale(combined[d][1].doses)
         }
         )
         .attr("height",10)
         .attr("fill",function(d){
-            return colorScale(combined[d][1].order)
+            return colorScale(pub.modelDictionary[d]["Percentile_ranks_"+pub.column1])
+            //return colorScale(combined[d][1].order)
         })
-            .attr("transform","translate(0,150)")  
+        .attr("transform","translate(0,"+(topMargin+5)+")")  
+        .on("mouseover",function(d){
+            
+        mouseoverText(combined[d][0].county,d,pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column1],pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column2])
+          
+        })
+        .on("mouseout",function(d){
+             mouseout()
+        })  
         
+        
+     svg.selectAll(".compare2Text")
+        .data(Object.keys(combined))
+        .enter()
+        .append("text")
+        .attr("class","compare2Text")
+        .attr("id",function(d){return "num2_"+d})
+        .attr("opacity",function(d){
+           return 1
+        })
+        .text(function(d,i){
+            return numberWithCommas(Math.round(combined[d][1].doses))
+        })
+        .attr("y",function(d,i){return combined[d][0].order*12})
+        .attr("text-anchor","start")
+        .attr("x",function(d,i){
+            return c+g*3+wScale(combined[d][1].doses)
+        })
+            .attr("transform","translate(0,"+(topMargin+15)+")")  
+        .on("mouseover",function(d){
+        mouseoverText(combined[d][0].county,d,pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column1],pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column2])
+            
+        })
+        .on("mouseout",function(d){
+            
+        mouseout()
+        })
+          
+          
     svg.selectAll(".compare1")
             .data(Object.keys(combined))
             .enter()
             .append("rect")
             .attr("class","compare1")
-            //.attr("id",function(d){return "connector_"+lineData[0].fips})
-            .attr("class","connector")
+            .attr("id",function(d){return "bar1_"+d})
             .attr("opacity",function(d){
                return 1
             })
-            .attr("y",function(d,i){return combined[d][1].order*12})
-            .attr("x",201)
+            .attr("y",function(d,i){return combined[d][0].order*12})
+            .attr("x",function(d,i){
+                return c-g-wScale(combined[d][0].doses)
+            })
             .attr("width",function(d,i){
-                console.log(combined[d][0].doses)
+                //console.log(combined[d][0].doses)
                 return wScale(combined[d][0].doses)
             }
             )
             .attr("height",10)
             .attr("fill",function(d){
+            return colorScale(pub.modelDictionary[d]["Percentile_ranks_"+pub.column1])
                 return colorScale(combined[d][0].order)
             })
+            .attr("transform","translate(0,"+(topMargin+5)+")")  
             .on("mouseover",function(d){
-                map1.setFilter("county_outline",["==","FIPS",d[0].fips])
-                map2.setFilter("county_outline",["==","FIPS",d[0].fips])
-                d3.selectAll(".list1").attr("opacity",.3)
-                d3.selectAll(".list2").attr("opacity",.3)
-                d3.selectAll(".connector").attr("opacity",.3)
-                d3.select(this).attr("opacity",1)
-                 d3.select("#text_"+d[0].fips).attr("opacity",1)
-                 d3.select("#list1_"+d[0].fips).attr("opacity",1)
-                 d3.select("#list2_"+d[0].fips).attr("opacity",1)
+                mouseoverText(combined[d][0].county,d,pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column1],pub.modelDictionary[d]["Proportional_allocation_to_"+pub.column2])
+               
             })
             .on("mouseout",function(d){
-                map1.setFilter("county_outline",["==","FIPS",""])
-                map2.setFilter("county_outline",["==","FIPS",""])
-                d3.selectAll(".list1").attr("opacity",1)
-                d3.selectAll(".list2").attr("opacity",1)
-                d3.selectAll(".connector").attr("opacity",1)
-                d3.selectAll(".difText").attr("opacity",0)
-            })
-            .attr("transform","translate(0,150)")  
+               mouseout()
         
+            })
 }
 function drawLines(combined,svg){
     //console.log(combined)
@@ -431,11 +693,16 @@ function drawLines(combined,svg){
 }
     
 
-function combinedList(list,combined,column){    
+function combinedList(list,combined,column){ 
+      
     for(var i in list){
         if(list[i].FIPS!=undefined){
             var fips = list[i].FIPS
             var county = list[i].county
+            
+            if(list[i]["Proportional_allocation_to_"+column]>pub.maxDoses){
+                pub.maxDoses=list[i]["Proportional_allocation_to_"+column]
+            }
             
             if(Object.keys(combined).indexOf(fips)==-1){
                 combined[fips]=[]
@@ -445,6 +712,7 @@ function combinedList(list,combined,column){
             }
         }
     }
+    //console.log(pub.maxDoses)
     return combined
 }
 
@@ -460,17 +728,17 @@ function numberWithCommas(x) {
 
 
 function drawList(list,x,anchor,className,svg,column){
+    var wScale = d3.scaleLinear().domain([0,100000]).range([3,100])
     
     svg.append("text").text(measureDisplayText[column])
     .attr("id",className+"_title")
     .attr("x",function(){
-        if(anchor=="start"){return 390}
-        else{return 10}
+        if(anchor=="start"){return 205}
+        else{return 195}
     })
     .attr("y",0)
     .attr("text-anchor",function(){
-        if(anchor=="start"){return "end"}
-        else{return "start"}
+        return anchor
     })
     .attr("transform","translate(0,125)")
     .attr("font-size","16px")
@@ -494,8 +762,14 @@ function drawList(list,x,anchor,className,svg,column){
     .append("text")
     .attr("class",className)
     .attr("id",function(d){return className+"_"+d.FIPS})
-    .text(function(d){return d.county+" "+numberWithCommas(Math.ceil(d["Proportional_allocation_to_"+column]))})
-    .attr("x",x)
+    .text(function(d){return d.county+" "+numberWithCommas(Math.round(d["Proportional_allocation_to_"+column]))})
+    .attr("x",function(d){
+        if(className =="list1"){
+            return 195-wScale(d["Proportional_allocation_to_"+column])
+        }else{
+            return 205+wScale(d["Proportional_allocation_to_"+column])
+        }
+    })
     .attr("fill",function(d){console.log(d);
         if(className=="list1"){
             return "black"
@@ -600,7 +874,7 @@ function combineData(modelData,counties){
             modelDictionary[fips]=data
         }
     }
-    
+    pub.modelDictionary = modelDictionary
     //add data to geo
     for(var c in counties.features){
         var fips = counties.features[c].properties.FIPS
@@ -670,7 +944,7 @@ function drawMap(data,div,column,outline){
          map.getCanvas().style.cursor = 'pointer'; 
          var feature = e.features[0]
          if(feature["properties"].FIPS!=undefined){
-            //console.log(feature)
+            console.log(feature)
              
              var county = feature.properties.county
              var pop = feature.properties.totalPopulation
@@ -678,42 +952,24 @@ function drawMap(data,div,column,outline){
              var column2Text = measureDisplayText[pub.column2]
              var column1Value = feature.properties["Proportional_allocation_to_"+pub.column1]
              var column2Value = feature.properties["Proportional_allocation_to_"+pub.column2]
+             var fips = feature.properties.FIPS
              
              d3.select("#mapPop")
-             .html("<strong>"+county+" county</strong>"
-             +"<br>Population: "+pop
-             +"<br><br>Doses allocated by <br>"+column1Text+": "+Math.ceil(column1Value)
-             +"<br>"+column2Text+": "+Math.ceil(column2Value)
+             .html("<strong>"+county+" County</strong>"
+             //+"<br>Population: "+pop
+             +"<br><br>Doses allocated by <br>"+column1Text+": "+Math.round(column1Value)
+             +"<br>"+column2Text+": "+Math.round(column2Value)
              )
              //console.log(window.event.clientY,window.event.clientX)
              d3.select("#mapPop").style("visibility","visible")
              .style("left",window.event.clientX+30+"px")
              .style("top",window.event.clientY+"px")
-             
-             
-             d3.selectAll(".list1").attr("opacity",.3)
-             d3.selectAll(".list2").attr("opacity",.3)
-              d3.selectAll(".connector").attr("opacity",.3)
-             
-             var fips = feature.properties.FIPS
-             d3.select("#list1_"+fips).attr("opacity",1)
-             d3.select("#list2_"+fips).attr("opacity",1)
-              d3.select("#connector_"+fips).attr("opacity",1)
-             
-             map1.setFilter("county_outline",["==","FIPS",fips])
-             map2.setFilter("county_outline",["==","FIPS",fips])
-             
-         }       
+             mouseoverText(county,fips,column1Value,column2Value)
+        }       
          
          map.on("mouseleave",'counties',function(){
-             d3.select("#mapPop").style("visibility","hidden")
              
-            d3.selectAll(".connector").attr("opacity",1)
-             d3.selectAll(".list1").attr("opacity",1)
-             d3.selectAll(".list2").attr("opacity",1)
-                 
-             map1.setFilter("county_outline",["==","FIPS",""])
-             map2.setFilter("county_outline",["==","FIPS",""])
+               mouseout()
          })  
     });
     
@@ -733,7 +989,7 @@ function colorByPriority(map,column){
     map.setPaintProperty("counties", 'fill-opacity',1)  
     var matchString = {
         property: "Percentile_ranks_"+column,
-        stops: [[0,colors[0]],[0.00001, colors[1]],[50,"gold"],[100, colors[2]]]
+        stops: [[0,colors[0]],[50, colors[1]],[100, colors[2]]]
     }
     map.setPaintProperty("counties", 'fill-color', matchString)
 }
