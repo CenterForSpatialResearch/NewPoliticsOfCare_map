@@ -290,16 +290,17 @@ function updateColumns(){
   //  updateListColumn(list2,pub.column2)
     
     combined2 = combinedList(list2,combined1,pub.column2)
-    updateBars(combined2)
+    var orderedColumn = 0
+    updateBars(combined2,orderedColumn)
        
     
 }
-function updateBars(data){
+function updateBars(data,orderedColumn){
     //console.log(data)
         var wScale = d3.scaleLinear().domain([0,pub.maxDoses]).range([3,100])
     
-    d3.select("#title1").text(measureDisplayText[pub.column1])
-    d3.select("#title2").text(measureDisplayText[pub.column2])
+    d3.select("#bartitle1").text(measureDisplayText[pub.column1])
+    d3.select("#bartitle2").text(measureDisplayText[pub.column2])
     
     d3.selectAll(".countyNameText")
     .data(Object.keys(data))
@@ -308,14 +309,14 @@ function updateBars(data){
         d3.select("#label_"+fips)
             .transition()
             .duration(1000)
-            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("y",parseInt(data[d][orderedColumn].order)*12)
         
         
         
         d3.select("#bar1_"+fips)
             .transition()
             .duration(1000)
-            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("y",parseInt(data[d][orderedColumn].order)*12)
             .attr("width",function(){
                 return wScale(data[d][0].doses)
             })
@@ -327,7 +328,7 @@ function updateBars(data){
         d3.select("#bar2_"+fips)
             .transition()
             .duration(1000)
-            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("y",parseInt(data[d][orderedColumn].order)*12)
             .attr("width",function(){
                 return wScale(data[d][1].doses)
             })
@@ -335,64 +336,24 @@ function updateBars(data){
         d3.select("#num1_"+fips)
             .transition()
             .duration(1000)
-            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("y",parseInt(data[d][orderedColumn].order)*12)
             .attr("x",function(){
-                return 230 - wScale(data[d][0].doses)
+                return 230 -3- wScale(data[d][0].doses)
             })
             .text(Math.round(data[d][0].doses))
             
         d3.select("#num2_"+fips)
             .transition()
             .duration(1000)
-            .attr("y",parseInt(data[d][0].order)*12)
+            .attr("y",parseInt(data[d][orderedColumn].order)*12)
             .attr("x",function(){
-                return 230+wScale(data[d][1].doses)
+                return 230+3+wScale(data[d][1].doses)
             })
             .text(Math.round(data[d][1].doses))
     })
 }
 
-function updateListColumn(list,className,column){
-    // console.log(list)
-    // console.log(column)
-   
-    d3.selectAll(".countyNameText")
-    .data(list)
-    .each(function(d,i){
-        console.log(d)
-        d3.select("#"+className+"_"+d.FIPS)
-        .transition()
-        .duration(1000)
-        .attr("y",parseInt(i)*12)
-        .text(d.county+" "+Math.round(d["Proportional_allocation_to_"+column]))
-        //.attr("id",className+"_"+d.FIPS)
-    })
-}
 
-function updateLines(combined,svg){
-    var line = d3.line()
-        .x(function(d,i){
-                return i*190+105
-        })
-        .y(function(d){
-                return parseInt(d.order)*12-4
-        })  
-        
-    var opacityScale = d3.scaleLinear().domain([0,40]).range([.1,1])
-        for(var i in combined){
-            var lineData = combined[i]            
-            d3.select("#connector_"+lineData[0].fips)
-                .data([lineData])
-                .each(function(d,i){
-                    d3.select("#connector_"+lineData[0].fips)
-                            .transition()
-                            .duration(1000)
-                            .delay(i*100)
-                            .attr("d",line)
-                })
-        }
-    
-}
 
 function mouseout(){
              d3.select("#mapPop").style("visibility","hidden")
@@ -464,25 +425,49 @@ function drawBars(combined,svg){
     .attr("font-size","13px")
     .attr("font-weight","bold")
     
+    
     svg.append("text").text(measureDisplayText[pub.column1])
-    .attr("id","title1")
-    .attr("x",c-10)
+    .attr("id","bartitle1")
+    .attr("x",c-25)
     .attr("y",0)
+    .attr("class","columnHeader")
     .attr("text-anchor","end")
     .attr("transform","translate(0,"+topMargin+")")
-    .attr("font-size","13px")
+    .attr("font-size","12px")
     .attr("font-weight","bold")
-    .style('text-decoration',"underline")
+   // .style('text-decoration',"underline")
+    .attr("cursor","pointer")
+    .on("click",function(){
+        updateBars(combined,0)
+        // d3.select("#title1").style('text-decoration',"none")
+//         d3.select("#title2").style('text-decoration',"underline")
+        d3.select("#downArrow").transition().attr("x",c-20)
+    })
     
+    svg.append("text").text(" \uf063").attr("id","downArrow")
+      .attr("font-family","FontAwesome")
+        .attr("x",c-20)
+        .attr("y",0)
+    .attr("transform","translate(0,"+topMargin+")")
+    .attr("font-size","12px")
     
     svg.append("text").text(measureDisplayText[pub.column2])
-    .attr("id","title2")
-    .attr("x",c+g*10)
+    .attr("id","bartitle2")
+    .attr("x",c+g*25)
     .attr("y",0)
     .attr("text-anchor","start")
+    .attr("class","columnHeader")
+    
     .attr("transform","translate(0,"+topMargin+")")
-    .attr("font-size","13px")
+    .attr("font-size","12px")
     .attr("font-weight","bold")
+    .attr("cursor","pointer")
+    .on("click",function(){
+        updateBars(combined,1)
+        // d3.select("#title1").style('text-decoration',"none")
+ //        d3.select("#title2").style('text-decoration',"underline")//.text(measureDisplayText[pub.column2])
+        d3.select("#downArrow").transition().attr("x",c+10)
+    })
     
     
  svg.selectAll(".countyNameText")
@@ -501,6 +486,7 @@ function drawBars(combined,svg){
     .attr("x",function(d,i){
         return 10
     })
+    .attr("cursor","pointer")
     .attr("transform","translate(0,"+(topMargin+15)+")")  
     .on("mouseover",function(d){
         mouseoverText(combined[d][0].county,d,combined[d][0].doses,combined[d][1].doses)
@@ -523,6 +509,7 @@ function drawBars(combined,svg){
     .data(Object.keys(combined))
     .enter()
     .append("text")
+    .attr("cursor","pointer")
     .attr("class","compare1Text")
     .attr("opacity",function(d){
        return 1
@@ -549,6 +536,7 @@ function drawBars(combined,svg){
         .data(Object.keys(combined))
         .enter()
         .append("rect")
+    .attr("cursor","pointer")
         .attr("class","compare2")
         .attr("id",function(d){return "bar2_"+d})
         .attr("opacity",function(d){
@@ -582,6 +570,7 @@ function drawBars(combined,svg){
         .data(Object.keys(combined))
         .enter()
         .append("text")
+    .attr("cursor","pointer")
         .attr("class","compare2Text")
         .attr("id",function(d){return "num2_"+d})
         .attr("opacity",function(d){
@@ -611,6 +600,7 @@ function drawBars(combined,svg){
             .enter()
             .append("rect")
             .attr("class","compare1")
+    .attr("cursor","pointer")
             .attr("id",function(d){return "bar1_"+d})
             .attr("opacity",function(d){
                return 1
