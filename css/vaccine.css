@@ -339,15 +339,7 @@ select{
      font-weight:400;
      color:#fff;
  }
- #key{
-     z-index:999;
-     width:400px;
-     height:100px;
-     margin:10px;
-     background-color:none;
-     border-bottom:1px solid #ddd;
-     
- }
+
 
  #mainMenu{
      position:fixed;

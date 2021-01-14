@@ -96,6 +96,47 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
         moveMapsTogether(map1,map2)
     });
     
+    var keySvg = d3.select("#key").append("svg").attr("width",250).attr("height",50)
+    var defs = keySvg.append("defs");
+     var gradient = defs.append("linearGradient")
+        .attr("id", "svgGradient")
+        .attr("x1", "0%")
+        .attr("x2", "100%")
+        .attr("y1", "0%")
+        .attr("y2", "0%");
+
+     gradient.append("stop")
+        .attr('class', 'start')
+        .attr("offset", "0%")
+        .attr("stop-color", colors[0])
+        .attr("stop-opacity", 1);
+
+     gradient.append("stop")
+        .attr('class', 'end')
+        .attr("offset", "50%")
+        .attr("stop-color",colors[1])
+        .attr("stop-opacity", 1);
+        
+     gradient.append("stop")
+        .attr('class', 'end')
+        .attr("offset", "100%")
+        .attr("stop-color", colors[2])
+        .attr("stop-opacity", 1);
+        
+    
+    keySvg.append("text").text("Maps and Bar Charts are colored by Percentil Rank")
+    .attr("x",10).attr("y",20).attr("fill","white")
+    .style("font-size","10px")
+
+    keySvg.append("rect").attr("width",180).attr("height",10).attr("x",30).attr("y",30).attr("fill","url(#svgGradient)")
+
+
+    keySvg.append("text").text("0%").attr("x",12).attr("y",40).attr("fill","white")    .style("font-size","10px")
+
+    keySvg.append("text").text("100%").attr("x",212).attr("y",40).attr("fill","white")    .style("font-size","10px")
+
+    
+    
     
     var s = 12
     var svgList = d3.select("#list")
@@ -181,7 +222,6 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
 
 function makeStateTotalsDictionary(data){
     var dict = {}
-    console.log(data)
     for(var i in data){
         if(data[i].State!=undefined){
             var state = data[i].State.split(" ").join("_").split(".").join("_")
