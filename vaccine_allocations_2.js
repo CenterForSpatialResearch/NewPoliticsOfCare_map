@@ -387,9 +387,21 @@ function mouseoverText(county,fips,doses1,doses2){
     +"<br><br> Difference: "+ difference
     )
     //console.log(window.event.clientY,window.event.clientX)
+    if(window.event.clientX+150>window.innerWidth){
+        var popupLeft = window.event.clientX-160+"px"
+    }else{
+        var popupLeft = window.event.clientX+30+"px"
+    }
+    if(window.event.clientY+250>window.innerHeight){
+        var popupTop = window.innderHeight-200+"px"
+    }else{
+        var popupTop = window.event.clientY+20+"px"
+    }
+    
+    
     d3.select("#mapPop").style("visibility","visible")
-    .style("left",window.event.clientX+30+"px")
-    .style("top",window.event.clientY+20+"px")
+    .style("left",popupLeft)
+    .style("top",popupTop)
 
     d3.selectAll(".countyNameText").attr("opacity",.3)
     d3.select("#label_"+fips).attr("opacity",1)
@@ -974,7 +986,7 @@ function drawMap(data,div,column,outline){
          map.getCanvas().style.cursor = 'pointer'; 
          var feature = e.features[0]
          if(feature["properties"].FIPS!=undefined){
-            console.log(feature)
+            //console.log(feature)
              
              var county = feature.properties.county
              var pop = feature.properties.totalPopulation
@@ -991,9 +1003,9 @@ function drawMap(data,div,column,outline){
              +"<br>"+column2Text+": "+Math.round(column2Value)
              )
              //console.log(window.event.clientY,window.event.clientX)
-             d3.select("#mapPop").style("visibility","visible")
-             .style("left",window.event.clientX+30+"px")
-             .style("top",window.event.clientY+"px")
+             // d3.select("#mapPop").style("visibility","visible")
+//              .style("left",window.event.clientX+30+"px")
+//              .style("top",window.event.clientY+"px")
              mouseoverText(county,fips,column1Value,column2Value)
         }       
          
