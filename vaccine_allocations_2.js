@@ -72,7 +72,6 @@ var stateToNumber = {'WA': '53', 'DE': '10', 'DC': '11', 'WI': '55', 'WV': '54',
 function ready(counties,outline,centroids,modelData,timeStamp,states,carto,stateAllocations){
     //combine data
     PopulateDropDownList(states.features)
-    
     var combined = combineData(modelData,counties)
     pub.dataByState = makeStateDictionary(combined)
     
@@ -369,26 +368,26 @@ function mouseoverText(county,fips,doses1,doses2){
     
     if(doses1>doses2){
         var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"
-        +Math.round(doses1-doses2)
-        +" more</strong> individual doses <br>or <strong>"
-        + Math.round((doses1-doses2)/doses1*100)
+        +numberWithCommas(Math.round(doses1-doses2))
+        +" doses more</strong> <br>or <strong>"
+        + numberWithCommas(Math.round((doses1-doses2)/doses1*100))
         +"% more</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }else{
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+Math.round(doses2-doses1)
-        +" less</strong> individual doses <br>or <strong>"
-        + Math.round((doses2-doses1)/doses1*100)
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+numberWithCommas(Math.round(doses2-doses1))
+        +" doses less </strong><br>or <strong>"
+        + numberWithCommas(Math.round((doses2-doses1)/doses1*100))
         +"% less</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }
     d3.select("#mapPop")
     .html("<strong>"+county+" County</strong>"
-    //+"<br>Population: "+pop
-    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": "+Math.round(doses1)
-    +"<br>"+measureDisplayText[pub.column2]+": "+Math.round(doses2)
+    +"<br>Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
+    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.round(doses1))+" doses</strong>"
+    +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.round(doses2))+" doses</strong>"
     +"<br><br> Difference: "+ difference
     )
     //console.log(window.event.clientY,window.event.clientX)
     if(window.event.clientX+150>window.innerWidth){
-        var popupLeft = window.event.clientX-160+"px"
+        var popupLeft = window.event.clientX-180+"px"
     }else{
         var popupLeft = window.event.clientX+30+"px"
     }
