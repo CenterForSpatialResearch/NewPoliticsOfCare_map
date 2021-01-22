@@ -29,8 +29,12 @@ var states = d3.json("simplestates.geojson")
 var carto= d3.json("cartogram.geojson")
 var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/State_level_vaccine_allocation.csv")
 
-var colors = ["rgb(236, 235, 16)","rgb(133, 205, 98)","rgb(16, 182, 163)"]
-
+var colors = ["rgb(16, 182, 163)","rgb(133, 205, 98)","rgb(236, 235, 16)"]
+// var colors = ["#17DCFF","#7E6EFF","#E400FF"]
+// var colors = ["#E0ECF4","#9EBCDA","#8856A7"]
+// var colors = ["#2D7FB8",
+// "#7FCDBB",
+// "#2D7FB8"]
 var measureSet = [
      "Adult_pop",
      "Firstphase",
@@ -107,7 +111,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
      gradient.append("stop")
         .attr('class', 'start')
         .attr("offset", "0%")
-        .attr("stop-color", colors[0])
+        .attr("stop-color", colors[2])
         .attr("stop-opacity", 1);
 
      gradient.append("stop")
@@ -119,20 +123,24 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
      gradient.append("stop")
         .attr('class', 'end')
         .attr("offset", "100%")
-        .attr("stop-color", colors[2])
+        .attr("stop-color", colors[0])
         .attr("stop-opacity", 1);
         
     
-    keySvg.append("text").text("Maps and Bar Charts are colored by Percentil Rank")
-    .attr("x",10).attr("y",20).attr("fill","white")
+    keySvg.append("text").text("Maps and bar charts are colored in order of priority:")
+    .attr("x",10).attr("y",10).attr("fill","white")
     .style("font-size","10px")
 
     keySvg.append("rect").attr("width",180).attr("height",10).attr("x",30).attr("y",30).attr("fill","url(#svgGradient)")
 
 
-    keySvg.append("text").text("0%").attr("x",12).attr("y",40).attr("fill","white")    .style("font-size","10px")
+    keySvg.append("text").text("High Priority").attr("x",12).attr("y",25).attr("fill","white")    .style("font-size","10px")
+    keySvg.append("text").text("1").attr("x",12).attr("y",39).attr("fill","white")    .style("font-size","10px")
 
-    keySvg.append("text").text("100%").attr("x",212).attr("y",40).attr("fill","white")    .style("font-size","10px")
+    keySvg.append("text").attr("id","keyMaxCounties").text("62").attr("x",220).attr("y",39).attr("fill","white")    .style("font-size","10px")
+    keySvg.append("text").text("Low Priority").attr("x",230).attr("y",25).attr("fill","white")    
+        .style("font-size","10px")
+        .attr("text-anchor","end")
 
     
     
@@ -262,6 +270,8 @@ function drawNewLists(){
     pub.maxDoses = 0 
     //do lists
     var list1 = sortList(pub.dataByState[pub.currentState],pub.column1)
+    //console.log(list1.length)
+    d3.select("#keyMaxCounties").text(list1.length)
    // drawList(list1,100,"end","list1",svgList,pub.column1)   
     combined1 = combinedList(list1,combined,pub.column1)
     
@@ -365,25 +375,24 @@ function mouseout(){
              map2.setFilter("county_outline",["==","FIPS",""])
 }    
 function mouseoverText(county,fips,doses1,doses2){
-    
-    if(doses1>doses2){
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"
+    if(parseFloat(doses1)>parseFloat(doses2)){
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
         +numberWithCommas(Math.floor(doses1-doses2))
-        +" doses more</strong> <br>or <strong>"
+        +" doses more</span></strong> <br>or <strong><span class=\"morePopup\">"
         + numberWithCommas(Math.floor((doses1-doses2)/doses1*100))
-        +"% more</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
+        +"% more</span></strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }else{
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+numberWithCommas(Math.floor(doses2-doses1))
-        +" doses less </strong><br>or <strong>"
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"+numberWithCommas(Math.floor(doses2-doses1))
+        +" doses less</span> </strong><br>or <strong><span class=\"lessPopup\">"
         + numberWithCommas(Math.floor((doses2-doses1)/doses1*100))
-        +"% less</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
+        +"% less</span></strong></span> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }
     d3.select("#mapPop")
     .html("<strong>"+county+" County</strong>"
-    +"<br>Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
-    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.floor(doses1))+" doses</strong>"
-    +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.floor(doses2))+" doses</strong>"
-    +"<br><br> Difference: "+ difference
+        +"<br>Total Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
+        +"<br><br>Doses allocated proportional to <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.floor(doses1))+" doses</strong>"
+        +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.floor(doses2))+" doses</strong>"
+        +"<br><br> Difference: "+ difference
     )
     //console.log(window.event.clientY,window.event.clientX)
     if(window.event.clientX+150>window.innerWidth){
