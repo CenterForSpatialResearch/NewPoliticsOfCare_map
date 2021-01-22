@@ -339,7 +339,7 @@ function updateBars(data,orderedColumn){
             .attr("x",function(){
                 return 230 -3- wScale(data[d][0].doses)
             })
-            .text(Math.round(data[d][0].doses))
+            .text(Math.floor(data[d][0].doses))
             
         d3.select("#num2_"+fips)
             .transition()
@@ -348,7 +348,7 @@ function updateBars(data,orderedColumn){
             .attr("x",function(){
                 return 230+3+wScale(data[d][1].doses)
             })
-            .text(Math.round(data[d][1].doses))
+            .text(Math.floor(data[d][1].doses))
     })
 }
 
@@ -368,21 +368,21 @@ function mouseoverText(county,fips,doses1,doses2){
     
     if(doses1>doses2){
         var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"
-        +numberWithCommas(Math.round(doses1-doses2))
+        +numberWithCommas(Math.floor(doses1-doses2))
         +" doses more</strong> <br>or <strong>"
-        + numberWithCommas(Math.round((doses1-doses2)/doses1*100))
+        + numberWithCommas(Math.floor((doses1-doses2)/doses1*100))
         +"% more</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }else{
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+numberWithCommas(Math.round(doses2-doses1))
+        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong>"+numberWithCommas(Math.floor(doses2-doses1))
         +" doses less </strong><br>or <strong>"
-        + numberWithCommas(Math.round((doses2-doses1)/doses1*100))
+        + numberWithCommas(Math.floor((doses2-doses1)/doses1*100))
         +"% less</strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }
     d3.select("#mapPop")
     .html("<strong>"+county+" County</strong>"
     +"<br>Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
-    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.round(doses1))+" doses</strong>"
-    +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.round(doses2))+" doses</strong>"
+    +"<br><br>Doses allocated by <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.floor(doses1))+" doses</strong>"
+    +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.floor(doses2))+" doses</strong>"
     +"<br><br> Difference: "+ difference
     )
     //console.log(window.event.clientY,window.event.clientX)
@@ -527,7 +527,7 @@ function drawBars(combined,svg){
     })
     .attr("id",function(d){return "num1_"+d})
     .text(function(d,i){
-        return numberWithCommas(Math.round(combined[d][0].doses))
+        return numberWithCommas(Math.floor(combined[d][0].doses))
     })
     .attr("y",function(d,i){return combined[d][0].order*12})
     .attr("text-anchor","end")
@@ -588,7 +588,7 @@ function drawBars(combined,svg){
            return 1
         })
         .text(function(d,i){
-            return numberWithCommas(Math.round(combined[d][1].doses))
+            return numberWithCommas(Math.floor(combined[d][1].doses))
         })
         .attr("y",function(d,i){return combined[d][0].order*12})
         .attr("text-anchor","start")
@@ -685,9 +685,9 @@ function drawLines(combined,svg){
       //           .text(
       //               function(){
       //                   if(lineData[1].doses<lineData[0].doses){
-      //                       return "-"+Math.round(lineData[0].doses-lineData[1].doses)
+      //                       return "-"+Math.floor(lineData[0].doses-lineData[1].doses)
       //                   }
-      //                   return "+"+Math.round(lineData[0].doses-lineData[1].doses)
+      //                   return "+"+Math.floor(lineData[0].doses-lineData[1].doses)
       //               }
       //           )
       //           .attr("r",10)
@@ -803,7 +803,7 @@ function drawList(list,x,anchor,className,svg,column){
     .append("text")
     .attr("class",className)
     .attr("id",function(d){return className+"_"+d.FIPS})
-    .text(function(d){return d.county+" "+numberWithCommas(Math.round(d["Proportional_allocation_to_"+column]))})
+    .text(function(d){return d.county+" "+numberWithCommas(Math.floor(d["Proportional_allocation_to_"+column]))})
     .attr("x",function(d){
         if(className =="list1"){
             return 195-wScale(d["Proportional_allocation_to_"+column])
@@ -998,8 +998,8 @@ function drawMap(data,div,column,outline){
              d3.select("#mapPop")
              .html("<strong>"+county+" County</strong>"
              //+"<br>Population: "+pop
-             +"<br><br>Doses allocated by <br>"+column1Text+": "+Math.round(column1Value)
-             +"<br>"+column2Text+": "+Math.round(column2Value)
+             +"<br><br>Doses allocated by <br>"+column1Text+": "+Math.floor(column1Value)
+             +"<br>"+column2Text+": "+Math.floor(column2Value)
              )
              //console.log(window.event.clientY,window.event.clientX)
              // d3.select("#mapPop").style("visibility","visible")
