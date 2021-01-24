@@ -133,23 +133,23 @@ Where should 1,000,000 Community Health Workers be equitably located? <br><br><b
 
 <script>
   var highlightColor = "#fff"
-  var highlightColor2 = "#fff"
+  var highlightColor2 = "#000"
   
 //var colors = ["rgb(16, 182, 163)","rgb(133, 205, 98)","rgb(236, 235, 16)"]
   
   
   d3.select("#vaccine").style("color",highlightColor)
- // d3.select("#vaccine").style("background-color",highlightColor2)
-  d3.select("#vaccine").style("background","linear-gradient(140deg, rgb(16, 182, 163) 0%, rgb(133, 205, 98) 35%, rgb(236, 235, 16) 100%)")
+  d3.select("#vaccine").style("background-color",highlightColor2)
+//  d3.select("#vaccine").style("background","linear-gradient(-40deg, rgba(16, 182, 163,.7) 0%, rgb(16, 182, 163) 100%)")
   
  // d3.select("#vaccine").style("border","2px solid "+highlightColor2)
 d3.select("#vaccineButton").style("border","2px solid "+ highlightColor)
 d3.select("#vaccineButton a").style("color", highlightColor)
 
 
- // d3.select("#chw").style("background-color",highlightColor)
+  d3.select("#chw").style("background-color",highlightColor)
   
-   d3.select("#chw").style("background","linear-gradient(-140deg, rgb(236, 235, 16) -30%, rgb(133, 205, 98) 35%, rgb(16, 182, 163) 130%)")
+   //d3.select("#chw").style("background","linear-gradient(-140deg, rgba(16, 182, 163,.9) 0%, rgb(16, 182, 163) 100%)")
   d3.select("#chw").style("color",highlightColor2)
 d3.select("#chwButton").style("border","2px solid "+highlightColor2)
   
