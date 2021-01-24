@@ -9,14 +9,13 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Coda+Caption:wght@800&family=Hammersmith+One&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
-    <script src="https://unpkg.com/scrollama"></script>
+   <script type="text/javascript" src="js/d3.js"></script>
     <style>
         body {
             margin:0; 
             padding:0; 
           	font-family:sans-serif;
-            background-color:rgb(16, 182, 163);
+            background-color:#fff;
             color:#000;
         }
        
@@ -77,7 +76,7 @@
       }
       .button{
         border:2px solid #000;
-        border-radius:30px;
+        border-radius:0px;
         display:inline-block;
         padding:20px;
         font-size:16px;
@@ -89,6 +88,28 @@
         text-decoration:none;
         color:#000;
       }
+      .side{
+        font-family: 'Hammersmith One', sans-serif;
+        width:41%;
+        height:100vh;
+        top:0px;
+        display:inline-block;
+        position:fixed;
+        font-size:24px;
+        line-height:150%;
+        padding:5%;
+        padding-top:350px;
+      }
+      #vaccine{
+        left:0px;
+        background-color:#fff;
+        color:rgb(16, 182, 163);
+      }
+      #chw{
+        right:0px;
+        color:#fff;
+        background-color:#fff;
+      }
         </style>
 </head>
 <body>
@@ -96,13 +117,45 @@
   <span id="brand">MAPPING THE NEW POLITICS OF CARE</span><br>
 </div>
 <div id="mainMenu">
-  COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States. Unless we address the long-standing inequalities embedded in the social and political landscape of the country along with the immediate needs produced by the pandemic, we will come out of the current crisis just as vulnerable as when this all began.<br><br>
-  <div id="vaccine" class="button"><a href="vaccine.html">Vaccinations</a></div>
-  <div id="chw" class="button"><a href="map.html">Community Healthcare Workers</a></div>
+  
+  <div id="vaccine" class="side">+/-254,000,000 adults need vaccines<br><br>
+How do we ensure there is an equitable distribution?<br><br><br>
+  <div id="vaccineButton" class="button"><a href="vaccine.html">Vaccinations</a></div>
+</div>
+
+  <div id="chw" class="side">+/-328,016,242 people live in the U.S.<br><br>
+Where should 1,000,000 Community Health Workers be equitably located? <br><br><br>
+  <div id="chwButton" class="button"><a href="map.html">Community Healthcare Workers</a></div>
+</div>
+  
+ 
 </div>
 
 <script>
+  var highlightColor = "#fff"
+  var highlightColor2 = "#fff"
+  
+//var colors = ["rgb(16, 182, 163)","rgb(133, 205, 98)","rgb(236, 235, 16)"]
+  
+  
+  d3.select("#vaccine").style("color",highlightColor)
+ // d3.select("#vaccine").style("background-color",highlightColor2)
+  d3.select("#vaccine").style("background","linear-gradient(140deg, rgb(16, 182, 163) 0%, rgb(133, 205, 98) 35%, rgb(236, 235, 16) 100%)")
+  
+ // d3.select("#vaccine").style("border","2px solid "+highlightColor2)
+d3.select("#vaccineButton").style("border","2px solid "+ highlightColor)
+d3.select("#vaccineButton a").style("color", highlightColor)
 
+
+ // d3.select("#chw").style("background-color",highlightColor)
+  
+   d3.select("#chw").style("background","linear-gradient(-140deg, rgb(236, 235, 16) -30%, rgb(133, 205, 98) 35%, rgb(16, 182, 163) 130%)")
+  d3.select("#chw").style("color",highlightColor2)
+d3.select("#chwButton").style("border","2px solid "+highlightColor2)
+  
+d3.select("#chwButton a").style("color",highlightColor2)
+  
+ 
 </script>
 
 </body>
