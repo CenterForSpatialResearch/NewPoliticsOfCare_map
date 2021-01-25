@@ -102,13 +102,39 @@
       }
       #vaccine{
         right:0px;
+        top:0px;
         background-color:#fff;
         color:rgb(16, 182, 163);
+          height: 100%;
       }
+      #vaccineImg{
+     
+        height:40%;
+        background-image: url("ContactSheet-001.png");
+        background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+      }
+      
       #chw{
         left:0px;
         color:#fff;
-        background-color:#fff;
+        background-color:#fff;\
+          height: 100%;
+      }
+      #chwImg{
+        background-image: url("chw.png");
+        background-position: center;
+          background-repeat: no-repeat;
+          background-size: cover;
+          height:40%;
+      }
+      #populationNote{
+        font-size:11px;
+        position:fixed;
+        bottom:0px;
+        right:10px;
+        color:rgb(16, 182, 163);
       }
         </style>
 </head>
@@ -118,23 +144,30 @@
 </div>
 <div id="mainMenu">
   
-  <div id="vaccine" class="side">+/-254,000,000 adults need vaccines<br><br>
-How do we ensure there is an equitable distribution?<br><br><br>
+  <div id="vaccine" class="side">
+  
+  254,000,000* adults need vaccines<br>
+How do we ensure there is an equitable distribution?<br><br>
   <div id="vaccineButton" class="button"><a href="vaccine.html">Vaccinations</a></div>
+<div id="vaccineImg"></div>
 </div>
 
-  <div id="chw" class="side">+/-328,016,242 people live in the U.S.<br><br>
-Where should 1,000,000 Community Health Workers be equitably located? <br><br><br>
+  <div id="chw" class="side">328,016,242* people live in the U.S.<br>
+Where should 1,000,000 Community Health Workers be equitably located? <br><br>
   <div id="chwButton" class="button"><a href="map.html">Community Healthcare Workers</a></div>
+  <div id="chwImg"></div>
 </div>
   
- 
+ <div id="populationNote">*Census Population Estimates</div>
 </div>
 
 <script>
+  var bgColor = "rgb(16, 182, 163)"
+  var bgColor2 = "rgb(236, 235, 16)"
+  
+  
   var highlightColor = "rgb(16, 182, 163)"
   var highlightColor2 = "rgb(236, 235, 16)"
-  
 //var colors = ["rgb(16, 182, 163)","rgb(133, 205, 98)","rgb(236, 235, 16)"]
   
   
@@ -147,10 +180,10 @@ d3.select("#vaccineButton").style("border","2px solid "+ highlightColor)
 d3.select("#vaccineButton a").style("color", highlightColor)
 
 
-  d3.select("#chw").style("background-color",highlightColor)
+  d3.select("#chw").style("background-color",bgColor)
   
    //d3.select("#chw").style("background","linear-gradient(-140deg, rgba(16, 182, 163,.9) 0%, rgb(16, 182, 163) 100%)")
-  d3.select("#chw").style("color",highlightColor2)
+  d3.select("#chw").style("color",bgColor2)
 d3.select("#chwButton").style("border","2px solid "+highlightColor2)
   
 d3.select("#chwButton a").style("color",highlightColor2)

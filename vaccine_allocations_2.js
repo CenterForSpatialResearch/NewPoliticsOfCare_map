@@ -992,7 +992,7 @@ function drawMap(data,div,column,outline){
         style:"mapbox://styles/c4sr-gsapp/ckjiy8jxw03vp19ro3f0h6osn",
         zoom: 7,
         //preserveDrawingBuffer: true,
-        minZoom:3.5,
+        minZoom:2.5,
         center:[-75.71912589189347,42.91745518794737]
         //,
     //    maxBounds: maxBounds    
