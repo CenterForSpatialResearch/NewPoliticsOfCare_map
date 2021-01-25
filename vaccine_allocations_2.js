@@ -43,9 +43,15 @@ var measureSet = [
 ]
 var measureDisplayText = {
      Adult_pop:"Adult Population",
-     Firstphase:"Healthcare/Long-term",
-     SVI:"SVI",
-     SVI_no_race:"SVI no race"
+     Firstphase:"Phase 1a",
+     SVI:"Phase 1a w/ SVI",
+     SVI_no_race:"Phase 1a w/ SVI (ex. Race)"
+}
+var measureDefinitionText = {
+     Adult_pop:"Allocation is in proportion to the estimated adult population of each county.",
+     Firstphase:"Phase 1a includes healthcare personnel & long-term care facility residents",
+     SVI:"County Phase 1a estimates are weighted by the county’s Social Vulnerability Index (SVI) ranking’s 15 social factors.",
+     SVI_no_race:"County Phase 1a estimates are weighted by the county’s only 14 social factors from SVI as the race/ethnicity variable (i.e., “Minority Status”) is excluded."
 }
 var measureDisplayTextPop={
      Adult_pop:"Adult Population",
@@ -162,7 +168,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     .attr("id","stateTotals")
     .attr("x",10)
     .attr("y",135)
-    .attr("font-size","16px")
+    .attr("font-size","14px")
     .attr("font-weight","bold")
     
     var combined = {}
@@ -183,10 +189,29 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
         //console.log(measureSet[m])
         d3.select("#columns1")
             .append("div")
+            .attr("class","measures1popUp")
+            .html(measureDefinitionText[measureSet[m]])
+            .attr("id",measureSet[m]+"popUp")
+            .style("visibility","hidden")
+            .style("position","absolute")
+            .style("left","150px")
+            .style("width","150px")
+            .style("background-color","rgba(255,255,255,.8)")
+        
+        d3.select("#columns1")
+            .append("div")
             .attr("class","measures1")
             .html(measureDisplayText[measureSet[m]])
             .attr("id",measureSet[m])
             .style("cursor","pointer")
+            .on("mouseover",function(d){
+                d3.select("#"+d3.select(this).attr("id")+"popUp").style("visibility","visible")
+                d3.select(this).style("font-weight","bold")
+            })
+            .on("mouseout",function(d){
+                d3.select("#"+d3.select(this).attr("id")+"popUp").style("visibility","hidden")
+                d3.select(this).style("font-weight","normal")
+            })
             .on("click",function(){
                 if(d3.select(this).attr("id")!=pub.column1 && d3.select(this).attr("id")!=pub.column2){
                     d3.selectAll(".measures1").style("background-color","#fff").style("color","#000").style("border","1px solid #000")
@@ -202,10 +227,29 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
             
         d3.select("#columns2")
             .append("div")
+            .attr("class","measures1popUp")
+            .html(measureDefinitionText[measureSet[m]])
+            .attr("id",measureSet[m]+"popUp2")
+            .style("visibility","hidden")
+            .style("position","absolute")
+            .style("right","150px")
+            .style("width","150px")
+            .style("background-color","rgba(255,255,255,.8)")
+       
+        d3.select("#columns2")
+            .append("div")
             .attr("class","measures2")
             .html(measureDisplayText[measureSet[m]])
             .attr("id",measureSet[m])
             .style("cursor","pointer")
+            .on("mouseover",function(d){
+                d3.select("#"+d3.select(this).attr("id")+"popUp2").style("visibility","visible")
+                d3.select(this).style("font-weight","bold")
+            })
+            .on("mouseout",function(d){
+                d3.select("#"+d3.select(this).attr("id")+"popUp2").style("visibility","hidden")
+                d3.select(this).style("font-weight","normal")
+            })
             .on("click",function(){
                 if( d3.select(this).attr("id")!=pub.column2 && d3.select(this).attr("id")!=pub.column1){
                     d3.selectAll(".measures2").style("background-color","#fff")
@@ -258,7 +302,7 @@ function drawNewLists(){
     .attr("id","stateTotals")
     .attr("x",10)
     .attr("y",135)
-    .attr("font-size","16px")
+    .attr("font-size","14px")
     .attr("font-weight","bold")
     
     
