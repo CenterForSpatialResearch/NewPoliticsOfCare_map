@@ -219,7 +219,7 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
                     d3.select(this).style("background-color","gold").style("color","#000").style("border","1px solid #000")
                     pub.column1 = d3.select(this).attr("id")
                     updateColumns()
-                    //d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
+                    d3.select("#columns1").select("#"+pub.column2).style("color","#aaa").style("border","1px solid #aaa")
                     d3.select("#columns2").select("#"+pub.column1).style("color","#aaa").style("border","1px solid #aaa")
                     colorByPriority(map1,pub.column1)
                 }
