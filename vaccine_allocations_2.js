@@ -423,12 +423,12 @@ function mouseoverText(county,fips,doses1,doses2){
         var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
         +numberWithCommas(Math.floor(doses1-doses2))
         +" doses more</span></strong> <br>or <strong><span class=\"morePopup\">"
-        + numberWithCommas(Math.floor((doses1-doses2)/doses1*100))
+        + numberWithCommas(Math.floor((doses1-doses2)/doses1*10000)/100)
         +"% more</span></strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }else{
         var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"+numberWithCommas(Math.floor(doses2-doses1))
         +" doses less</span> </strong><br>or <strong><span class=\"lessPopup\">"
-        + numberWithCommas(Math.floor((doses2-doses1)/doses1*100))
+        + numberWithCommas(Math.floor((doses2-doses1)/doses1*10000)/100)
         +"% less</span></strong></span> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
     }
     d3.select("#mapPop")
