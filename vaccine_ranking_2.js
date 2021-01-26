@@ -287,8 +287,8 @@ function drawMap(geoData,lists){
     var map = new mapboxgl.Map({
         container: "map",
         style:"mapbox://styles/c4sr-gsapp/ckjiy8jxw03vp19ro3f0h6osn",
-        zoom: 3,
-        center:[-95,40],
+        zoom: 3.5,
+        center:[-92,40],
         minZoom:2.5
         //,
     //    maxBounds: maxBounds    
