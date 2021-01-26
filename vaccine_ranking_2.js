@@ -30,6 +30,10 @@ var carto= d3.json("cartogram.geojson")
 var stateAllocations = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis_vaccine/main/Vaccine_allocation/Output/State_level_vaccine_allocation.csv")
 
 var colors = ["rgb(236, 235, 16)","rgb(133, 205, 98)","rgb(16, 182, 163)"]
+var colors = ["#50ac72",
+"#c9578c",
+"#8675ca",
+"#c96840"]
 
 var measureSet = [
      "Adult_pop",
@@ -86,22 +90,32 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     var mins = groups[1]
    // console.log(maxs)
   //  console.log(mins)
-    for(var max in maxs){
-        var gids = maxs[max]
-        d3.select("#map").append("div").attr("id","title_"+max).attr("class","mapTitle").html("Counties that received <strong><u>maximum</u></strong> doses when allocating by "+measureDisplayText[max])
-        d3.select("#map").append("div").attr("id","max_"+max).style("width","600px").style("height","300px")
-        drawMap("max_"+max,gids,counties,max)
-        //break
-    }
+    drawMap(counties,maxs)
     
-    for(var min in mins){
-        var gids = mins[min]
-        d3.select("#map").append("div").attr("id","title_"+min).attr("class","mapTitle").html("Counties that received <strong><u>minimum</u></strong> doses when allocating by "+measureDisplayText[min])
-        d3.select("#map").append("div").attr("id","min_"+min).style("width","600px").style("height","300px")
-        drawMap("min_"+min,gids,counties,min)
-        //break
+    var keySvg = d3.select("#key").append("svg").attr("width",200).attr("height",150)
+    for(var m in measureSet){
+        var measure = measureSet[m]
+        var color = colors[m]
+        keySvg.append("rect").attr("width",20).attr("height",20).attr("fill",color).attr("x",20).attr("y",m*30+20)
+        keySvg.append("text").attr("fill",color).attr("x",50).attr("y",m*30+30).text(measure)
+        
     }
-    
+    // for(var max in maxs){
+  //       var gids = maxs[max]
+  //       d3.select("#map").append("div").attr("id","title_"+max).attr("class","mapTitle").html("Counties that received <strong><u>maximum</u></strong> doses when allocating by "+measureDisplayText[max])
+  //       d3.select("#map").append("div").attr("id","max_"+max).style("width","600px").style("height","300px")
+  //       drawMap("max_"+max,gids,counties,max)
+  //       //break
+  //   }
+        //
+    // for(var min in mins){
+    //     var gids = mins[min]
+    //     d3.select("#map").append("div").attr("id","title_"+min).attr("class","mapTitle").html("Counties that received <strong><u>minimum</u></strong> doses when allocating by "+measureDisplayText[min])
+    //     d3.select("#map").append("div").attr("id","min_"+min).style("width","600px").style("height","300px")
+    //     drawMap("min_"+min,gids,counties,min)
+    //     //break
+    // }
+    //
     //click on county to move map
     //add some text to map - population, density, etc.   
     //what counties benefit most from each?
@@ -265,15 +279,15 @@ function sortBy(data, column){
 }
 
 
-function drawMap(div,list,geoData,title){
+function drawMap(geoData,lists){
     //console.log(list)
 //
     mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"//new account
    // var maxBounds = [[-190,8],[-20, 74]];
     var map = new mapboxgl.Map({
-        container: div,
+        container: "map",
         style:"mapbox://styles/c4sr-gsapp/ckjiy8jxw03vp19ro3f0h6osn",
-        zoom: 2.8,
+        zoom: 3,
         center:[-95,40],
         minZoom:2.5
         //,
@@ -290,9 +304,9 @@ function drawMap(div,list,geoData,title){
              "type":"geojson",
              "data":geoData
          })
-                  
+         
          map.addLayer({
-             'id': 'counties',
+             'id': "counties",
              'type': 'fill',
              'source': 'counties',
              'paint': {
@@ -300,19 +314,40 @@ function drawMap(div,list,geoData,title){
                  'fill-opacity':.5
              },
              'filter': ['==', '$type', 'Polygon']
-         },"state-abbr");
+         },"state-abbr");  
          
          map.addLayer({
              'id': 'county_outline',
              'type': 'line',
              'source': 'counties',
              'paint': {
-                 'line-color':"#000000",
-                 'line-width':2
+                 'line-color':"#fff",
+                 'line-width':.1
              }             
          });
+                 //
+          for(var m in measureSet){
+              var measure = measureSet[m]
+              var list = lists[measure]
+              var gids = []
+              
+              map.addLayer({
+                  'id': measureSet[m],
+                  'type': 'fill',
+                  'source': 'counties',
+                  'paint': {
+                      'fill-color': colors[m],
+                      'fill-opacity':1
+                  },
+                  'filter': ['==', '$type', 'Polygon']
+              },"state-abbr");
+              
+              map.setFilter(measureSet[m],["in","FIPS"].concat(list))
+         
+          }      
+        
              //console.log(map.getStyle().layers)
-        map.setFilter("county_outline",["==","FIPS",""])
+       // map.setFilter("county_outline",["==","FIPS",""])
             
      })
    
@@ -341,23 +376,23 @@ function drawMap(div,list,geoData,title){
              var sviNoRacePC = Math.floor(fipsData["coverage_SVI_no_race"]*100)/100
             
             d3.select("#popup").html(county+"<br>"
-                +"Total Population:"+population+"<br>"
-                +"Adult: "+adultP+" Persons /    "+ adultD+" Doses"+"<br>"
-                +"1a: "+firstPhaseP+" Persons /    "+ firstPhaseD+" Doses"+"<br>"
-                +"SVI: "+sviP+" /    "+ sviD+" Doses"+"<br>"
-                +"SVI-race: "+sviNoRaceP+" /   "+ sviNoRaceD+" Doses"
+                +"Total Population:"+population+"<br>"+"<br>"
+                +"Adult: "+adultP+" Persons allocates "+ adultD+" Doses"+"<br>"
+                +"1a: "+firstPhaseP+" Persons allocates "+ firstPhaseD+" Doses"+"<br>"
+                +"SVI: "+sviP+" allocates "+ sviD+" Doses"+"<br>"
+                +"SVI-race: "+sviNoRaceP+" allocates "+ sviNoRaceD+" Doses"
             )
             .style("left",(window.event.clientX+20)+"px")
             .style("top",window.event.clientY+"px")
         }       
          
-         map.on("mouseleave",'counties',function(){
-             
-         })  
+         // map.on("mouseleave",'counties',function(){
+  //
+  //        }) 
     });
     
     map.once("idle",function(){
-        map.setFilter("counties",["in","FIPS"].concat(list))
+   //     map.setFilter("counties",["in","FIPS"].concat(list))
         
         //var coords = pub.bounds["36"]
         //console.log(coords)

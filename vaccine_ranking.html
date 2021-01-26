@@ -171,6 +171,25 @@
         padding-top:20px;
         font-size:16px;
       }
+      #popup{
+        position:absolute;
+        z-index:99999;
+        right:10px;
+        width:200px;
+        background-color:#ffffff;
+      }
+      #map{
+        width:1200px;
+        height:1000px;
+      }
+      #key{
+        width:150px;
+        height:180px;
+        position:absolute;
+        left:630px;
+        top:10px;
+        background-color:#ffffff;
+      }
     </style>
 
 </head>
@@ -179,9 +198,11 @@
 
 
   <div id="map"></div>
+  <div id="key">KEY: color by which method allocates most doses to that county</div>
+  
   <div id="list"></div>
   <div id="columns1"><strong></strong></div>
-
+<div id="popup">test</div>
 
 
 <script type="text/javascript" src="js/d3.js"></script>
@@ -199,7 +220,7 @@
   
     </script>
 
-<script type="text/javascript" src="vaccine_ranking.js"></script>
+<script type="text/javascript" src="vaccine_ranking_2.js"></script>
 
 </body>
 </html>
