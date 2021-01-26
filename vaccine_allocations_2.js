@@ -453,8 +453,8 @@ function mouseoverText(county,fips,doses1,doses2){
     d3.select("#mapPop")
     .html("<strong>"+county+" County</strong>"
         +"<br>Total Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
-        +"<br><br>Doses allocated proportional to <br>"+measureDisplayText[pub.column1]+": <strong>"+numberWithCommas(Math.floor(doses1))+" doses</strong>"
-        +"<br>"+measureDisplayText[pub.column2]+": <strong>"+numberWithCommas(Math.floor(doses2))+" doses</strong>"
+        +"<br><br>Doses allocated proportional to: <br>"+measureDisplayText[pub.column1]+" <strong>"+numberWithCommas(Math.floor(doses1))+" doses</strong>"
+        +"<br>"+measureDisplayText[pub.column2]+" <strong>"+numberWithCommas(Math.floor(doses2))+" doses</strong>"
         +"<br><br> Difference: "+ difference
     )
     //console.log(window.event.clientY,window.event.clientX)
