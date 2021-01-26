@@ -36,7 +36,7 @@ var colors = ["#50ac72",
 "#c96840"]
 
 var measureSet = [
-     "Adult_pop",
+     //"Adult_pop",
      "Firstphase",
      "SVI",
      "SVI_no_race"

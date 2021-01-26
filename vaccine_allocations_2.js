@@ -50,8 +50,8 @@ var measureDisplayText = {
 var measureDefinitionText = {
      Adult_pop:"Allocation is in proportion to the estimated adult population of each county.",
      Firstphase:"Phase 1a includes healthcare personnel & long-term care facility residents",
-     SVI:"County Phase 1a estimates are weighted by the county’s Social Vulnerability Index (SVI) ranking’s 15 social factors.",
-     SVI_no_race:"County Phase 1a estimates are weighted by the county’s only 14 social factors from SVI as the race/ethnicity variable (i.e., “Minority Status”) is excluded."
+     SVI:"County Phase 1a estimates weighted by the county’s Social Vulnerability Index (SVI).",
+     SVI_no_race:"County Phase 1a estimates weighted by the county’s SVI excluding the race/ethnicity variable (i.e., “Minority Status”)."
 }
 var measureDisplayTextPop={
      Adult_pop:"Adult Population",
@@ -419,18 +419,37 @@ function mouseout(){
              map2.setFilter("county_outline",["==","FIPS",""])
 }    
 function mouseoverText(county,fips,doses1,doses2){
+    
+    
     if(parseFloat(doses1)>parseFloat(doses2)){
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
-        +numberWithCommas(Math.floor(doses1-doses2))
-        +" doses more</span></strong> <br>or <strong><span class=\"morePopup\">"
-        + numberWithCommas(Math.floor((doses1-doses2)/doses1*10000)/100)
-        +"% more</span></strong> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
-    }else{
-        var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"+numberWithCommas(Math.floor(doses2-doses1))
-        +" doses less</span> </strong><br>or <strong><span class=\"lessPopup\">"
-        + numberWithCommas(Math.floor((doses2-doses1)/doses1*10000)/100)
-        +"% less</span></strong></span> doses than allocating by "+measureDisplayText[pub.column2]+" for this county."
+        
+        if(parseFloat(doses1)==0){
+            var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
+            +numberWithCommas(Math.floor(doses1-doses2))
+            +" doses more</span></strong> than allocating by "+measureDisplayText[pub.column2]+" for this county."
+        }else{
+            var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
+            +numberWithCommas(Math.floor(doses1-doses2))
+            +" doses more</span></strong> than allocating by "+measureDisplayText[pub.column2]
+            +" for this county <strong><span class=\"morePopup\">("+ numberWithCommas(Math.floor((doses1-doses2)/doses1*10000)/100)+"% more)</span></strong></span>."
+            
+        }
+        
+     }else{
+         if(parseFloat(doses1)==0){
+            var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"
+            +numberWithCommas(Math.floor(doses1-doses2))
+            +" doses less</span></strong> than allocating by "+measureDisplayText[pub.column2]+" for this county."
+         }else{
+                var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"+numberWithCommas(Math.floor(doses2-doses1))
+                +" doses less</span> </strong><br> than allocating by "+measureDisplayText[pub.column2]+" for this county <strong><span class=\"lessPopup\">("
+                + numberWithCommas(Math.floor((doses2-doses1)/doses1*10000)/100)
+                +"% less)</span></strong></span>."
+         }
+        
     }
+    
+    
     d3.select("#mapPop")
     .html("<strong>"+county+" County</strong>"
         +"<br>Total Adult Population: <strong>"+numberWithCommas(pub.modelDictionary[fips]["Adult_pop"])+" Persons</strong>"
