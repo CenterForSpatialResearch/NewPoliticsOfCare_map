@@ -96,8 +96,8 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,carto,state
     for(var m in measureSet){
         var measure = measureSet[m]
         var color = colors[m]
-        keySvg.append("rect").attr("width",20).attr("height",20).attr("fill",color).attr("x",20).attr("y",m*30+20)
-        keySvg.append("text").attr("fill",color).attr("x",50).attr("y",m*30+30).text(measure)
+        keySvg.append("rect").attr("width",20).attr("height",20).attr("fill",color).attr("x",10).attr("y",m*30+20)
+        keySvg.append("text").attr("fill",color).attr("x",35).attr("y",m*30+37).text(measure)
         
     }
     // for(var max in maxs){
