@@ -9,13 +9,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Raleway:wght@600&display=swap" rel="stylesheet">
  <link href="https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@700&family=Coda+Caption:wght@800&family=Hammersmith+One&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
-    <script src="https://unpkg.com/scrollama"></script>
+   <script type="text/javascript" src="js/d3.js"></script>
     <style>
         body {
             margin:0; 
             padding:0; 
           	font-family:sans-serif;
+            background-color:rgb(16, 182, 163);
+            
         }
        
         #map {
@@ -45,78 +46,6 @@
             line-height: 25px;
             font-size: 14px;
         }
-        #features {
-            padding-top: 10vh;
-            padding-bottom: 10vh;
-            z-index: 100;
-        }
-        .centered {
-            width: 50vw;
-            margin: 0 auto;
-        }
-        .lefty {
-            width: 33vw;
-            margin-left: 5vw;
-        }
-        .righty {
-            width: 40vw;
-            margin-left: 55vw;
-        }
-        .light {
-            color: #000;
-            background-color: rgba(255,255,255,.8);
-        }
-        .dark{
-            color: #fafafa;
-            background-color: #444;
-        }
-        .step {
-            padding-bottom: 50vh;
-            /* margin-bottom: 10vh; */
-            opacity: 0.25;
-        }
-        .step.active {
-            opacity: 0.9;
-        }
-
-        .step div {
-            padding:  25px 50px;
-            line-height: 25px;
-            font-size: 14px;
-        }
-        a{
-          color:white;
-          text-decoration:none;
-        }
-
-   .step img {
-    position:absolute;
-    left:0px;
-    width:55vw;
-    display:inline-block;
-    z-index:-999;
-        }
-
-        @media (max-width: 750px) {
-            #features {
-                width: 90vw;
-                margin: 0 auto;
-            }
-        }
-        #gotoMap{
-          font-size:24px;    
-          cursor:pointer;
-          border:1px solid black;
-          padding:10px;
-          border-radius:10px;
-          color:white;
-          height:100px;
-          text-decoration:none;
-          background-color:black;
-        }
-        #cartogram {
-          width:90vw;
-        }
         #head{
           padding:20px;
           letter-spacing:1px;
@@ -136,194 +65,141 @@
             color:#000;
         font-family: 'Hammersmith One', sans-serif;
       }
-      #skipStory a{
-        color:#000;
-        text-decoration:underline;
+      #mainMenu{
+        position:absolute;
+        top:30%;
+        display:inline-block;
+        width:30%;
+        left:20%;
+        line-height:150%;
+        font-size:16px;
       }
+      .button{
+        border:2px solid #000;
+        border-radius:0px;
+        display:inline-block;
+        padding:20px;
+        font-size:24px;
+        margin:10px;
+        cursor:pointer;
+        font-weight:bold;
+      }
+      a{
+        text-decoration:none;
+        color:#000;
+      }
+      .side{
+        font-family: 'Hammersmith One', sans-serif;
+        height:100vh;
+        top:0px;
+        display:inline-block;
+        position:fixed;
+        font-size:24px;
+        line-height:150%;
+        padding:5%;
+        padding-top:200px;
+      }
+      #vaccine{
+        left:0px;
+        top:0px;
+        color:rgb(16, 182, 163);
+          width: 40%;
+          background-image: url("front_page.png");
+          background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+      }
+      #vaccineImg{
+     
+        height:40%;
+      
+      }
+      
+      #chw{
+        right:0px;
+          width: 40%;
+          background-image: url("front_page_2.png");
+          background-position: center;
+            background-repeat: no-repeat;
+            background-size: contain;
+      }
+      #chwImg{
         
+      }
+      #populationNote{
+        font-size:11px;
+        position:fixed;
+        bottom:0px;
+        left:10px;
+        color:rgb(16, 182, 163);
+        background-color:rgb(236, 235, 16);
+        padding-right:5px;
+      }
+      #attribution{
+        font-size:11px;
+        position:fixed;
+        top:20px;
+        right:20px;
+        z-index:999999;
+        text-align:right;
+      }
         </style>
 </head>
 <body>
 <div id="head">
   <span id="brand">MAPPING THE NEW POLITICS OF CARE</span><br>
-</div>==
-<div id="map"></div>
-<div id="story"></div>
-<script src="js/jquery.js"></script>
-<script type="text/javascript" src="js/d3.js"></script>
-<script type="text/javascript" src="js/crossfilter.js"></script>
-<script type="text/javascript" src="js/dc.js"></script>
-<script type="text/javascript" src="js/queue.v1.min.js"></script>
-<script src="./story_build.js"></script>
-<script src="./story_config.js"></script>
+ 
+</div>
+  <div id="attribution">Project of the <a href="https://c4sr.columbia.edu/" target="blank"><u>Center for Spatial Research</u> at Columbia</u></a> <br>
+    and the <a href="https://law.yale.edu/ghjp" target="blank"><u>Global Health Justice Partnership</u> at Yale</a>
+</div>
+<div id="mainMenu">
+  
+  <a href="vaccine.html"><div id="vaccine" class="side">
+<!--  254,000,000* adults need vaccines<br>
+How do we ensure there is an equitable distribution?<br><br>
+  <div id="vaccineButton" class="button"><a href="vaccine.html">Vaccinations</a>
+  </div> -->
+</div></a>
+
+  <a href="map.html"><div id="chw" class="side">
+    <!-- 328,016,242* people live in the U.S.<br>
+Where should 1,000,000 Community Health Workers be equitably located? <br><br>
+  <div id="chwButton" class="button"><a href="map.html">Community Healthcare Workers</a></div> -->
+</div></a>
+  
+ <div id="populationNote">*Census Population Estimates</div>
+
+</div>
+
 <script>
-var layerTypes = {
-    'fill': ['fill-opacity'],
-    'line': ['line-opacity'],
-    'circle': ['circle-opacity', 'circle-stroke-opacity'],
-    'symbol': ['icon-opacity', 'text-opacity'],
-    'raster': ['raster-opacity'],
-    'fill-extrusion': ['fill-extrusion-opacity']
-}
+  var bgColor2 = "rgb(236, 235, 16)"
+  var bgColor =  "rgb(16, 182, 163)"
+  
+  
+  var highlightColor = "rgb(16, 182, 163)"
+  var highlightColor2 = "rgb(236, 235, 16)"
+//var colors = ["rgb(16, 182, 163)","rgb(133, 205, 98)","rgb(236, 235, 16)"]
+  
+  
+  d3.select("#vaccine").style("color",highlightColor)
+  d3.select("#vaccine").style("background-color",bgColor2)
+//  d3.select("#vaccine").style("background","linear-gradient(-40deg, rgba(16, 182, 163,.7) 0%, rgb(16, 182, 163) 100%)")
+  
+ // d3.select("#vaccine").style("border","2px solid "+highlightColor2)
+d3.select("#vaccineButton").style("border","2px solid "+ highlightColor)
+d3.select("#vaccineButton a").style("color", highlightColor)
 
-var alignments = {
-    'left': 'lefty',
-    'center': 'centered',
-    'right': 'righty'
-}
 
-function getLayerPaintType(layer) {
-    var layerType = map.getLayer(layer).type;
-    return layerTypes[layerType];
-}
-
-function setLayerOpacity(layer) {
-    var paintProps = getLayerPaintType(layer.layer);
-    paintProps.forEach(function(prop) {
-        map.setPaintProperty(layer.layer, prop, layer.opacity);
-    });
-}
-
-var story = document.getElementById('story');
-var features = document.createElement('div');
-features.classList.add(alignments[config.alignment]);
-features.setAttribute('id', 'features');
-
-var header = document.createElement('div');
-
-if (config.title) {
-    var titleText = document.createElement('h1');
-    titleText.innerText = config.title;
-    header.appendChild(titleText);
-}
-
-if (config.subtitle) {
-    var subtitleText = document.createElement('h2');
-    subtitleText.innerText = config.subtitle;
-    header.appendChild(subtitleText);
-}
-
-if (config.byline) {
-    var bylineText = document.createElement('p');
-    bylineText.innerText = config.byline;
-    header.appendChild(bylineText);
-}
-
-if (header.innerText.length > 0) {
-    header.classList.add(config.theme);
-    header.setAttribute('id', 'header');
-    story.appendChild(header);
-}
-
-config.chapters.forEach((record, idx) => {
-    var container = document.createElement('div');
-    var chapter = document.createElement('div');
-    
-    if (record.title) {
-        var title = document.createElement('h3');
-        title.innerText = record.title;
-        chapter.appendChild(title);
-    }
-    
-    if (record.image) {
-        var image = new Image();  
-        image.src = record.image;  
-        chapter.appendChild(image);
-    }
-    
-    if (record.description) {
-        var story = document.createElement('p');
-        story.innerHTML = record.description;
-        chapter.appendChild(story);
-    }
-
-    container.setAttribute('id', record.id);
-    container.classList.add('step');
-    if (idx === 0) {
-        container.classList.add('active');
-    }
-
-    chapter.classList.add(config.theme);
-    container.appendChild(chapter);
-    features.appendChild(container);
-});
-
-story.appendChild(features);
-
-var footer = document.createElement('div');
-
-if (config.footer) {
-    var footerText = document.createElement('p');
-    footerText.innerHTML = config.footer;
-    footer.appendChild(footerText);
-}
-
-if (footer.innerText.length > 0) {
-    footer.classList.add(config.theme);
-    footer.setAttribute('id', 'footer');
-    story.appendChild(footer);
-}
-
-mapboxgl.accessToken = config.accessToken;
-
-const transformRequest = (url) => {
-    const hasQuery = url.indexOf("?") !== -1;	  
-    const suffix = hasQuery ? "&pluginName=journalismScrollytelling" : "?pluginName=journalismScrollytelling";	  
-    return {
-      url: url + suffix
-    }	  
-}
-
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: config.style,
-    center: config.chapters[0].location.center,
-    zoom: config.chapters[0].location.zoom,
-    bearing: config.chapters[0].location.bearing,
-    pitch: config.chapters[0].location.pitch,
-    scrollZoom: false,
-    transformRequest: transformRequest
-});
-
-var marker = new mapboxgl.Marker();
-if (config.showMarkers) {
-    marker.setLngLat(config.chapters[0].location.center).addTo(map);
-}
-
-// instantiate the scrollama
-var scroller = scrollama();
-
-map.on("idle", function() {
-    // setup the instance, pass callback functions
-    scroller
-    .setup({
-        step: '.step',
-        offset: 0.5,
-        progress: true
-    })
-    .onStepEnter(response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
-        response.element.classList.add('active');
-        map.flyTo(chapter.location);
-        if (config.showMarkers) {
-            marker.setLngLat(chapter.location.center);
-        }
-        if (chapter.onChapterEnter.length > 0) {
-            chapter.onChapterEnter.forEach(setLayerOpacity);
-        }
-    })
-    .onStepExit(response => {
-        var chapter = config.chapters.find(chap => chap.id === response.element.id);
-        response.element.classList.remove('active');
-        if (chapter.onChapterExit.length > 0) {
-            chapter.onChapterExit.forEach(setLayerOpacity);
-        }
-    });
-});
-
-// setup resize event
-window.addEventListener('resize', scroller.resize);
-
+  d3.select("#chw").style("background-color",bgColor)
+  
+   //d3.select("#chw").style("background","linear-gradient(-140deg, rgba(16, 182, 163,.9) 0%, rgb(16, 182, 163) 100%)")
+  d3.select("#chw").style("color",bgColor2)
+d3.select("#chwButton").style("border","2px solid "+highlightColor2)
+  
+d3.select("#chwButton a").style("color",highlightColor2)
+  
+ 
 </script>
 
 </body>
