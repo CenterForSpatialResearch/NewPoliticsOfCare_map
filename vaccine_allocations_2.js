@@ -423,7 +423,7 @@ function mouseoverText(county,fips,doses1,doses2){
     
     if(parseFloat(doses1)>parseFloat(doses2)){
         
-        if(parseFloat(doses1)==0){
+        if(parseFloat(doses2)==0){
             var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
             +numberWithCommas(Math.floor(doses1-doses2))
             +" doses more</span></strong> than allocating by "+measureDisplayText[pub.column2]+" for this county."
@@ -431,19 +431,19 @@ function mouseoverText(county,fips,doses1,doses2){
             var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"morePopup\">"
             +numberWithCommas(Math.floor(doses1-doses2))
             +" doses more</span></strong> than allocating by "+measureDisplayText[pub.column2]
-            +" for this county <strong><span class=\"morePopup\">("+ numberWithCommas(Math.floor((doses1-doses2)/doses1*10000)/100)+"% more)</span></strong></span>."
+            +" for this county <strong><span class=\"morePopup\">("+ numberWithCommas(Math.floor((doses1-doses2)/doses2*10000)/100)+"% more)</span></strong></span>."
             
         }
         
      }else{
-         if(parseFloat(doses1)==0){
+         if(parseFloat(doses2)==0){
             var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"
             +numberWithCommas(Math.floor(doses1-doses2))
             +" doses less</span></strong> than allocating by "+measureDisplayText[pub.column2]+" for this county."
          }else{
                 var difference = "Allocating by "+measureDisplayText[pub.column1]+" means <strong><span class=\"lessPopup\">"+numberWithCommas(Math.floor(doses2-doses1))
                 +" doses less</span> </strong><br> than allocating by "+measureDisplayText[pub.column2]+" for this county <strong><span class=\"lessPopup\">("
-                + numberWithCommas(Math.floor((doses2-doses1)/doses1*10000)/100)
+                + numberWithCommas(Math.floor((doses2-doses1)/doses2*10000)/100)
                 +"% less)</span></strong></span>."
          }
         
