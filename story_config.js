@@ -345,7 +345,7 @@ var config = {
             title: 'Explore each state on your own',
             image: '',
             description: 
-            '<span id="gotoMap"><a href="map.html">GO TO MAP</a></span>', 
+            '<span id="gotoMap"><a href="vulnerabilities.html">GO TO MAP</a></span>', 
             location: {
                 center: [-109.463005,35.052533],
                 zoom: 4,
