@@ -89,23 +89,23 @@ function toTitleCase(str){
 }
 
 var colorColumn = "_priority"
-var countyCentroids = d3.json("county_centroids.geojson")
-var counties = d3.json("counties.geojson")
-var stateCentroids = d3.json("us-state-centroids.json")
-var usOutline = d3.json("simple_contiguous.geojson")
-var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
-var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
+var countyCentroids = d3.json("../county_centroids.geojson")
+var counties = d3.json("../counties.geojson")
+var stateCentroids = d3.json("../us-state-centroids.json")
+var usOutline = d3.json("../simple_contiguous.geojson")
+var allData =d3.csv("../County_level_proportional_allocation_for_all_policies.csv")
+//var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
 var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
 //var allData = d3.csv("County_level_proportional_allocation_for_all_policies 2.csv")
-var states = d3.json("simplestates.geojson")
+var states = d3.json("../simplestates.geojson")
 
 var userRankings = {}
 
 
 
-Promise.all([counties,usOutline,countyCentroids,allData,timeStamp,states,stateCentroids])
+Promise.all([counties,usOutline,countyCentroids,allData,states,stateCentroids])
 .then(function(data){
-    ready(data[0],data[1],data[2],data[3],data[4],data[5],data[6])
+    ready(data[0],data[1],data[2],data[3],data[4],data[5])
 })
 var hoveredStateId = null;
 
@@ -114,7 +114,7 @@ var lineWeight = {stops:[[-1,0],[-0.01,0],[0,2],[99,.5],[100,0]]}
 var centroids = null
 var latestDate = null
 var countiesCount = null
-function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids){ 
+function ready(counties,outline,centroids,modelData,states,sCentroids){ 
     
     getCountyCountByState(counties)
     
@@ -122,7 +122,6 @@ function ready(counties,outline,centroids,modelData,timeStamp,states,sCentroids)
         d3.select("#SVIMap").style("display","none")
     })
     pub.states = states
-     d3.select("#date").html("Model run as of "+timeStamp["columns"][1])
     var dataByFIPS = turnToDictFIPS(modelData,"County_FIPS")
     pub.dataByFIPS=dataByFIPS
     countiesCount = getCountyCountByState(counties)

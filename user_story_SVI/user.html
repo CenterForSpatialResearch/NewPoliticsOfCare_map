@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Mapping the New Politics of Care</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.5.0/mapbox-gl.css' rel='stylesheet' />
+    <script src="https://unpkg.com/intersection-observer@0.5.1/intersection-observer.js"></script>
+    <script src="https://unpkg.com/scrollama"></script>
+    <style>
+        body {
+            margin:0; 
+            padding:0; 
+            font-family: sans-serif;
+        }
+        a, a:hover, a:visited {
+            color: #0071bc;
+        }
+        #map {
+            top:0; 
+            height: 100vh;
+            width:67vw;
+            position: fixed;
+            z-index: -5;
+        }
+        #header {
+            margin: 3vh auto;
+            width: 90vw;
+            padding: 2vh;
+            text-align: center;
+        }
+        #footer {
+            width: 100%;
+            min-height: 5vh;
+            padding-top: 2vh;
+            padding-bottom: 2vh;
+            text-align: center;
+            line-height: 25px;
+            font-size: 13px;
+        }
+        #features {
+            padding-top: 10vh;
+            padding-bottom: 10vh;
+            z-index: 100;
+        }
+        .centered {
+            width: 50vw;
+            margin: 0 auto;
+        }
+        .lefty {
+            width: 33vw;
+            margin-left: 5vw;
+        }
+        .righty {
+            width: 33vw;
+            margin-right: 10px;
+            position:absolute;
+            right:0px;
+            background-color:rgba(255,255,255,.8);
+        }
+        .light {
+            color: #000;
+            background-color: #fff;
+        }
+        .dark {
+            color: #fafafa;
+            background-color: #444;
+        }
+        .step {
+            padding-bottom: 50vh;
+            /* margin-bottom: 10vh; */
+            opacity: 0.25;
+        }
+        .step.active {
+            opacity: 0.9;
+        }
+
+        .step div {
+            padding:  25px 50px;
+            line-height: 25px;
+            font-size: 13px;
+        }
+
+        .step img {
+            width: 100%;
+        }
+
+        @media (max-width: 750px) {
+            #features {
+                width: 90vw;
+                margin: 0 auto;
+            }
+        }
+        .mapboxgl-marker {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border:1px solid gray;
+            background-color:yellow;
+        }
+        #loader{
+          width:100%;
+          height:100%;
+          position:absolute;
+          left:0px;
+          top:0px;
+          background-color:rgba(255,255,255);
+          z-index:999;
+        }
+        .mapMenu{
+          width:20%;
+        }
+        #stories{
+          width:19%;
+        }
+        #placesMenu{
+          border:none;
+        }
+        #ddlCustomers{
+          font-size:2em;
+          padding:10px;
+        }
+        h3{
+          font-size:24px;
+          line-height:150%;
+        }
+        #ipAddress{
+          padding:5px;
+          line-height:110%;
+          font-style:italic;
+          cursor:pointer;
+        }
+        #percents{
+          padding:0px;
+          margin:0px;
+        }
+        </style>
+</head>
+<body>
+
+
+<script>
+var filteredToState = "NY"
+var measureSet = [
+      "SVI",
+      "YPLL",
+      "Medicaid_capita",
+      "Unemployment_capita",
+        "Covid",
+      "Covid_capita",
+      "Covid_death_capita"
+ ]
+ var measureDisplayTextPop={
+      Medicaid_capita:"Total estimated medicaid enrollment",
+      SVI:"Social Vulneralbility Index*",
+      YPLL:"Years of Potential Life Lost",
+      Unemployment_capita:"Unemployment",
+       Covid:"Total Covid Cases (14 Days)",
+      Covid_capita:"Covid Cases / 100k Residents",
+      Covid_death_capita:"Covid Deaths / 100k Residents"
+ }
+ var capitaSet = ["Unemployment_capita","Medicaid_capita","Covid_capita","Covid_death_capita"]
+ var capitaSetDisplayTitle = {
+   Unemployment_capita:"Comparing unemployment per capita to other parts of the country",
+   Medicaid_capita:"Comparing Medicaid enrollment per capita across the country",
+   Covid_capita:"Comparing Covid cases per capita across the country",
+   Covid_death_capita:"Comparing Covid deaths per capita across the country"
+ }
+ 
+var userCoordinates = [-74.91448282148225,40.67736399374095]
+ 
+ var state_tiger_dict = {'01':'AL','02':'AK','04':'AZ','05':'AR','06':'CA','08':'CO','09':'CT','10':'DE','11':'DC','12':'FL','13':'GA','15':'HI','16':'ID','17':'IL','18':'IN','19':'IA','20':'KS','21':'KY','22':'LA','23':'ME','24':'MD','25':'MA','26':'MI','27':'MN','28':'MS','29':'MO','30':'MT','31':'NE','32':'NV','33':'NH','34':'NJ','35':'NM','36':'NY','37':'NC','38':'ND','39':'OH','40':'OK','41':'OR','42':'PA','44':'RI','45':'SC','46':'SD','47':'TN','48':'TX','49':'UT','50':'VT','51':'VA','53':'WA','54':'WV','55':'WI','56':'WY','60':'AS','66':'GU','69':'MP','72':'PR','78':'VI'}
+  
+ 
+ function getLocation() {
+   if (navigator.geolocation) {
+     navigator.geolocation.getCurrentPosition(showPosition);
+   } else { 
+     x.innerHTML = "Geolocation is not supported by this browser.";
+   }
+ }
+
+ function showPosition(position) {
+   x.innerHTML = "Latitude: " + position.coords.latitude + 
+   "<br>Longitude: " + position.coords.longitude;
+   console.log([position.coords.latitude, position.coords.longitude])
+   userCoordinates = [position.coords.latitude, position.coords.longitude]
+ }
+ 
+ var map;
+var transformRequest
+ var scroller = scrollama();
+ var introDescription = {
+       "Medicaid_capita":"Vulnerability is also reflected by the number of residents enrolled in Medicaid, a means-tested health insurance program with eligibility largely determined by income. The enrollment criteria share some factors with SVI*, such as income, household composition, disability, and employment status.",
+       "Unemployment_capita":"As the pandemic has rolled through the United States, unemployment has increased dramatically; this increase is a sign of the economic toll the virus has taken. For many workers in America, health care access is tied to a job. With rising unemployment, many have been left uninsured or underinsured.",
+       "SVI": "SVI* calls attention to counties with the greatest number of its highly vulnerable per-capita factors across the four areas of socioeconomic status, household composition and disability, minority status and language, and housing type.",
+       "YPLL":"Years of Potential Life Lost (YPLL) represents community-specific health vulnerability in the United States by measuring rates of premature death. Some of the counties that have the state’s highest values for SVI* also have the highest levels of YPLL. But other counties are newly visible as vulnerable.",
+         "Covid":"The direct effects of COVID-19 have exacerbated many of the preexisting vulnerabilities in the United States. Sometimes long-term vulnerabilities and the impact of COVID-19 coincide in our maps, but sometimes they do not.",
+       "Covid_capita":"Normalizing recent COVID-19 cases by population highlights the less populous counties where large proportions of a community have acquired the virus",
+     "Covid_death_capita":"Cumulative COVID-19 deaths normalized by population show places that have had a severe epidemic at any time since March 2020, whether those deaths were recent or occurred months ago."
+ }
+</script>
+<div id="map"></div>
+<div id="story"></div>
+
+<script src="../js/jquery.js"></script>
+<script type="text/javascript" src="../js/d3.js"></script>
+<script type="text/javascript" src="../js/crossfilter.js"></script>
+<script type="text/javascript" src="../js/dc.js"></script>
+<script type="text/javascript" src="../js/queue.v1.min.js"></script>
+
+<script src="../us-state-centroids.js"></script>
+<script src="user_build.js"></script>
+<script src="user_config.js"></script>
+<script src="user_scroller.js"></script>
+
+
+</body>
+</html>

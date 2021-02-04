@@ -175,7 +175,7 @@ var latestDate = null
 
 function ready(counties,outline,centroids,modelData,timeStamp,states,carto,stateAllocations){
     makeMinMaxDictionary()
-    console.log(modelData)
+   // console.log(modelData)
     d3.select("#closeMap").on("click",function(){
         d3.select("#SVIMap").style("display","none")
     })

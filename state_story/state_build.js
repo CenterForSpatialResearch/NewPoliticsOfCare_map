@@ -89,15 +89,15 @@ function toTitleCase(str){
 }
 
 var colorColumn = "_priority"
-var countyCentroids = d3.json("county_centroids.geojson")
-var counties = d3.json("counties.geojson")
-var stateCentroids = d3.json("us-state-centroids.json")
-var usOutline = d3.json("simple_contiguous.geojson")
-var allData =d3.csv("County_level_proportional_allocation_for_all_policies.csv")
+var countyCentroids = d3.json("../county_centroids.geojson")
+var counties = d3.json("../counties.geojson")
+var stateCentroids = d3.json("../us-state-centroids.json")
+var usOutline = d3.json("../simple_contiguous.geojson")
+var allData =d3.csv("../County_level_proportional_allocation_for_all_policies.csv")
 var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
 var allData = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/County_level_proportional_allocation_for_all_policies.csv")
 //var allData = d3.csv("County_level_proportional_allocation_for_all_policies 2.csv")
-var states = d3.json("simplestates.geojson")
+var states = d3.json("../simplestates.geojson")
 
  var measureSet = [
      "Medicaid_capita",
