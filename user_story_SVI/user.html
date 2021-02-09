@@ -20,7 +20,7 @@
         #map {
             top:0; 
             height: 100vh;
-            width:67vw;
+            width:65vw;
             position: fixed;
             z-index: -5;
         }
@@ -53,15 +53,17 @@
             margin-left: 5vw;
         }
         .righty {
-            width: 33vw;
+            width: 30vw;
             margin-right: 10px;
             position:absolute;
             right:0px;
-            background-color:rgba(255,255,255,.8);
+            background-color:rgba(255,255,255,1);
+            padding:1vw;
         }
         .light {
             color: #000;
             background-color: #fff;
+            padding:0px;
         }
         .dark {
             color: #fafafa;
@@ -124,16 +126,29 @@
         h3{
           font-size:24px;
           line-height:150%;
+          padding:0px;
         }
         #ipAddress{
           padding:5px;
           line-height:110%;
-          font-style:italic;
           cursor:pointer;
+          font-size:24px;
+          font-weight:bold;
         }
         #percents{
           padding:0px;
           margin:0px;
+        }
+        .percent_text{
+          font-size:11px;
+        }
+        #countyName{
+          color:"#5ac15f";
+          font-size:24px;
+        }
+        #popup{
+          z-index:9999999;
+          position:fixed;
         }
         </style>
 </head>
@@ -203,6 +218,7 @@ var transformRequest
 </script>
 <div id="map"></div>
 <div id="story"></div>
+<div id="popup">popup</div>
 
 <script src="../js/jquery.js"></script>
 <script type="text/javascript" src="../js/d3.js"></script>

@@ -17,7 +17,10 @@ var themesDefinitions ={
 var pub = {
     coordsByCounty:null,
     sviByCounty:null,
-    combined:null
+    combined:null,
+    neighborsGeo:null,
+    neighborId:null,
+    currendId:null
 }
 var mostLeastDescription = {}
 var currentState = ""
@@ -60,8 +63,42 @@ POV:"Persons below poverty",
 SNGPNT:"Single parent household with children under 18",
 UNEMP:"Civilian(age 16+) unemployed"
 }
+var measuresPercentDenominators = {
+AGE17:"of population",
+AGE65:"of population",
+DISABL:"of population",
+LIMENG:"of population",
+CROWD:"of households",
+GROUPQ:"of population",
+MINRTY:"of population",
+MOBILE:"of housing units",
+MUNIT:"of housing units",
+NOHSDP:"of population 25+",
+NOVEH:"of households",
+PCI:"",
+POV:"of population",
+SNGPNT:"of households",
+UNEMP:"of population 16+"
+}
+var measuresDenominators = {
+AGE17:"persons",
+AGE65:"persons",
+DISABL:"persons",
+LIMENG:"persons",
+CROWD:"households",
+GROUPQ:"persons",
+MINRTY:"persons",
+MOBILE:"housing units",
+MUNIT:"housing units",
+NOHSDP:"persons",
+NOVEH:"households",
+PCI:"",
+POV:"persons",
+SNGPNT:"households",
+UNEMP:"persons"
+}
 
-var colors = ["rgba(255,255,255,.1)","gold"]
+var colors = ["#aaa","red"]
 function loader(){
     function myFunction() {
       var myVar = setTimeout(showPage, 1000);
@@ -104,7 +141,7 @@ function toTitleCase(str){
 
 var colorColumn = "_priority"
 var countyCentroids = d3.json("../county_centroids.geojson")
-var counties = d3.json("../counties.geojson")
+var counties = d3.json("counties_neighbors.geojson")
 var stateCentroids = d3.json("../us-state-centroids.json")
 var usOutline = d3.json("../simple_contiguous.geojson")
 //var timeStamp = d3.csv("https://raw.githubusercontent.com/CenterForSpatialResearch/newpoliticsofcare_analysis/master/Output/time_stamp.csv")
@@ -158,20 +195,22 @@ function drawPercents(data){
     console.log(data)
     var lineHeight = 60
     
-    d3.select("#percents svg").remove()
+    d3.select("#user svg").remove()
     d3.select("#countyTitle").remove()
+    d3.select("#countySubtitle").remove()
     
-    d3.select("#percents").append("div").attr("id","countyTitle")
+    d3.select("#user h3").html("<span id=\"countyName\"> "+ data.LOCATION+"</span>")
+    d3.select("#user").append("div").attr("id","countyTitle")
     .style("font-size","16px")
     .style("width","300px")
     .style("padding","0px")
-    .html(data.county+", "+data.stateAbbr
-        +"<br>Total Population: "+numberWithCommas(data["E_TOTPOP"])
+    .html("<br>Total Population: "+numberWithCommas(data["E_TOTPOP"])
         +"<br>Total Households: "+numberWithCommas(data["E_HH"])
         +"<br>Total Housing Units: "+numberWithCommas(data["E_HU"])
         )
+    d3.select("#user").append("p").html("Here are the 15 Census demographic data points used in SVI:").attr("id","countySubtitle")
     
-   var svg= d3.select("#percents").append("svg").attr("width",300).attr("height",16*60)
+   var svg= d3.select("#user").append("svg").attr("width",300).attr("height",16*60)
     
   
     
@@ -204,8 +243,21 @@ function drawPercents(data){
         return numberWithCommas(data["E_"+d])
     })
     .attr("x",10)
-    .attr("y",function(d,i){return i*lineHeight+50})
+    .attr("y",function(d,i){return i*lineHeight+45})
     .attr("font-size","24px")
+    .attr("fill","#5ac15f")
+    
+   svg.selectAll(".count_label")
+    .data(measures)
+    .enter()
+    .append("text")
+    .attr("class","count_label")
+    .text(function(d){
+        return measuresDenominators[d]
+    })
+    .attr("x",10)
+    .attr("y",function(d,i){return i*lineHeight+55})
+    .attr("font-size","11px")
     .attr("fill","#5ac15f")
 
    svg.selectAll(".percent_number")
@@ -220,25 +272,39 @@ function drawPercents(data){
         return numberWithCommas(data["EP_"+d])+"%"
     })
     .attr("x",280)
-    .attr("y",function(d,i){return i*lineHeight+50})
+    .attr("y",function(d,i){return i*lineHeight+45})
     .attr("font-size","24px")
     .attr("fill","#6acc54")
     .attr("text-anchor","end")
+    
+   svg.selectAll(".percent_count_label")
+    .data(measures)
+    .enter()
+    .append("text")
+    .attr("class","percent_count_label")
+    .text(function(d){
+        return measuresPercentDenominators[d]
+    })
+    .attr("x",280)
+    .attr("y",function(d,i){return i*lineHeight+55})
+    .attr("font-size","11px")
+    .attr("fill","#5ac15f")
+    .attr("text-anchor","end")
 }
 function drawPercentile(data){
-    var lineHeight = 40
+    var lineHeight = 30
     
     d3.select("#percentile svg").remove()
     d3.select("#countyTitlePercentile").remove()
     
-    d3.select("#percentile").append("div").attr("id","countyTitlePercentile")
+    d3.select("#percentile h3").html("How does <span id=\"countyName\"> "+ data.LOCATION+"</span> compare?")
+    
+    d3.select("#percentile").append("p")
     .style("font-size","16px")
     .style("width","300px")
     .style("padding","0px")
-    .html(data.county+", "+data.stateAbbr
-        +"<br>Total Population: "+numberWithCommas(data["E_TOTPOP"])
-        +"<br>Total Households: "+numberWithCommas(data["E_HH"])
-        +"<br>Total Housing Units: "+numberWithCommas(data["E_HU"])
+    .html("RPL: "+data["RPL_THEMES"]
+        +"<br>SPL: "+data["SPL_THEMES"]
         )
     
    var svg= d3.select("#percentile").append("svg").attr("width",400).attr("height",16*60)
@@ -260,6 +326,7 @@ function drawPercentile(data){
     .style("font-size","10px")
     
     var wScale = d3.scaleLinear().domain([0,1]).range([0,200])
+    var cScale = d3.scaleLinear().domain([0,1]).range([colors[0],colors[1]])
     
    svg.selectAll(".percent_count")
     .data(measures)
@@ -271,8 +338,26 @@ function drawPercentile(data){
     })
     .attr("height",lineHeight/2)
     .attr("x",10)
-    .attr("y",function(d,i){return i*lineHeight+20})
-    .attr("fill","#5ac15f")
+    .attr("y",function(d,i){return i*lineHeight+25})
+    .attr("fill",function(d){
+        return cScale(data["EPL_"+d])
+    })
+    
+   svg.selectAll(".percentile_label")
+    .data(measures)
+    .enter()
+    .append("text")
+    .attr("class","percentile_label")
+    .attr("x",function(d){
+        return wScale(data["EPL_"+d])+10
+    })
+    .attr("y",function(d,i){return i*lineHeight+35})
+    .attr("fill",function(d){
+        return cScale(data["EPL_"+d])
+    })
+    .text(function(d){
+        return Math.round(data["EPL_"+d]*10000)/100+"%"
+    })
 
    // svg.selectAll(".percent_number")
  //    .data(measures)
@@ -291,7 +376,172 @@ function drawPercentile(data){
  //    .attr("fill","#6acc54")
  //    .attr("text-anchor","end")
 }
-
+function drawNeighbors(data){
+    //console.log(data)
+    d3.select("#neighbors svg").remove()
+    d3.select("#neighbors p").remove()
+    var neighbors = data.NEIGHBORS.split(",")
+    var bounds = []
+    var nsData = []
+    var neighborId = []
+    for(var i in neighbors){
+        var nGid = neighbors[i]
+        var nData = pub.sviByCounty[nGid]
+        var nGeo = pub.coordsByCounty[nGid]
+        bounds.push(nGeo)
+        nsData.push(nData)
+        neighborId.push(nGid)
+    }
+    neighborId.push(data["GEOID"])
+    pub.neighborsGeo = bounds
+    pub.neighborId = neighborId
+    nsData.push(data)
+    
+    
+    d3.select("#neighbors h3")
+    .html("How does <span id=\"countyName\">"+ data.LOCATION+ "</span> compare to its <span id=\"countyName\">"+(nsData.length-1)+" neighboring counties</span>?")
+    d3.select("#neighbors").append("p").attr("id","neighborDescription")
+//.html("rollover the bars to see corresponding neighboring county on map")
+    var descriptionText = data.COUNTY+" ranks <br>"
+    var svg  = d3.select("#neighbors").append("svg").attr("width",200).attr("height",nsData.length*210)
+    
+   // console.log(nsData)
+    for(var m in measures){
+        
+        var nCount = nsData.length
+        var measure = measures[m]
+        
+        var w = 300/nsData.length
+        if(w>30){
+            w=30
+        }
+        
+        var sorted = nsData.sort(function(a,b){
+            return b["EP_"+measures[m]]-a["EP_"+measures[m]]
+        })
+        
+        var rank = sorted.indexOf(data)
+      //  console.log(rank)
+        
+        if(rank == 0){
+            descriptionText+="highest in \""+ measuresLabels[measure]+"\"<br>"
+           // d3.select("#neighborDescription").append("p").html(data.COUNTY+" ranks the highest in "+ measuresLabels[measure])
+        }else if(rank == nCount-1){
+           descriptionText+="lowest in \""+ measuresLabels[measure]+"\"<br>"
+           // d3.select("#neighborDescription").append("p").html(data.COUNTY+" ranks the lowest in "+ measuresLabels[measure])
+        }
+        
+        var wScale = d3.scaleLinear().domain([0,sorted[0]["EP_"+measure]]).range([2,100])
+        
+        svg.append("text").attr("id",measure)
+        .text(function(){
+                return measuresLabels[measure]
+        })
+        .attr("transform","translate(0,"+(m*((nCount+5)*11)+11)+")")
+       .attr("font-size","11px")
+        
+        svg.append("text").attr("id",measure+"denom")
+        .text(function(){
+            if(measure=="PCI"){
+                return ""
+            }else{
+                return " as % "+measuresPercentDenominators[measure]
+                
+            }
+        })
+        .attr("transform","translate(0,"+(m*((nCount+5)*11)+22)+")")
+       .attr("font-size","11px")
+        
+        svg.selectAll(".bar_"+measures[m])
+        .data(sorted)
+        .enter()
+        .append("rect")
+        .attr("id",function(d){
+            return measure+"_"+d.FIPS
+        })
+        .attr("measure",measure)
+        .attr("height",10)
+        .attr("width",function(d){
+            return wScale(d["EP_"+measure])
+        })
+        .attr("y",function(d,i){return i*11})
+        .attr("x",function(d,i){return 80; return 100-wScale(d["EP_"+measure])})
+        .attr("transform","translate(0,"+(m*((nCount+5)*11)+25)+")")
+        .attr("fill",function(d){
+            //console.log([d.FIPS,data.FIPS])
+            if(d.FIPS==data.FIPS){
+                return "red"
+            }else{
+                return "#aaa"
+            }
+        })
+        .attr("cursor","pointer")
+        .on("mouseover",function(d){
+            var gid = d.FIPS
+            console.log(d)
+            var currentMeasure = d3.select(this).attr("measure")
+            map.setFilter("hover",["==","GEOID",gid])
+            d3.select("#popup")
+                .style("left",(window.event.clientX+20)+"px")
+                .style("top",window.event.clientY+"px")
+                .html(d.LOCATION+"<br>"+currentMeasure+":"+d["EP_"+currentMeasure])
+        })
+        .on("mouseout",function(d){
+            var gid = d.FIPS
+            map.setFilter("hover",["==","GEOID",""])
+            
+        })
+        
+        svg.selectAll(".label_"+measure)
+        .data(sorted)
+        .enter()
+        .append("text")
+       .text(function(d){
+           if(measure=="PCI"){
+               return numberWithCommas(Math.round(d["EP_"+measure]))
+           }
+           return d["EP_"+measure]+"%"
+       })
+        .attr("x",function(d,i){return wScale(d["EP_"+measure])+85})
+        .attr("y",function(d,i){return i*11})
+        .attr("transform","translate(0,"+(m*((nCount+5)*11)+35)+")")
+       .attr("font-size","10px")
+        .attr("fill",function(d){
+            //console.log([d.FIPS,data.FIPS])
+            if(d.FIPS==data.FIPS){
+                return "red"
+            }else{
+                return "#aaa"
+            }
+        })
+        
+        
+         svg.selectAll(".label_"+measure)
+         .data(sorted)
+         .enter()
+         .append("text")
+        .text(function(d){
+            return d["COUNTY"]
+        })
+         .attr("x",function(d,i){return 75})
+         .attr("y",function(d,i){return i*11})
+         .attr("transform","translate(0,"+(m*((nCount+5)*11)+35)+")")
+        .attr("font-size","10px")
+        .attr("text-anchor","end")
+         .attr("fill",function(d){
+             //console.log([d.FIPS,data.FIPS])
+             if(d.FIPS==data.FIPS){
+                 return "red"
+             }else{
+                 return "#aaa"
+             }
+         })
+        
+    }
+    
+     d3.select("#neighborDescription").append("p").html(descriptionText).style("font-size","11px")
+    
+}
 function addLayers(column){
 
          map.addLayer({
@@ -300,7 +550,7 @@ function addLayers(column){
              'source': 'counties',
              'paint': {
                  'fill-color': "#ffffff",
-                 'fill-opacity':.8
+                 'fill-opacity':0
              }
          });
          
@@ -309,7 +559,7 @@ function addLayers(column){
          stops: [[0,"#ddd"],[0.001, colors[0]],[1, colors[1]]]
          }
          map.setPaintProperty(column, 'fill-color', matchString)
-         map.setPaintProperty(column, 'fill-opacity', 0)
+      //   map.setPaintProperty(column, 'fill-opacity', 0)
 }
 
 
@@ -328,10 +578,11 @@ function getSviByCounty(data){
     return dict
 }
 function getCountyCoordinates(counties){
+   // console.log(counties)
     var dict = {}
     for(var i in counties.features){
         var geometry = counties.features[i].geometry.coordinates
-        var gid = counties.features[i].properties.FIPS
+        var gid = counties.features[i].properties.GEOID
         dict[gid]=geometry
     }
     return dict
@@ -376,7 +627,7 @@ function fipsCountyName(data,columName){
     var dict = {}
     for(var i in data.features){
         var county = data.features[i].properties[columName]
-        var fips = data.features[i].properties.FIPS
+        var fips = data.features[i].properties.GEOID
         if(fips.length==4){
             fips = "0"+fips
         }
@@ -389,8 +640,9 @@ function numberWithCommas(x) {
 }
 
 function combineGeojson(all,counties){
+
     for(var c in counties.features){
-        var countyFIPS = counties.features[c].properties.FIPS
+        var countyFIPS = counties.features[c].properties.GEOID
         if(countyFIPS.length==4){
             countyFIPS = "0"+countyFIPS
         }
@@ -462,6 +714,35 @@ function drawMap(data){
                      'fill-opacity':.1
                  }
              });
+             map.addLayer({
+                 'id':"hover",
+                 'type': 'fill',
+                 'source': 'counties',
+                 'paint': {
+                     'fill-color': "gold",
+                     'fill-opacity':0
+                 }
+             });
+             map.addLayer({
+                 'id':"outline",
+                 'type': 'line',
+                 'source': 'counties',
+                 'paint': {
+                     'line-color':"#fff",
+                     'line-opacity':0,
+                     'line-width':2
+                 },
+             });
+             map.addLayer({
+                 'id':"outline_hover",
+                 'type': 'line',
+                 'source': 'counties',
+                 'paint': {
+                     'line-color':"#fff",
+                     'line-opacity':.5,
+                     'line-width':.5
+                 },
+             });
           //   console.log(map.getStyle().layers)
              map.on("mousemove","base",function(c){
                 // console.log(c.features[0])
@@ -477,6 +758,9 @@ function drawMap(data){
     //    console.log(map.getStyle().layers)
     
     map.once("idle",function(){
+        addLayers("RPL_THEMES")
+        map.setFilter("hover",["==","GEOID",""])
+        
         for(var m in measures){
             var measure = measures[m]
             addLayers(measure)
@@ -495,7 +779,7 @@ function drawMap(data){
                 userCoordinates = [location.longitude, location.latitude]
                
                      var userCounty = getUserCounty(userCoordinates)
-                console.log(userCounty)
+                        console.log(userCounty)
                      var userProperties = userCounty.properties
                     getUserInfo(userCoordinates,userProperties,map)
                 
@@ -508,16 +792,18 @@ function drawMap(data){
 
 
 function getUserInfo(userCoordinates,userProperties,map){
-            var userGid = userProperties.FIPS
+            var userGid = userProperties.GEOID
     if(String(userGid).length==4){
         userGid = "0"+String(userGid)
     }
-            var userGeometry = pub.coordsByCounty[userGid][0]
+    pub.currentId = userGid
+    
+        var userGeometry = pub.coordsByCounty[userGid]
             var userCoords =  flatDeep(userGeometry,Infinity)
             var userBounds = getMaxMin(userCoords)
 
             var bounds = new mapboxgl.LngLatBounds(userBounds)
-
+            
             map.fitBounds(bounds,{padding:20})
             
     if(userCoordinates!=null){
@@ -526,15 +812,20 @@ function getUserInfo(userCoordinates,userProperties,map){
             +", population "+userProperties.totalPopulation)+"."
     }else{
         d3.select("#ipAddress").html("You have selected "
-            +"<br> in "+userProperties.county+" county, "+userProperties.stateAbbr
-            +", population "+userProperties.totalPopulation)+"."
+            +"<br><span id=\"countyName\">"+userProperties.LOCATION
+            +"</span><br> population "+userProperties["E_TOTPOP"])+"."
     
     }
     map.setPaintProperty("base","fill-opacity",.9)
-    map.setFilter("base",["!=","FIPS",userGid])
+    map.setFilter("base",["!=","GEOID",userGid])
+    map.setFilter("outline",["==","GEOID",userGid])
+    
+    map.setPaintProperty("outline","line-opacity",1)
+    
     
     drawPercents(userProperties)
     drawPercentile(userProperties)
+    drawNeighbors(userProperties)
 }
 
 function getMaxMin(coords){
@@ -604,7 +895,7 @@ function mostVulnerableCounty(measure,selectedState){
                 var county = properties.county
                 var population = properties.totalPopulation
                // console.log(pub.all.features[i].)
-                var centroid = pub.centroids[properties.FIPS]
+                var centroid = pub.centroids[properties.GEOID]
                 return {county:county,population:population, centroid:centroid}
                // return 
             }
@@ -628,7 +919,7 @@ function combineDatasets(svi,covid){
     var formatted = {}
     for(var s in svi){
         var state = svi[s]["ST"]
-        var county = "_"+String(svi[s].FIPS)
+        var county = "_"+String(svi[s].GEOID)
         var totalPop = parseInt(svi[s]["E_TOTPOP"])
         //console.log(covid[county])
         if(Object.keys(covid[county]).length==0 ){

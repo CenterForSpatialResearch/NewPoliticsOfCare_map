@@ -124,13 +124,23 @@ scroller
     .onStepEnter(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);
         response.element.classList.add('active');
-        map.flyTo(chapter.location);
-        if (config.showMarkers) {
-            marker.setLngLat(chapter.location.center);
+        console.log(chapter)
+        if(chapter.id=="neighbors"){
+            console.log(chapter.id)
+            var neighborGeo =  getMaxMin(flatDeep(pub.neighborsGeo,Infinity))
+            var bounds = new mapboxgl.LngLatBounds(neighborGeo)
+            map.fitBounds(bounds,{padding:20})
+            map.setFilter("base",["!in","GEOID"].concat(pub.neighborId))
+            map.setPaintProperty("hover","fill-opacity",.5)
+        
         }
-        if (chapter.onChapterEnter.length > 0) {
-            chapter.onChapterEnter.forEach(setLayerOpacity);
-        }
+        // map.flyTo(chapter.location);
+  //       if (config.showMarkers) {
+  //           marker.setLngLat(chapter.location.center);
+  //       }
+  //       if (chapter.onChapterEnter.length > 0) {
+  //           chapter.onChapterEnter.forEach(setLayerOpacity);
+  //       }
     })
     .onStepExit(response => {
         var chapter = config.chapters.find(chap => chap.id === response.element.id);

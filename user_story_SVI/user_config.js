@@ -14,18 +14,16 @@ function configureStory(){
         chapters: [
             {
                 id: 'start',
-                title: 'Communities can be vulnerable in many different ways - ROUGH DRAFT',
+                title: 'There are many ways to measure vulnerability - SVI VERY ROUGH DRAFT',
                 image: '',
-                description: 'COVID-19 affects our communities differently. Health and social vulnerabilities that predate the pandemic have fueled uneven effects across the United States.'
-                +"<br><br>There are many ways to measure vulnerability." 
-                +"<br><br>One of them, the CDC's Social Vulnerability Index<sup>1</sup>, uses 15 demographic data points from the American Community Survey <sup>1</sup> to provide a vulnerability score for each county and census tract. Here we are looking at counties."
-                +"<br><br><strong>Let's start where you are</strong><br><div id=\"ipAddress\">click <u>here</u> to use your ip address for location"
-                +"<br>or click on your county on the map to start there</div>",
+                description: "One of them, the CDC's Social Vulnerability Index<sup>*</sup>, uses 15 demographic data points from the American Community Survey <sup>*</sup> to provide a vulnerability score for each county and census tract in the country. Here we are looking at data on the county level."
+                +"<div id=\"ipAddress\">"
+                +"<br>click on a county on the map to start there</div>",
                 //+"<div id=\"userLocation\">Click here to start where you are.</div><br><br>",
                 location: {
-                    center:[-95,39],
-                    zoom:3.5,
-                    speed: .4
+                    // center:[-95,39],
+    //                 zoom:3.5,
+    //                 speed: .4
                 },
                 onChapterEnter: [
                      {
@@ -48,9 +46,7 @@ function configureStory(){
         id: 'user',
         title: 'You are here',
         image: '',
-        description: "Here is the data for your county."
-        +"These numbers are  collected by the Census for the 15 categories that the CDC selected"
-        +"<br><br><div id=\"percents\"></div>",
+        description: "",
         location: {},
         onChapterEnter: [],
         onChapterExit: []
@@ -60,12 +56,44 @@ function configureStory(){
     
     
     var newChapter = {
+        id: 'neighbors',
+        title: 'How does your county compare to neighboring counties?',
+        image: '',
+        description: "Here is how your county ranks when compared to adjacent counties.",
+        location: {
+           
+        },
+        onChapterEnter: [
+            
+        ],
+        onChapterExit: []
+    }
+
+    config.chapters.push(newChapter)
+    
+    var newChapter = {
+        id: 'state',
+        title: 'How does your county compare to the rest of the state?',
+        image: '',
+        description: "Here is how your county compares in its own state.",
+        location: {
+           
+        },
+        onChapterEnter: [
+            
+        ],
+        onChapterExit: []
+    }
+
+    config.chapters.push(newChapter)
+    
+    var newChapter = {
         id: 'percentile',
         title: 'How does your county compare?',
         image: '',
         description: "Here is how your county ranks across the country for the same data points "
         +"(higher % = more vulnerable)"
-        +"<br><br><div id=\"percentiles\"></div>",
+        +"<div id=\"percentiles\"></div>",
         location: {
             center:[-95,39],
             zoom:3.5,
