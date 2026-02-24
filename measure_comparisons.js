@@ -345,7 +345,7 @@ function colorMap(map,key){
     
 }
 function drawMap(data,comparisonsKeys){
-	mapboxgl.accessToken = 'pk.eyJ1Ijoic2lkbCIsImEiOiJkOGM1ZDc0ZTc5NGY0ZGM4MmNkNWIyMmIzNDBkMmZkNiJ9.Qn36nbIqgMc4V0KEhb4iEw';    
+	mapboxgl.accessToken = 'pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJjbW0wdWgzZXYwMnB6MnJxNHAzZHBkb3YwIn0.hSOoIs-K14aboYEhHEA4rw';    
     //mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"//new account
     var bounds = [
     [-74.1, 40.6], // Southwest coordinates
