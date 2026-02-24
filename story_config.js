@@ -1,6 +1,6 @@
 var config = {
     style: 'mapbox://styles/c4sr-gsapp/ckfg2z1oy1tsl19pehe3qnlzj',
-    accessToken: 'pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ',
+    accessToken: 'pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJjbW0wdWgzZXYwMnB6MnJxNHAzZHBkb3YwIn0.hSOoIs-K14aboYEhHEA4rw',
     showMarkers: false,
     theme: 'light',
     alignment: 'right',
