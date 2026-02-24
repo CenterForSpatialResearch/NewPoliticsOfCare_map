@@ -315,7 +315,7 @@ function drawReservations(data,map){
 function drawMap(data,outline){
     // d3.select("#map").style("width",window.innerWidth+"px")
  //       .style("height",window.innerHeight+"px")
-    mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"//new account
+    mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJjbW0wdWgzZXYwMnB6MnJxNHAzZHBkb3YwIn0.hSOoIs-K14aboYEhHEA4rw"//new account
     var maxBounds = [
     [-165,6], // Southwest coordinates
     [-15, 70] // Northeast coordinates
