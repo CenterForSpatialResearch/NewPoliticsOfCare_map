@@ -1003,7 +1003,7 @@ function combineData(modelData,counties){
 function drawMap(data,div,column,outline){
     // d3.select("#"+div).style("width",window.innerWidth+"px").style("height",window.innerHeight+"px")
 //
-    mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJja2J0ajRtNzMwOHBnMnNvNnM3Ymw5MnJzIn0.fsTNczOFZG8Ik3EtO9LdNQ"//new account
+    mapboxgl.accessToken = "pk.eyJ1IjoiYzRzci1nc2FwcCIsImEiOiJjbW0wdWgzZXYwMnB6MnJxNHAzZHBkb3YwIn0.hSOoIs-K14aboYEhHEA4rw"//new account
    // var maxBounds = [[-190,8],[-20, 74]];
     var map = new mapboxgl.Map({
         container: div,
